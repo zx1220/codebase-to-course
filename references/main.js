@@ -25,8 +25,51 @@
 
   /* ── NAVIGATION & PROGRESS BAR ────────────────────────────── */
   const progressBar = $('#progress-bar');
-  const navDots     = $$('.nav-dot');
+  const navDotsEl   = $('#nav-dots');
   const modules     = $$('.module');
+
+  // Auto-generate nav dots from .module sections when the #nav-dots container is
+  // empty or still holds the NAV_DOTS placeholder. Hand-written dots (existing
+  // courses) are left untouched — full backward compatibility.
+  function initNavDots() {
+    if (!navDotsEl) return;
+    const hasDots = navDotsEl.querySelector('.nav-dot');
+    const isPlaceholder = navDotsEl.textContent.includes('NAV_DOTS');
+    if (hasDots || !isPlaceholder) return; // hand-written dots or already populated
+    modules.forEach((mod) => {
+      const id = mod.id;
+      const numMatch = id && id.match(/module-(\d+)/);
+      const num = numMatch ? numMatch[1] : '';
+      const shortTitle = mod.dataset.navTitle;
+      const titleEl = $('.module-title', mod);
+      const title = shortTitle || (titleEl ? titleEl.textContent.trim() : (id || 'Module'));
+      const btn = document.createElement('button');
+      btn.className = 'nav-dot';
+      btn.dataset.target = id;
+      btn.dataset.tooltip = title;
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-label', (num ? 'Module ' + num + ': ' : '') + title);
+      navDotsEl.appendChild(btn);
+    });
+  }
+  initNavDots();
+
+  const navDots = $$('.nav-dot');
+
+  // Cache module offsets so scroll (a high-frequency event) never forces layout
+  // reflow via offsetTop/offsetHeight. Recomputed only on resize/load.
+  let moduleMetrics = [];
+  function measureModules() {
+    moduleMetrics = modules.map(mod => ({ top: mod.offsetTop, height: mod.offsetHeight }));
+  }
+  function currentModuleIndex() {
+    const scrollMid = window.scrollY + window.innerHeight / 2;
+    for (let i = 0; i < moduleMetrics.length; i++) {
+      const m = moduleMetrics[i];
+      if (scrollMid >= m.top && scrollMid < m.top + m.height) return i;
+    }
+    return 0;
+  }
 
   function updateProgress() {
     if (!progressBar) return;
@@ -40,15 +83,16 @@
 
   function updateNavDots() {
     const scrollMid = window.scrollY + window.innerHeight / 2;
+    const scrollBottom = window.scrollY + window.innerHeight;
     modules.forEach((mod, i) => {
       const dot = navDots[i];
-      if (!dot) return;
-      const top    = mod.offsetTop;
-      const bottom = top + mod.offsetHeight;
+      if (!dot || !moduleMetrics[i]) return;
+      const top    = moduleMetrics[i].top;
+      const bottom = top + moduleMetrics[i].height;
       if (scrollMid >= top && scrollMid < bottom) {
         dot.classList.add('active');
         dot.classList.remove('visited');
-      } else if (window.scrollY + window.innerHeight > top) {
+      } else if (scrollBottom > top) {
         dot.classList.remove('active');
         dot.classList.add('visited');
       } else {
@@ -58,6 +102,8 @@
   }
 
   window.addEventListener('scroll', () => requestAnimationFrame(updateProgress), { passive: true });
+  window.addEventListener('resize', measureModules, { passive: true });
+  measureModules();
   updateProgress();
 
   // Nav dot click → scroll to module
@@ -69,16 +115,7 @@
   });
 
   /* ── KEYBOARD NAVIGATION ───────────────────────────────────── */
-  function currentModuleIndex() {
-    const scrollMid = window.scrollY + window.innerHeight / 2;
-    for (let i = 0; i < modules.length; i++) {
-      const top    = modules[i].offsetTop;
-      const bottom = top + modules[i].offsetHeight;
-      if (scrollMid >= top && scrollMid < bottom) return i;
-    }
-    return 0;
-  }
-
+  // currentModuleIndex() is defined above and uses the cached moduleMetrics.
   document.addEventListener('keydown', e => {
     if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
@@ -111,7 +148,19 @@
   });
 
   /* ── GLOSSARY TOOLTIPS ─────────────────────────────────────── */
-  let activeTooltip = null;
+  // A single reusable tooltip node, lazily created once and repositioned on each
+  // show — avoids the create/appendChild/remove churn of per-term nodes.
+  let tooltipNode = null;
+  let activeTerm = null;
+
+  function getTooltip() {
+    if (!tooltipNode) {
+      tooltipNode = document.createElement('span');
+      tooltipNode.className = 'term-tooltip';
+      document.body.appendChild(tooltipNode);
+    }
+    return tooltipNode;
+  }
 
   function positionTooltip(term, tip) {
     const rect     = term.getBoundingClientRect();
@@ -120,7 +169,6 @@
     left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
     tip.style.left  = left + 'px';
     tip.style.width = tipWidth + 'px';
-    document.body.appendChild(tip);
     const tipHeight = tip.offsetHeight;
     if (rect.top - tipHeight - 12 < 0) {
       tip.style.top = (rect.bottom + 8) + 'px';
@@ -131,37 +179,43 @@
     }
   }
 
-  function showTooltip(term, tip) {
-    if (activeTooltip && activeTooltip !== tip) {
-      activeTooltip.classList.remove('visible');
-      activeTooltip.remove();
-    }
+  function showTooltip(term) {
+    const tip = getTooltip();
+    tip.textContent = term.dataset.definition;
     positionTooltip(term, tip);
     requestAnimationFrame(() => tip.classList.add('visible'));
-    activeTooltip = tip;
+    activeTerm = term;
   }
 
-  function hideTooltip(tip) {
-    tip.classList.remove('visible');
-    setTimeout(() => { if (!tip.classList.contains('visible')) tip.remove(); }, 150);
-    if (activeTooltip === tip) activeTooltip = null;
+  let hideTimer = null;
+  function hideTooltip() {
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      if (tooltipNode) tooltipNode.classList.remove('visible');
+      activeTerm = null;
+    }, 150);
   }
 
   $$('.term').forEach(term => {
-    const tip = document.createElement('span');
-    tip.className = 'term-tooltip';
-    tip.textContent = term.dataset.definition;
-
-    term.addEventListener('mouseenter', () => showTooltip(term, tip));
-    term.addEventListener('mouseleave', () => hideTooltip(tip));
+    term.addEventListener('mouseenter', () => {
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+      showTooltip(term);
+    });
+    term.addEventListener('mouseleave', hideTooltip);
     term.addEventListener('click', e => {
       e.stopPropagation();
-      tip.classList.contains('visible') ? hideTooltip(tip) : showTooltip(term, tip);
+      if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+      if (activeTerm === term && tooltipNode && tooltipNode.classList.contains('visible')) {
+        hideTooltip();
+      } else {
+        showTooltip(term);
+      }
     });
   });
 
   document.addEventListener('click', () => {
-    if (activeTooltip) { activeTooltip.classList.remove('visible'); activeTooltip.remove(); activeTooltip = null; }
+    if (tooltipNode) tooltipNode.classList.remove('visible');
+    activeTerm = null;
   });
 
   /* ── QUIZ ENGINE ───────────────────────────────────────────── */
@@ -418,7 +472,13 @@
       packet.style.animation  = 'none';
       packet.offsetHeight; // reflow
       packet.style.animation  = 'packetMove 0.8s var(--ease-in-out) forwards';
-      setTimeout(() => { packet.style.display = 'none'; }, 850);
+    }
+
+    // Hide the packet when its animation actually ends — no fixed-timeout drift,
+    // and no overlap if "Next Step" is clicked rapidly.
+    if (packet && !packet._hideBound) {
+      packet.addEventListener('animationend', () => { packet.style.display = 'none'; });
+      packet._hideBound = true;
     }
 
     function next() {

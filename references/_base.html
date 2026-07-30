@@ -40,11 +40,10 @@
       <span class="nav-title">COURSE_TITLE</span>
       <div class="nav-dots" id="nav-dots" role="tablist">
         <!--
-          One <button> per module. Replace MODULE_N_NAME with the actual module title.
-
-          <button class="nav-dot" data-target="module-1" data-tooltip="MODULE_1_NAME" role="tab" aria-label="Module 1: MODULE_1_NAME"></button>
-          <button class="nav-dot" data-target="module-2" data-tooltip="MODULE_2_NAME" role="tab" aria-label="Module 2: MODULE_2_NAME"></button>
-          ...
+          Leave NAV_DOTS as-is. main.js generates one <button class="nav-dot"> per
+          .module section at load time — they can never drift out of sync with the modules.
+          To give a module a short tooltip, add data-nav-title="short title" to its <section>;
+          otherwise the full .module-title text is used.
         -->
         NAV_DOTS
       </div>

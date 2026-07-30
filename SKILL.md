@@ -5,7 +5,9 @@ description: "Turn any codebase into a beautiful, interactive single-page HTML c
 
 # Codebase-to-Course
 
-Transform any codebase into a stunning, interactive course. The output is a **directory** containing a pre-built `styles.css`, `main.js`, per-module HTML files, and an assembled `index.html` — open it directly in the browser with no setup required (only external dependency: Google Fonts CDN). The course teaches how the code works through scroll-based modules, animated visualizations, embedded quizzes, and plain-English translations of code.
+**语言要求：所有课程内容（标题、正文、按钮、提示、测验题目和选项、代码注释翻译等）必须使用中文输出。代码片段本身保留原文，但代码旁边的翻译和解释用中文。**
+
+Transform any codebase into a stunning, interactive course. The output is a **directory** containing a pre-built `styles.css`, `main.js`, per-module HTML files, and an assembled `index.html` — open it directly in the browser with no setup required (only external dependency: Google Fonts CDN). The course teaches how the code works through scroll-based modules, animated visualizations, embedded quizzes, and plain-Chinese translations of code.
 
 ## First-Run Welcome
 
@@ -18,33 +20,19 @@ When the skill is first triggered and the user hasn't specified a codebase yet, 
 > - **A GitHub link** — e.g., "make a course from https://github.com/user/repo"
 > - **The current project** — if you're already in a codebase, just say "turn this into a course"
 >
-> I'll read through the code, figure out how everything fits together, and generate a beautiful single-page HTML course with animated diagrams, plain-English code explanations, and interactive quizzes. The whole thing runs in your browser — no setup needed.
+> I'll read through the code, figure out how everything fits together, and generate a beautiful single-page HTML course with animated diagrams, plain-Chinese code explanations, and interactive quizzes. The whole thing runs in your browser — no setup needed.
 
 If the user provides a GitHub link, clone the repo first (`git clone <url> /tmp/<repo-name>`) before starting the analysis. If they say "this codebase" or similar, use the current working directory.
 
 ## Who This Is For
 
-The target learner is a **"vibe coder"** — someone who builds software by instructing AI coding tools in natural language, without a traditional CS education. They may have built this project themselves (without looking at the code), or they may have found an interesting open-source project on GitHub and want to understand how it's built. Either way, they don't yet understand what's happening under the hood.
+The learner is a **"vibe coder"** — builds software by instructing AI in natural language, no CS background. They've used the app but don't know how it works under the hood. They want coding as a superpower, not to become engineers: they need to *read*, *understand*, and *direct* code, not write it from scratch.
 
-**Assume zero technical background.** Every CS concept — from variables to APIs to databases — needs to be explained in plain language as if the learner has never encountered it. No jargon without definition. No "as you probably know." The tone should be like a smart friend explaining things, not a professor lecturing.
-
-**Their goals are practical, not academic:**
-- Have enough technical knowledge to effectively **steer AI coding tools** — make better architectural and tech stack decisions
-- **Detect when AI is wrong** — spot hallucinations, catch bad patterns, know when something smells off
-- **Intervene when AI gets stuck** — break out of bug loops, debug issues, unblock themselves
-- Build more advanced software with **production-level quality and reliability**
-- Be **technically fluent** enough to discuss decisions with engineers confidently
-- **Acquire the vocabulary of software** — learn the precise technical terms so they can describe requirements clearly and unambiguously to AI coding agents (e.g., knowing to say "namespace package" instead of "shared folder thing")
-
-**They are NOT trying to become software engineers.** They want coding as a superpower that amplifies what they're already good at. They don't need to write code from scratch — they need to *read* it, *understand* it, and *direct* it.
-
-## Why This Approach Works
-
-This skill inverts traditional CS education. The old model is: memorize concepts for years → eventually build something → finally see the point (most people quit before step 3). This model is: **build something first → experience it working → now understand how it works.**
-
-The learner already has context that traditional students don't — they've *used* the app, they know what it does, they may have even described its features in natural language. The course meets them where they are: "You know that button you click? Here's what happens under the hood when you click it."
-
-Every module answers **"why should I care?"** before "how does it work?" The answer to "why should I care?" is always practical: *because this knowledge helps you steer AI better, debug faster, or make smarter architectural decisions.*
+**Four hard rules that follow from this:**
+1. **Assume zero technical background.** Explain every concept — variables, APIs, databases — in plain language. No jargon without a definition. Tone = smart friend, not professor.
+2. **Every module answers "why should I care?" before "how does it work?"** The answer is always practical: this helps you steer AI, debug, or make architectural decisions.
+3. **The vocabulary IS the learning.** Teach the precise terms (e.g. "namespace package" not "shared folder thing") so learners can describe requirements clearly to AI agents.
+4. **Teach by tracing the known.** Start from what the learner already does ("you know that button you click? here's what happens under the hood"), then peel back layers. Build-first, understand-later — the inverse of traditional CS education.
 
 The directory-based output is intentional: separating CSS/JS from content means AI never regenerates boilerplate, each module is written independently (keeping output size small and quality high), and the assembled `index.html` works offline with zero setup.
 
@@ -115,7 +103,7 @@ For complex codebases, write a brief for each module before writing any HTML. Th
 
 Read `references/module-brief-template.md` for the template structure. Read `references/content-philosophy.md` for the content rules that should guide brief writing.
 
-**For each module, write a brief to `course-name/briefs/0N-slug.md` containing:**
+**For each module, write a brief to `/root/code/codebase-to-course/project/course-name/briefs/0N-slug.md` containing:**
 - Teaching arc (metaphor, opening hook, key insight)
 - Pre-extracted code snippets (copy-pasted from the codebase with file paths and line numbers)
 - Interactive elements checklist with enough detail to build them
@@ -128,9 +116,11 @@ The code snippets are the critical token-saving step. By pre-extracting them int
 
 The course output is a **directory**, not a single file. All CSS and JS are pre-built reference files — never regenerate them. Your job is to write only the HTML content.
 
+**Output root:** All courses are generated under `/root/code/codebase-to-course/project/`. Replace `course-name` below with the actual course slug.
+
 **Output structure:**
 ```
-course-name/
+/root/code/codebase-to-course/project/course-name/
   styles.css       ← copied verbatim from references/styles.css
   main.js          ← copied verbatim from references/main.js
   _base.html       ← customized shell (title, accent color, nav dots)
@@ -144,41 +134,46 @@ course-name/
   index.html       ← assembled by build.sh (do not write manually)
 ```
 
-**Step 1 (both paths): Setup** — Create the course directory. Copy these four files verbatim using Read + Write (do not regenerate their contents):
-- `references/styles.css` → `course-name/styles.css`
-- `references/main.js` → `course-name/main.js`
-- `references/_footer.html` → `course-name/_footer.html`
-- `references/build.sh` → `course-name/build.sh`
+**Step 1 (both paths): Setup** — Create the course directory under `/root/code/codebase-to-course/project/course-name/`. Copy these four files verbatim using Read + Write (do not regenerate their contents):
+- `references/styles.css` → `/root/code/codebase-to-course/project/course-name/styles.css`
+- `references/main.js` → `/root/code/codebase-to-course/project/course-name/main.js`
+- `references/_footer.html` → `/root/code/codebase-to-course/project/course-name/_footer.html`
+- `references/build.sh` → `/root/code/codebase-to-course/project/course-name/build.sh`
 
-**Step 2 (both paths): Customize `_base.html`** — Read `references/_base.html`, then write it to `course-name/_base.html` with exactly three substitutions:
+**Step 2 (both paths): Customize `_base.html`** — Read `references/_base.html`, then write it to `/root/code/codebase-to-course/project/course-name/_base.html` with exactly two substitutions:
 - Both instances of `COURSE_TITLE` → the actual course title
 - The four `ACCENT_*` placeholders → the chosen accent color values (pick one palette from the comments in `_base.html`)
-- `NAV_DOTS` → one `<button class="nav-dot" ...>` per module
+
+**Leave `NAV_DOTS` as-is** — `main.js` generates nav dots automatically at load time by scanning the `.module` sections (it uses each module's `.module-title`, or an optional `data-nav-title="short title"` on the `<section>` for a shorter tooltip). You never hand-write nav dots. This means nav dots can never drift out of sync with the modules.
 
 **Step 3: Write modules** — This is where the paths diverge.
 
 #### Sequential path (simple codebases)
 
-Read `references/content-philosophy.md` and `references/gotchas.md`. Then write modules one at a time. For each module, write `course-name/modules/0N-slug.html` containing only the `<section class="module" id="module-N">` block and its contents. Do not include `<html>`, `<head>`, `<body>`, `<style>`, or `<script>` tags.
+**First, sketch a mini-brief per module** (a few lines, can live in your working notes — no separate file needed): the metaphor, which 1-2 code snippets it uses (with file path + line numbers), and which interactive element carries it. This front-loads the hard thinking so later modules don't thin out, and means you don't re-scan the codebase to locate snippets while writing. (Complex codebases use the full `module-brief-template.md` instead — see Phase 2.5.)
+
+**Naming rule:** Module files must be named `0N-slug.html` (zero-padded two-digit number, e.g. `01-intro.html`, `02-actors.html`). `build.sh` concatenates `modules/*.html` in glob order, so the numeric prefix is what keeps modules in the right sequence — and `0N` must match the section's `id="module-N"` (prefix `01` → `id="module-1"`).
+
+Read `references/content-philosophy.md` and `references/gotchas.md`. Then write modules one at a time. For each module, write `/root/code/codebase-to-course/project/course-name/modules/0N-slug.html` containing only the `<section class="module" id="module-N">` block and its contents. Do not include `<html>`, `<head>`, `<body>`, `<style>`, or `<script>` tags.
 
 Read `references/interactive-elements.md` for HTML patterns for each interactive element type. Read `references/design-system.md` for visual conventions.
 
 #### Parallel path (complex codebases)
 
 Dispatch modules to subagents in batches of up to 3. Each agent receives:
-- Its module brief (from `course-name/briefs/`)
+- Its module brief (from `/root/code/codebase-to-course/project/course-name/briefs/`)
 - `references/content-philosophy.md` and `references/gotchas.md`
 - Only the sections of `references/interactive-elements.md` and `references/design-system.md` listed in the brief
 
-Each agent writes its module file(s) to `course-name/modules/`. Short modules (3 screens, one quiz) can be paired — two briefs given to one agent.
+Each agent writes its module file(s) to `/root/code/codebase-to-course/project/course-name/modules/`. Short modules (3 screens, one quiz) can be paired — two briefs given to one agent.
 
 **What agents do NOT receive:** the full codebase (snippets are in the brief), SKILL.md, other modules' briefs, or unneeded reference file sections.
 
-After all agents finish, do a quick consistency check in the main context: nav dots match modules, transitions between modules are coherent, no obvious tone shifts.
+After all agents finish, do a quick consistency check in the main context: transitions between modules are coherent, no obvious tone shifts. (Nav dots auto-generate from modules at load time, so they need no manual sync check.)
 
 **Step 4 (both paths): Assemble** — Run `build.sh` from the course directory:
 ```bash
-cd course-name && bash build.sh
+cd /root/code/codebase-to-course/project/course-name && bash build.sh
 ```
 This produces `index.html`. Open it in the browser.
 
