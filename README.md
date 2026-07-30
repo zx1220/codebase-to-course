@@ -1,6 +1,6 @@
 # Codebase to Course（代码库转课程）
 
-一个 Claude Code 技能，能把任何代码库变成一个精美、交互式的单页 HTML 课程。
+一个技能，能把任何代码库变成一个精美、交互式的单页 HTML 课程。
 
 指向一个代码仓库，就能得到一份惊艳、自包含的课程，讲解代码的工作原理——包含滚动式导航、动画可视化、嵌入式测验，以及代码与"大白话"的并排对照翻译。
 
@@ -89,4 +89,3 @@ codebase-to-course/
 
 ---
 
-由 [Zara](https://x.com/zarazhangrui) 使用 Claude Code 打造。
