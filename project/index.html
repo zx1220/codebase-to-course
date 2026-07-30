@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>课程看板 · 4 门课程</title>
-  <meta name="generated" content="2026-07-13 13:58">
+  <title>课程看板 · 6 门课程</title>
+  <meta name="generated" content="2026-07-30 11:02">
   <!-- Favicon：朱砂红圆角底 + 摊开的书，内联 SVG，零外部依赖 -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23D94F30'/><path d='M50 32C41 26 29 26 22 30V68C29 64 41 64 50 70' fill='%23fff'/><path d='M50 32C59 26 71 26 78 30V68C71 64 59 64 50 70' fill='%23fff' fill-opacity='0.92'/><path d='M50 32V70' stroke='%23D94F30' stroke-width='2.5'/></svg>">
 
@@ -113,9 +113,9 @@
     <h1>把代码变成<em>看得懂</em>的课。<br>这里是你做过的所有课程。</h1>
     <p>每一张卡片对应一个代码库的交互式课程。点开就能在浏览器里学，离线可用。新增课程后重跑一次扫描脚本，这里会自动出现新卡片。</p>
     <div class="hero-stats">
-      <div class="stat"><span class="stat-num">4</span><span class="stat-label">门课程</span></div>
-      <div class="stat"><span class="stat-num">22</span><span class="stat-label">个模块</span></div>
-      <div class="stat"><span class="stat-num">07/13</span><span class="stat-label">最近更新</span></div>
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label">门课程</span></div>
+      <div class="stat"><span class="stat-num">42</span><span class="stat-label">个模块</span></div>
+      <div class="stat"><span class="stat-num">07/30</span><span class="stat-label">最近更新</span></div>
     </div>
   </header>
   <section class="courses-section">
@@ -127,11 +127,11 @@
   </section>
   <footer class="footer">
     <span>由 codebase-to-course 技能生成 · 点击卡片打开课程</span>
-    <span class="footer-meta">看板生成于 2026-07-13 13:58</span>
+    <span class="footer-meta">看板生成于 2026-07-30 11:02</span>
   </footer>
   <script>
     // 课程数据直接内联，无需 fetch，双击 file:// 即可打开
-    const COURSES = [{"dir":"aihot-skill-course","title":"AI HOT Skill 课：让 AI 助手替你刷 AI 资讯","accent":"#D94F30","modules":5,"date":"2026-06-26"},{"dir":"anthropic-skills","title":"解密 Agent Skills：教 AI 学会新技能","accent":"#D4A843","modules":6,"date":"2026-07-13"},{"dir":"ecc-course","title":"ECC:给 AI 编程工具装一个「操作系统」","accent":"#D94F30","modules":5,"date":"2026-07-13"},{"dir":"rsshub-course","title":"RSSHub 学习笔记 · 万物皆可 RSS","accent":"#2A7B9B","modules":6,"date":"2026-07-13"}];
+    const COURSES = [{"dir":"aihot-skill-course","title":"AI HOT Skill 课：让 AI 助手替你刷 AI 资讯","accent":"#D94F30","modules":5,"date":"2026-06-26"},{"dir":"anthropic-skills","title":"解密 Agent Skills：教 AI 学会新技能","accent":"#D4A843","modules":6,"date":"2026-07-13"},{"dir":"ecc-course","title":"ECC:给 AI 编程工具装一个「操作系统」","accent":"#D94F30","modules":5,"date":"2026-07-13"},{"dir":"pojv-course","title":"破局者：企业内生性增长破局方法论 · 互动课程","accent":"#ec4899","modules":4,"date":"2026-07-30"},{"dir":"py-course","title":"Python 官方教程知识体系学习手册 · 互动课程","accent":"#ffd43b","modules":16,"date":"2026-07-30"},{"dir":"rsshub-course","title":"RSSHub 学习笔记 · 万物皆可 RSS","accent":"#2A7B9B","modules":6,"date":"2026-07-13"}];
 
     function hexToRgb(hex){const h=hex.replace('#','');return{r:parseInt(h.slice(0,2),16),g:parseInt(h.slice(2,4),16),b:parseInt(h.slice(4,6),16)};}
     function softBg(hex){const{r,g,b}=hexToRgb(hex);const m=c=>Math.round(c+(255-c)*.88);return`rgb(${m(r)},${m(g)},${m(b)})`;}
@@ -141,6 +141,7 @@
       'aihot-skill-course': '追踪一句「今天 AI 圈有啥新闻」从输入到出结果的完整旅程，拆解 Skill 的两个核心部件。',
       'anthropic-skills': '从零理解 Agent Skill 是什么、怎么触发、怎么写一个完整的 Skill，配真实仓库案例。',
       'rsshub-course': '理解 RSSHub 如何把 B站、微博等网站的「方言」翻译成 RSS 这种「世界语」，含路由与缓存机制。',
+      'pojv-course': '系统化掌握企业内生性增长破局的底层逻辑与 22 个落地工具，含六要素拆解、费曼解释与情境习题。',
     };
 
     const grid = document.getElementById('grid');

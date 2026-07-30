@@ -20,7 +20,19 @@ for d in */; do
   title="$(grep -o '<title>[^<]*</title>' "$d/index.html" | sed 's/<[^>]*>//g' | head -1)"
   accent="$(grep -o 'accent:[[:space:]]*#[0-9A-Fa-f]*' "$d/index.html" | head -1 | grep -o '#[0-9A-Fa-f]*')"
   [ -z "$accent" ] && accent="#D94F30"
-  modules="$(grep -o 'data-target="module-[0-9]*"' "$d/index.html" | sort -u | wc -l | tr -d ' ')"
+  # 模块计数：兼容两种标记。
+  #   旧课程用 data-target="module-N"（导航/手风琴触发器），
+  #   新课程（build_html.py 生成）用 id="mod-N"（模块容器锚点）。
+  # 任一命中即可，取较大值避免重复。
+  # 注意：grep 无匹配时退出码为 1，配合 set -o pipefail 会让整个脚本退出。
+  # 所以这里用 { grep ... || true; } 兜住退出码，保证 0 匹配也能正常计数。
+  m_old="$({ grep -o 'data-target="module-[0-9]*"' "$d/index.html" || true; } | sort -u | wc -l | tr -d ' ')"
+  m_new="$({ grep -o 'id="mod-[0-9]*"' "$d/index.html" || true; } | sort -u | wc -l | tr -d ' ')"
+  if [ "$m_new" -gt "$m_old" ]; then
+    modules="$m_new"
+  else
+    modules="$m_old"
+  fi
   date="$(stat -f '%Sm' -t '%Y-%m-%d' "$d/index.html" 2>/dev/null || stat -c '%y' "$d/index.html" 2>/dev/null | cut -d' ' -f1)"
   total_modules=$((total_modules + modules))
 
@@ -191,6 +203,7 @@ cat > index.html <<HTMLEOF
       'aihot-skill-course': '追踪一句「今天 AI 圈有啥新闻」从输入到出结果的完整旅程，拆解 Skill 的两个核心部件。',
       'anthropic-skills': '从零理解 Agent Skill 是什么、怎么触发、怎么写一个完整的 Skill，配真实仓库案例。',
       'rsshub-course': '理解 RSSHub 如何把 B站、微博等网站的「方言」翻译成 RSS 这种「世界语」，含路由与缓存机制。',
+      'pojv-course': '系统化掌握企业内生性增长破局的底层逻辑与 22 个落地工具，含六要素拆解、费曼解释与情境习题。',
     };
 
     const grid = document.getElementById('grid');
