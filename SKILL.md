@@ -103,7 +103,7 @@ For complex codebases, write a brief for each module before writing any HTML. Th
 
 Read `references/module-brief-template.md` for the template structure. Read `references/content-philosophy.md` for the content rules that should guide brief writing.
 
-**For each module, write a brief to `/root/code/codebase-to-course/project/course-name/briefs/0N-slug.md` containing:**
+**For each module, write a brief to `project/course-name/briefs/0N-slug.md` containing:**
 - Teaching arc (metaphor, opening hook, key insight)
 - Pre-extracted code snippets (copy-pasted from the codebase with file paths and line numbers)
 - Concept coverage list — the actors/flows/patterns this module owns (the anti-drop contract)
@@ -119,11 +119,11 @@ The code snippets are the critical token-saving step. By pre-extracting them int
 
 The course output is a **directory**, not a single file. All CSS and JS are pre-built reference files — never regenerate them. Your job is to write only the HTML content.
 
-**Output root:** All courses are generated under `/root/code/codebase-to-course/project/`. Replace `course-name` below with the actual course slug.
+**Output root:** All courses are generated under `project/` — all paths below are relative to the repository root (the directory holding this `SKILL.md`). Replace `course-name` below with the actual course slug.
 
 **Output structure:**
 ```
-/root/code/codebase-to-course/project/course-name/
+project/course-name/
   styles.css       ← copied verbatim from references/styles.css
   main.js          ← copied verbatim from references/main.js
   _base.html       ← customized shell (title, accent color, nav dots)
@@ -137,13 +137,13 @@ The course output is a **directory**, not a single file. All CSS and JS are pre-
   index.html       ← assembled by build.sh (do not write manually)
 ```
 
-**Step 1 (both paths): Setup** — Create the course directory under `/root/code/codebase-to-course/project/course-name/`. Copy these four files verbatim using Read + Write (do not regenerate their contents):
-- `references/styles.css` → `/root/code/codebase-to-course/project/course-name/styles.css`
-- `references/main.js` → `/root/code/codebase-to-course/project/course-name/main.js`
-- `references/_footer.html` → `/root/code/codebase-to-course/project/course-name/_footer.html`
-- `references/build.sh` → `/root/code/codebase-to-course/project/course-name/build.sh`
+**Step 1 (both paths): Setup** — Create the course directory under `project/course-name/`. Copy these four files verbatim using Read + Write (do not regenerate their contents):
+- `references/styles.css` → `project/course-name/styles.css`
+- `references/main.js` → `project/course-name/main.js`
+- `references/_footer.html` → `project/course-name/_footer.html`
+- `references/build.sh` → `project/course-name/build.sh`
 
-**Step 2 (both paths): Customize `_base.html`** — Read `references/_base.html`, then write it to `/root/code/codebase-to-course/project/course-name/_base.html` with exactly two substitutions:
+**Step 2 (both paths): Customize `_base.html`** — Read `references/_base.html`, then write it to `project/course-name/_base.html` with exactly two substitutions:
 - Both instances of `COURSE_TITLE` → the actual course title
 - The four `ACCENT_*` placeholders → the chosen accent color values (pick one palette from the comments in `_base.html`)
 
@@ -157,18 +157,18 @@ The course output is a **directory**, not a single file. All CSS and JS are pre-
 
 **Naming rule:** Module files must be named `0N-slug.html` (zero-padded two-digit number, e.g. `01-intro.html`, `02-actors.html`). `build.sh` concatenates `modules/*.html` in glob order, so the numeric prefix is what keeps modules in the right sequence — and `0N` must match the section's `id="module-N"` (prefix `01` → `id="module-1"`).
 
-Read `references/content-philosophy.md` and `references/gotchas.md`. Then write modules one at a time. For each module, write `/root/code/codebase-to-course/project/course-name/modules/0N-slug.html` containing only the `<section class="module" id="module-N">` block and its contents. Do not include `<html>`, `<head>`, `<body>`, `<style>`, or `<script>` tags.
+Read `references/content-philosophy.md` and `references/gotchas.md`. Then write modules one at a time. For each module, write `project/course-name/modules/0N-slug.html` containing only the `<section class="module" id="module-N">` block and its contents. Do not include `<html>`, `<head>`, `<body>`, `<style>`, or `<script>` tags.
 
 Read `references/interactive-elements.md` for HTML patterns for each interactive element type. Read `references/design-system.md` for visual conventions.
 
 #### Parallel path (complex codebases)
 
 Dispatch modules to subagents in batches of up to 3. Each agent receives:
-- Its module brief (from `/root/code/codebase-to-course/project/course-name/briefs/`)
+- Its module brief (from `project/course-name/briefs/`)
 - `references/content-philosophy.md` and `references/gotchas.md`
 - Only the sections of `references/interactive-elements.md` and `references/design-system.md` listed in the brief
 
-Each agent writes its module file(s) to `/root/code/codebase-to-course/project/course-name/modules/`. Short modules (3 screens, one quiz) can be paired — two briefs given to one agent.
+Each agent writes its module file(s) to `project/course-name/modules/`. Short modules (3 screens, one quiz) can be paired — two briefs given to one agent.
 
 **What agents do NOT receive:** the full codebase (snippets are in the brief), SKILL.md, other modules' briefs, or unneeded reference file sections.
 
@@ -176,7 +176,7 @@ After all agents finish, do a quick consistency check in the main context: trans
 
 **Step 4 (both paths): Assemble** — Run `build.sh` from the course directory:
 ```bash
-cd /root/code/codebase-to-course/project/course-name && bash build.sh
+cd project/course-name && bash build.sh
 ```
 This produces `index.html`. Open it in the browser.
 

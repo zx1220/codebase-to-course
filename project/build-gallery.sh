@@ -13,6 +13,11 @@ courses=""
 first=1
 total_modules=0
 
+# 检测 stat 风格：GNU 用 `stat -c`，BSD/macOS 用 `stat -f`。
+# 必须先判定再分支——Linux 上 `stat -f` 不会失败，反而向 stdout 吐文件系统信息，
+# 会污染 $() 把日期变量变成垃圾，进而破坏生成的 JSON。
+if stat -c %y /dev/null >/dev/null 2>&1; then STAT_STYLE=gnu; else STAT_STYLE=bsd; fi
+
 for d in */; do
   [ -f "$d/index.html" ] || continue   # 跳过未构建的课程
 
@@ -33,7 +38,11 @@ for d in */; do
   else
     modules="$m_old"
   fi
-  date="$(stat -f '%Sm' -t '%Y-%m-%d' "$d/index.html" 2>/dev/null || stat -c '%y' "$d/index.html" 2>/dev/null | cut -d' ' -f1)"
+  if [ "$STAT_STYLE" = bsd ]; then
+    date="$(stat -f '%Sm' -t '%Y-%m-%d' "$d/index.html" 2>/dev/null)"
+  else
+    date="$(stat -c '%y' "$d/index.html" 2>/dev/null | cut -d' ' -f1)"
+  fi
   total_modules=$((total_modules + modules))
 
   # 安全转义 title 里的双引号和反斜杠
