@@ -1,0 +1,459 @@
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">装一套属于你的 ECC:从「点套餐」到「跨工具通吃」</h1>
+      <p class="module-subtitle">3300 个文件全塞进去,AI 反而会变笨。这一节教你按需点套餐,并看懂 ECC 为什么能一套说明书喂饱七个 AI 工具。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 开场钩子 + 点套餐比喻 + 上下文窗口铁律 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先泼盆冷水:全装上,AI 反而更笨</h2>
+        <p>前四节你见识了 ECC 的本事——67 位专家同事、278 本工作手册、一堆自动闸。真要装的时候,一个问题立刻冒出来:<strong>这些好东西全塞进 AI 的脑子,会不会把它撑傻?</strong></p>
+        <p>答案是会。因为 AI 有一个看不见的天花板:<span class="term" data-definition="上下文窗口(context window):AI 一次能同时「记住」的内容上限,可以理解为它的工作记忆容量。塞的东西越多,留给真正要解决的问题的脑子就越少。">上下文窗口</span>。它是稀缺资源,装得太满,AI 就从「聪明」掉到「迟钝」。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">铁律原文</span>
+            <pre><code><span class="code-line">Your 200k context window before compacting</span>
+<span class="code-line">might only be 70k with too many tools enabled.</span>
+<span class="code-line">Performance degrades significantly.</span>
+<span class="code-line"></span>
+<span class="code-line">Rule of thumb: Have 20-30 MCPs in config,</span>
+<span class="code-line">but keep under 10 enabled / under 80 tools</span>
+<span class="code-line">active.</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">大白话</span>
+            <div class="translation-lines">
+              <p class="tl">本来 <span class="term" data-definition="200k:指 20 万 token 的上下文窗口。token 是 AI 计量文本的最小单位,大约一个汉字≈1~2 个 token。20 万 token 看着多,其实很快就被各种规矩手册占满。">200k</span> 的窗口,工具开太多可能只剩 <span class="term" data-definition="70k:7 万 token——只剩原来的三分之一多一点,意味着 AI 真正能用来思考你问题的空间被大幅压缩。">70k</span>。</p>
+              <p class="tl">性能会<strong>明显下降</strong>——AI 开始忘事、答非所问。</p>
+              <p class="tl">经验法则:<span class="term" data-definition="MCP(Model Context Protocol):一种让 AI 调用外部工具/数据的通用协议,类似给 AI 装「外线电话」。配 20~30 个备选没问题,但同时开太多就会挤爆上下文。">MCP</span> 可以在配置里放 20~30 个备选。</p>
+              <p class="tl">但<strong>同时启用</strong>的别超过 10 个、活跃工具别超过 80 个。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">🧠</div>
+          <div class="callout-content">
+            <strong class="callout-title">全课最重要的实操教训之一</strong>
+            <p>上下文窗口 = AI 的工作记忆。装太多 = 让 AI 变笨。所以 ECC 给你的不是「全装」按钮,而是<strong>「点套餐」</strong>:几份预设组合,按需取用,留出脑子给真正的活。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🍱</div>
+          <div class="callout-content">
+            <strong class="callout-title">记住这个比喻:安装 ECC = 点一份套餐</strong>
+            <p>你不用把菜单上 278 道菜全端上来。ECC 给你几份 <span class="term" data-definition="profile(套餐):ECC 预先配好的安装组合,每份勾选若干 module。就像快餐店的「一号套餐」「二号套餐」,你选一份就行,不用单点。">profile</span>(minimal/core/developer/full),每份套餐勾选若干 <span class="term" data-definition="module(模块):ECC 里一个可安装的功能包,对应仓库里一两个文件夹(比如 rules、hooks)。套餐就是由若干 module 拼起来的。">module</span>。点一份最合适的,够用就好。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: HERO VISUAL — 交互式架构图 + 可移植性比喻 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一张图看懂:一份说明书,七个「阅读器」</h2>
+        <p>ECC 最厉害的设计是<strong>可移植</strong>——同一份 <code>SKILL.md</code> 说明书,可以喂给七种不同的 AI 工具。它们只是七个「不同的阅读器」,读的是同一本菜谱。点中间看 ECC 装了什么,点任一工具看它怎么读。</p>
+
+        <div class="arch-diagram">
+          <div class="arch-zone" style="background: var(--color-accent-light); border-style: solid;">
+            <h4 class="arch-zone-label">ECC 仓库 · 中心(同一本菜谱)</h4>
+            <div class="arch-component" data-desc="SKILL.md 是 ECC 里最可移植的单位。它是一份纯文本说明书:用 YAML 写明名字、用途、来源,正文描述什么时候用、给例子。任何能读文本的 AI 工具都能读它——这就是「一份菜谱,多个阅读器」的核心。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">📜</div>
+              <span>SKILL.md(最可移植)</span>
+            </div>
+            <div class="arch-component" data-desc="rules(规则):写给 AI 的铁律,比如「改代码前先跑测试」「安全敏感代码必须复审」。它和 skill 的区别在于:skill 是「怎么干某件事的手册」,rule 是「不管干什么都得守的规矩」。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">📐</div>
+              <span>rules(规则)</span>
+            </div>
+            <div class="arch-component" data-desc="hooks(自动闸):在 AI 干活的关键节点强制触发的脚本,比如「提交前自动跑 lint」。它不靠 AI 自觉,是硬性拦截——上一模块讲过的「自动刹车」。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🚦</div>
+              <span>hooks(自动闸)</span>
+            </div>
+            <div class="arch-component" data-desc="MCPs:让 AI 打「外线电话」调用外部工具/数据的协议接口。ECC 把它们打包成 module,你按需启用——但记住铁律:同时启用别超过 10 个。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🔌</div>
+              <span>MCPs(外线)</span>
+            </div>
+            <div class="arch-component" data-desc="commands 和 agents:commands 是你喊的快捷口令,agents 是 67 位专家同事。它们和 skills 一样,都是写给 AI 读的纯文本,所以同样能在多个工具间复用。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">👥</div>
+              <span>commands / agents</span>
+            </div>
+          </div>
+
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">七个「阅读器」· 点击看它怎么读 ECC</h4>
+            <div class="arch-component" data-desc="Claude Code:ECC 的「原配」阅读器。它原生支持插件机制,能直接加载 skills、commands、hooks、agents 全套,MCP 走标准协议。所以在 Claude Code 里,ECC 的能力发挥得最完整。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🟠</div>
+              <span>Claude Code</span>
+            </div>
+            <div class="arch-component" data-desc="Cursor:通过 .cursor/rules/ 目录读规则文件,把 skill 当作规则上下文喂给模型。它读的是同一份 SKILL.md,只是放在它认得的文件夹里、用它的方式注入。菜谱没变,摆放位置变了。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🔵</div>
+              <span>Cursor</span>
+            </div>
+            <div class="arch-component" data-desc="Codex:读 AGENTS.md 当作主说明书——这是它的「入口文件」。skills 作为可引用的工作手册摆在旁边,Codex 需要时去翻。同一个 skill,换个入口文件名就能用。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🟢</div>
+              <span>Codex</span>
+            </div>
+            <div class="arch-component" data-desc="Gemini:instruction-backed(靠指令文件驱动)。它通过 Gemini 自己的 instruction 文件注入 ECC 的 skills 和规则。文本说明书照样能用,只是注入通道不同。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🟣</div>
+              <span>Gemini</span>
+            </div>
+            <div class="arch-component" data-desc="Zed:通过 Zed 编辑器的扩展配置读取 rules 和 commands。作为较新的 AI 编辑器,它读的依然是同一批纯文本文件——ECC 不用为它重写内容。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">⚪</div>
+              <span>Zed</span>
+            </div>
+            <div class="arch-component" data-desc="OpenCode:开源的 AI 编程阅读器,读 AGENTS.md 和通用规则目录。因为 ECC 的文件都是纯文本、用标准 YAML 头,任何遵守这套约定的开源工具都能直接读。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">⚫</div>
+              <span>OpenCode</span>
+            </div>
+            <div class="arch-component" data-desc="Hermes:ECC 自家的 harness(AI 工具运行框架)。它原生支持全套 agents/skills/hooks,可以理解为「为 ECC 量身定做的阅读器」,读得最深、配合最紧。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🟤</div>
+              <span>Hermes</span>
+            </div>
+          </div>
+
+          <div class="arch-description" id="arch-desc">点中间任一块看 ECC 装了什么;点外围任一工具看它怎么读这些文件。</div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">📖</div>
+          <div class="callout-content">
+            <strong class="callout-title">第二个核心比喻:说明书是通用的,阅读器不同</strong>
+            <p>同一本菜谱,微波炉、烤箱、空气炸锅各按自己的方式读,但菜谱本身不变。这就是为什么 ECC 一个人维护、却能周更支持 7 个工具——<span class="term" data-definition="harness:这里指「AI 编程工具的运行框架」,即 AI 干活时所处的那个外壳环境。Claude Code、Cursor、Codex 各是一种 harness。">harness</span> 再多,要维护的只是那一份份纯文本说明书。</p>
+          </div>
+        </div>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">跨工具文档原文</span>
+            <pre><code><span class="code-line">## What Travels Unchanged</span>
+<span class="code-line"></span>
+<span class="code-line">`SKILL.md` is the most portable unit.</span>
+<span class="code-line"></span>
+<span class="code-line">A good ECC skill should:</span>
+<span class="code-line">- use YAML frontmatter with `name`,</span>
+<span class="code-line">  `description`, and `origin`</span>
+<span class="code-line">- describe when to use the skill</span>
+<span class="code-line">- keep examples repo-relative or generic</span>
+<span class="code-line">- avoid harness-only command assumptions</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐段翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>什么能原封不动地跨工具复用?</strong>——<code>SKILL.md</code> 是最 <span class="term" data-definition="portable(可移植):同一样东西换个环境还能照常用,不用重写。「可移植」是 ECC 的核心设计目标。">portable</span>(可移植)的单位。</p>
+              <p class="tl">一个好的 skill 应该:用 <span class="term" data-definition="YAML:一种用缩进和键值对来写配置的文本格式,常放在文件开头叫 frontmatter 的区块里,标注名字、用途、来源等元信息。机器和人都能轻松读。">YAML</span> 头写明 name、description、origin。</p>
+              <p class="tl">说清楚「什么时候该用这个 skill」。</p>
+              <p class="tl">例子要写成「相对于仓库」或通用形式——别绑死在某个工具上。</p>
+              <p class="tl"><strong>别</strong>假设某个 <span class="term" data-definition="harness-only:只有某个特定 AI 工具才支持的命令或特性。一旦写了这种,skill 就被绑死在一个工具上,失去了可移植性。">harness-only</span> 的命令存在。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 一个 module 长什么样 + 一行命令装上 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">拆一个 module:它怎么决定「复制哪些文件夹、喂给哪些工具」</h2>
+        <p>你点的每份套餐,本质是一组 module。每个 module 又是一小段 JSON,告诉安装器:「我要复制哪个文件夹、支持哪些阅读器、吃多少上下文」。下面是 <code>rules-core</code> 这个 module 的真身。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">install-modules.json</span>
+            <pre><code><span class="code-line">{</span>
+<span class="code-line">  <span class="code-property">"id"</span>: <span class="code-string">"rules-core"</span>,</span>
+<span class="code-line">  <span class="code-property">"kind"</span>: <span class="code-string">"rules"</span>,</span>
+<span class="code-line">  <span class="code-property">"description"</span>: <span class="code-string">"Shared and language rules for supported harness targets."</span>,</span>
+<span class="code-line">  <span class="code-property">"paths"</span>: [<span class="code-string">"rules"</span>],</span>
+<span class="code-line">  <span class="code-property">"targets"</span>: [<span class="code-string">"claude"</span>, <span class="code-string">"claude-project"</span>, <span class="code-string">"cursor"</span>,</span>
+<span class="code-line">              <span class="code-string">"codex"</span>, <span class="code-string">"zed"</span>, <span class="code-string">"gemini"</span>,</span>
+<span class="code-line">              <span class="code-string">"hermes"</span>, <span class="code-string">"kimi"</span>, <span class="code-string">"qwen"</span>, <span class="code-string">"openclaw"</span>],</span>
+<span class="code-line">  <span class="code-property">"defaultInstall"</span>: <span class="code-keyword">true</span>,</span>
+<span class="code-line">  <span class="code-property">"cost"</span>: <span class="code-string">"light"</span></span>
+<span class="code-line">}</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐字段翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>id</strong>="rules-core":这个 module 的身份证号。套餐列表里写的「rules-core」就是指它。</p>
+              <p class="tl"><strong>kind</strong>="rules":它属于「规则」这一类——和 skills、hooks、commands 是不同类别。</p>
+              <p class="tl"><strong>paths</strong>=["rules"]:安装时,把仓库里 <code>rules</code> 这一个文件夹复制过去。一个 module 对应一两个文件夹。</p>
+              <p class="tl"><strong>targets</strong>=[...十个工具...]:它<strong>支持</strong>喂给这十个阅读器。这就是可移植性的来源——同一份规则,十个工具都能读。</p>
+              <p class="tl"><strong>defaultInstall</strong>=true:默认装。哪怕最小套餐也带上它,因为是地基。</p>
+              <p class="tl"><strong>cost</strong>="light":吃上下文很「轻」。<span class="term" data-definition="cost(开销):这个 module 占用多少上下文窗口的估算标签,分 light/medium/heavy。点套餐时用它来权衡「值不值得装」。">cost</span> 分 light/medium/heavy,点套餐时靠它权衡。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>选 profile(套餐)</strong>:决定装哪几份 module</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>读 module 的 paths</strong>:决定复制哪些文件夹</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>按 targets 投递</strong>:喂给你用的那个阅读器</p>
+          </div>
+        </div>
+
+        <p>整个安装,落到命令行就是这么一行——<span class="term" data-definition="npx:Node.js 自带的命令,用来「临时下载并运行」某个 npm 包,不用先全局安装。npx ecc-universal 就是临时拉取 ECC 安装器跑一次。">npx</span> 临时拉取安装器,<span class="term" data-definition="npm:Node.js 的包管理器,相当于一个巨大的「代码包仓库」,你用它发布、安装、管理 JavaScript 写的工具和库。">npm</span> 生态帮你搞定剩下的事:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">install.sh 精简版</span>
+            <pre><code><span class="code-line"><span class="code-comment"># 选 developer 套餐(大多数人的默认)</span></span>
+<span class="code-line">npx ecc-universal install --profile developer</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 或最小化——只装地基,几乎不吃上下文</span></span>
+<span class="code-line">npx ecc-universal install --profile minimal</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><code>--profile developer</code>:点「developer 套餐」。安装器会去查这份套餐包含哪几个 module,再按 paths/targets 复制投递。</p>
+              <p class="tl"><code>--profile minimal</code>:点「最小套餐」。只带规则、agents、commands,没有 hook 运行时——最省脑子。</p>
+              <p class="tl">注意 <code>--profile</code> 这个 <span class="term" data-definition="flag(标志):命令行里以 -- 开头的选项,用来改变命令的行为。--profile developer 就是在告诉安装器「我要点 developer 这份套餐」。">flag</span>:你点哪份套餐,就装哪几份 module。一键搞定。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔗</div>
+          <div class="callout-content">
+            <strong class="callout-title">三个字段串起整个安装逻辑</strong>
+            <p>记住 <strong>profile → module → paths/targets</strong> 这条链:你选套餐,套餐点模块,模块决定复制哪个文件夹、喂给哪些工具。ECC 的安装就这么简单——没有黑魔法,全是查表 + 复制。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 四份套餐 pattern cards + 别贪多警示卡 + 小测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">四份套餐怎么选 + 一道「别贪多」警示</h2>
+        <p>ECC 预设了四份 profile。挑一份最像你的就行——别一上来就 full,那是给「啥都想试试」的人准备的陷阱。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🥗</div>
+            <h4 class="pattern-title">minimal(最小)</h4>
+            <p class="pattern-desc"><strong>适合谁:</strong>只想给 AI 加点规矩、不想装运行时的人。<strong>装什么:</strong>rules + agents + commands + 平台配置,没有 hook 运行时。<strong>轻重:</strong>最轻,几乎不吃上下文。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🍱</div>
+            <h4 class="pattern-title">core(核心)</h4>
+            <p class="pattern-desc"><strong>适合谁:</strong>想要完整 <span class="term" data-definition="harness baseline:工具运行的地基配置——在 minimal 基础上加上 hook 运行时,让自动闸能真正跑起来。">harness baseline</span> 的人。<strong>装什么:</strong>minimal 的全部 + hook 运行时 + 工作流质量。<strong>轻重:</strong>轻,自动闸开始生效。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🍳</div>
+            <h4 class="pattern-title">developer(开发者·推荐)</h4>
+            <p class="pattern-desc"><strong>适合谁:</strong>大多数 ECC 用户、日常写代码的人。<strong>装什么:</strong>core 的全部 + 框架语言 + 数据库 + 编排。<strong>轻重:</strong>中等,够用又不撑。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🍗</div>
+            <h4 class="pattern-title">full(全装·慎选)</h4>
+            <p class="pattern-desc"><strong>适合谁:</strong>真正需要全部 23 个模块的人(很少)。<strong>装什么:</strong>所有已分类模块。<strong>轻重:</strong>重——上下文窗口会被显著挤占,AI 可能变迟钝。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">别贪多:full 不是「最好」,是「最危险」</strong>
+            <p>新手最容易犯的错就是「既然有 full,那我肯定选 full」。错。装太多 = 挤爆上下文 = AI 变笨。从 <strong>developer</strong> 起步,觉得不够再加——这比「全装了再说」聪明得多。<span class="term" data-definition="compact(压缩):上下文窗口快满时,AI 会把早期内容「压缩」或丢弃来腾地方——但这意味着它开始忘事。装太多会逼着 AI 频繁 compact,质量直线下降。">compact</span> 不是好事,是危险信号。</p>
+          </div>
+        </div>
+
+        <h2 class="screen-heading" style="margin-top: var(--space-12);">小试一下:你会怎么选?</h2>
+        <p>四道情景题,看看「点套餐」和「可移植」这两件事你吃透没有。</p>
+
+        <div class="quiz-container" id="quiz-module5">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="完全正确。developer 是 ECC 给「大多数用户」准备的默认套餐:在 core 基础上加了框架语言、数据库、编排,覆盖全栈日常所需,又不至于把上下文撑爆。全栈开发选它最稳。"
+               data-explanation-wrong="再想想你的需求规模。minimal 太轻(没数据库/框架支持),core 偏地基,full 又太重(会挤爆上下文)。developer 正好覆盖全栈又留有余地——它就是为这种场景设计的。">
+            <h3 class="quiz-question">Q1:你是个全栈开发者,前后端都写、要碰数据库。该点哪份 profile?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>minimal —— 越轻越好,省脑子</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>core —— 有 hook 运行时就够了</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>developer —— 带框架语言、数据库、编排,全栈刚好</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>full —— 反正都要用,不如一次装齐</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="说到点子上了。full 会把 23 个模块全装上,大量 rules/skills/工具描述挤进上下文窗口,AI 真正能用来思考你问题的空间被压缩,性能明显下降。上下文窗口是稀缺资源,装太多反而让 AI 变笨。"
+               data-explanation-wrong="问题不在「安装步骤」或「磁盘空间」,而在 AI 的「脑子」。full 装的不是文件,而是塞进上下文窗口的内容——装太多,AI 能用来思考的空间就被挤掉,性能明显下降。这就是「上下文窗口是稀缺资源」这条铁律。">
+            <h3 class="quiz-question">Q2:朋友推荐你「直接上 full,功能最全」。为什么这不是好主意?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>因为 full 的安装步骤太复杂,容易出错</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>因为装太多会挤爆上下文窗口,让 AI 变迟钝</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>因为 full 占硬盘空间太大,电脑会卡</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>因为 full 是付费的,其他套餐免费</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正是如此。ECC 的 skills/规则是纯文本说明书(SKILL.md 是最可移植的单位),用标准 YAML 头标注。它们对 Cursor 和 Codex 来说是「同一份菜谱」,只是各自的阅读器把它放进不同的文件夹(.cursor/rules/ 或 AGENTS.md)用各自的方式注入。这就是可移植性的核心。"
+               data-explanation-wrong="关键在「说明书是通用的」。ECC 的 skill 是纯文本 SKILL.md,不依赖某个工具的私有特性。Cursor 和 Codex 是两个不同的「阅读器」,读的是同一份菜谱,只是各自把它放在自己认得的位置(.cursor/rules/ 或 AGENTS.md)、用各自的方式注入。不用为每个工具重写一遍。">
+            <h3 class="quiz-question">Q3:你想让同一个 skill 在 Cursor 和 Codex 里都能用。核心靠什么?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>给每个工具单独重写一份 skill,内容一样但格式不同</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>装两份 ECC,一份给 Cursor、一份给 Codex</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>靠 skill 的可移植性:同一份纯文本 SKILL.md,两个阅读器各按自己的方式读</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把 skill 编译成二进制,两个工具都能直接执行</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="漂亮,这条链你吃透了。你选 profile(套餐)→ 套餐里列出要装哪几个 module → 每个 module 的 paths 字段决定复制仓库里的哪个文件夹 → targets 字段决定喂给哪些工具。ECC 的安装就是「查表 + 复制」,没有黑魔法。"
+               data-explanation-wrong="顺着「点套餐」的逻辑想。你不是直接挑文件夹,也不是直接挑工具。你点的是 profile(套餐)——它替你勾选若干 module,每个 module 再用自己的 paths 决定复制哪个文件夹、用 targets 决定喂给哪些工具。这是一条「profile → module → paths/targets」的链。">
+            <h3 class="quiz-question">Q4:你点了 <code>developer</code> 套餐。安装器接下来怎么决定「复制哪些文件夹」?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把仓库里所有文件夹都复制一遍,保证不漏</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>查 developer 套餐包含哪些 module,再按每个 module 的 paths 字段复制对应文件夹</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>问你「想复制哪个文件夹」,你手动一个个勾</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>随机选几个文件夹复制,凑够 developer 这个数</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">重做</button>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 课程总结 — 五大要点回顾 + 赋能结尾 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">五节课走完:ECC 到底给了你什么</h2>
+        <p>还记得第一节的比喻吗——<strong>ECC 是给 AI 装的一个「操作系统」</strong>。现在你已经把这个系统从里到外看了一遍。把五节课浓缩成五句话,这就是你以后指挥 AI 时的底座。</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🖥️</div>
+            <div>
+              <strong>① ECC = 给 AI 装操作系统</strong>
+              <p>它把散落的规矩、手册、自动闸、外线接口,组织成一个统一平台。你不用一次次重复教 AI,装一次,它就「带着这套规矩」干活。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">👥</div>
+            <div>
+              <strong>② 六大角色各司其职</strong>
+              <p>agent 是同事、skill 是手册、command 是口令、hook 是质检闸、rule 是铁律、MCP 是外线电话。记住这六个岗位,你就有了调试 AI 的组织架构图。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">📜</div>
+            <div>
+              <strong>③ skill = AI 主动遵循的手册</strong>
+              <p>一份 SKILL.md 告诉 AI「什么时候、怎么干某件事」。它靠 AI 自己判断该不该用——灵活,但需要 AI 自觉。最可移植的单位,七个工具通吃。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🚦</div>
+            <div>
+              <strong>④ hook = 强制的自动闸</strong>
+              <p>在关键节点硬性触发的脚本,不靠 AI 自觉。「提交前必跑测试」「安全代码必复审」——它兜的是 skill 兜不住的底线。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">🍱</div>
+            <div>
+              <strong>⑤ 按需点套餐,别撑爆上下文</strong>
+              <p>装 ECC 像点套餐:minimal/core/developer/full 任选一份。上下文窗口是稀缺资源,装太多 AI 反而变笨。从 developer 起步,够用就好。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">你现在已经拥有的能力</strong>
+            <p>学完这五节,你已经能:看懂任何「给 AI 写说明书」类项目的本质;分清 skill 和 hook 的差别;读懂 profile/module/targets 这些安装字段;知道为什么一套 SKILL.md 能喂饱七个工具;更懂得怎么 <span class="term" data-definition="调教 AI:通过写规矩、加手册、设自动闸等方式,让 AI 按你想要的方式稳定干活,而不是每次都靠运气。">调教 AI</span>——别让它一次记太多,给它留足思考的脑子。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🚀</div>
+          <div class="callout-content">
+            <strong class="callout-title">最后一句话</strong>
+            <p>ECC 不是某个神奇工具,而是一种思路:把「怎么用 AI 干活」这件事本身,变成一套可维护、可移植、可组合的操作系统。理解了这个思路,你看到的就不只是一个仓库——而是一种组织 AI 能力的通用方法。<strong>现在,你也能为自己的 AI 搭一套操作系统了。</strong></p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

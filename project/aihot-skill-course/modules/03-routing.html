@@ -1,0 +1,176 @@
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">路由的艺术：一句话选对接口</h1>
+      <p class="module-subtitle">同一个 aihot，能问出五种不同的答案——全看你怎么把话说出口</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 三种数据，三种意图 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先认识三位「同父异母」的兄弟</h2>
+        <p>用户说「看 AI 资讯」，听起来是一个需求，其实背后藏着<strong>三种不同的数据池</strong>。aihot 把它们分得很细——选错池子，答案就跑偏。这就是整个 Skill 最核心的「路由」逻辑。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+            <div class="pattern-icon" style="background: var(--color-accent)">⭐</div>
+            <h4 class="pattern-title">精选（selected）</h4>
+            <p class="pattern-desc">每天精挑细选的「主菜单」。覆盖用户关心的大事，质量高、数量适中。<strong>宽问题的默认去处。</strong></p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📰</div>
+            <h4 class="pattern-title">日报（daily）</h4>
+            <p class="pattern-desc">每天北京时间 08:00 自动生成的「成品报」，按 UTC 整日切片，分 5 个固定版块。时间精度是「一整天」。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-text-muted)">
+            <div class="pattern-icon" style="background: var(--color-text-muted)">📚</div>
+            <h4 class="pattern-title">全部（all）</h4>
+            <p class="pattern-desc">含未精选的次要条目。量大但杂，像没筛过的原矿。<strong>只有用户主动点单才去。</strong></p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">「默认走精选」是这份便签的第一原则</strong>
+            <p>SKILL.md 把这句话放在「路由优先级」最显眼的位置。为什么？因为<strong>精选是主菜单，日报和全部是用户特意点单的备选</strong>。AI 如果把宽问题错路由到日报或全部，要么时间对不上，要么信息过载。这个「默认值」的设计，替用户挡掉了 90% 的选择负担。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 关键词触发表 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">AI 怎么靠「关键词」判断去哪个池</h2>
+        <p>SKILL.md 给 AI 立了一张「听到什么词、走什么接口」的对照表。AI 的工作就是<strong>扫描用户那句话里的关键词</strong>，对号入座。这就是 <span class="term" data-definition="启发式是「不保证完美但通常有效的经验法则」。AI 听到「日报」两字就猜用户要日报接口，不一定 100% 对，但绝大多数时候管用——这就是启发式。">启发式</strong></span>路由：靠几个词快速猜意图。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">SKILL.md 里的对照表</span>
+            <pre><code><span class="code-line"><span class="code-comment">| 用户在说 | 应该走的接口 |</span></span>
+<span class="code-line"><span class="code-comment">|---|---|</span></span>
+<span class="code-line">| <span class="code-string">默认（宽问题）</span>："今天AI圈" |</span>
+<span class="code-line">|   "过去24小时大新闻"     |</span>
+<span class="code-line">|   "最近AI圈有啥"        | items?mode=selected</span>
+<span class="code-line">|                          |   &amp;since=<span class="code-keyword">&lt;语义时间窗&gt;</span></span>
+<span class="code-line"><span class="code-comment">|----</span></span>
+<span class="code-line">| <span class="code-string">明确说"日报"</span>："AI 日报"   | daily</span>
+<span class="code-line"><span class="code-comment">|----</span></span>
+<span class="code-line">| <span class="code-string">明确说"全部/完整/</span>     |</span>
+<span class="code-line"><span class="code-string">   所有/全量"</span>           | items?mode=all</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">第一档是<strong>兜底默认</strong>：只要问题够「宽」（没指定具体形式），就走精选 + 时间窗。</p>
+              <p class="tl">第二档要<strong>显式触发词</strong>：「日报」两个字出现，才切到 daily 接口——否则别去。</p>
+              <p class="tl">第三档更严格：要「全部/完整/所有/全量」这种<strong>明确的扩量词</strong>，才去捞杂的 all 池。</p>
+              <p class="tl">三层是<strong>从严到宽</strong>的漏斗：越具体的词，越往特殊接口走；没词就走默认。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">「日报」和「过去 24 小时」为什么不能混</strong>
+            <p>这是 SKILL.md 反复强调的坑：日报是按 <strong>UTC 0 点</strong>切片的（比如「5 月 7 日的日报」= 5/6 00:00 到 5/7 00:00 这一整段）。而「过去 24 小时」是<strong>此刻往回数 24 小时</strong>的滚动窗口。两个时间概念根本对不上——用户说「过去 24 小时大新闻」却去查日报，可能拿到的内容已经超出或短于 24 小时。所以宽问题坚决走 selected + since，不走 daily。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 时间窗的艺术 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">时间窗：怎么把「最近」翻译成机器懂的时刻</h2>
+        <p>用户说「最近」，AI 不能就这么含糊地发请求——得算出一个具体的时刻。这就是 <code>since</code> 参数的活：把人类语言里的「最近 X」<strong>翻译成</strong>一个 <span class="term" data-definition="ISO 8601 是一种国际标准的日期时间写法，形如 2026-06-25T15:30:00Z。结尾的 Z 表示这是 UTC 协调世界时，全球统一基准，不跟任何时区绑。机器读它从不出错。">ISO 8601</span> 时间戳。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">真身（bash 命令）</span>
+            <pre><code><span class="code-line"><span class="code-comment"># 用户问"最近 3 天" → 算 3 天前这一刻</span></span>
+<span class="code-line">since=<span class="code-function">$</span>(date -u -v-3d +%Y-%m-%dT%H:%M:%SZ \</span>
+<span class="code-line">  2>/dev/null \</span>
+<span class="code-line">  || date -u -d <span class="code-string">'3 days ago'</span> +%Y-%m-%dT%H:%M:%SZ)</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-function">curl</span> -sH <span class="code-string">"User-Agent: $UA"</span> \</span>
+<span class="code-line">  <span class="code-string">".../items?mode=selected&amp;since=$since&amp;take=100"</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">第一行用 <code>date</code> 命令算「此刻往前 3 天」的 UTC 时刻，格式化成 ISO 8601 字符串。</p>
+              <p class="tl">中间的 <code>2>/dev/null || ...</code> 是<strong>跨系统兜底</strong>：macOS 的 date 认 <code>-v-3d</code>，Linux 认 <code>-d '3 days ago'</code>——哪个能用走哪个。</p>
+              <p class="tl">最后把算出来的时间塞进 <code>since=$since</code>，API 就知道「只给我这之后的内容」。</p>
+              <p class="tl">这一整段就是把人类的「最近 3 天」<strong>翻译成</strong>机器能执行的精确查询。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🛡️</div>
+          <div class="callout-content">
+            <strong class="callout-title">服务端的「7 天硬上限」是兜底保险</strong>
+            <p>就算 AI 忘了带 since，items 接口服务端也会<strong>强制</strong>按「最近 7 天」截断——绝不会拉出几个月前的老条目。这是一种<strong>防御式设计</strong>：不让上游的一个疏忽拖垮服务器。但 SKILL.md 仍然建议显式带 since，因为用户说「最近 3 天」时，让服务端默认 7 天会多带 4 天的冗余内容——<strong>精确永远比省事好</strong>。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 测验 — 路由情景题 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">你来当路由器</h2>
+        <p>下面是几个真实用户说法。根据 SKILL.md 的路由表，AI 该把它们送去哪个接口？选错了，用户拿到的就不是想要的答案。</p>
+
+        <div class="quiz-container" id="quiz-module3">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="对。这句话是典型的「宽问题」——没说「日报」也没说「全部」。按路由表，宽问题默认走精选 + 时间窗（since=过去24小时）。日报是按 UTC 整日切片，跟「过去 24 小时」的滚动窗口对不上。"
+               data-explanation-wrong="重点看用户有没有说出「日报」「全部」这类显式触发词。这句话里两个都没有——它是个宽问题。再想想宽问题的默认去处是哪个池？">
+            <h3 class="quiz-question">用户说：「过去 24 小时 AI 圈有什么大新闻？」AI 应该走哪个接口？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/daily（拉最新日报）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/items?mode=all（拉全部）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/items?mode=selected&amp;since=&lt;24小时前&gt;（精选+时间窗）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="没错。「看下今天的日报」里明确有「日报」二字，这是 daily 接口的显式触发词。走 /api/public/daily 就能拿到最新的成品日报。注意它和「过去 24 小时大新闻」不一样——后者是滚动窗口，前者是固定整日切片。"
+               data-explanation-wrong="这句话里有个关键词决定了路由。找找看——用户明确说出了哪个词？SKILL.md 规定只要这个词出现，就走专门的接口，而不是默认的精选池。">
+            <h3 class="quiz-question">用户说：「看下今天的日报。」这次该走哪个？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/items?mode=selected&amp;since=今天（精选+今天）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/daily（拉最新日报）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/items?mode=all（拉全部）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

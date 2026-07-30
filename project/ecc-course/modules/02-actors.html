@@ -1,0 +1,462 @@
+<section class="module" id="module-2" style="background: var(--color-surface-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">认识角色们：这家「AI 开发公司」里住了哪六种同事</h1>
+      <p class="module-subtitle">点开 ECC 的文件夹，里面有 67 位专家同事、278 本工作手册——它们怎么分工、又怎么接力？</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 开场钩子 + 公司比喻 + AGENTS.md 通讯录 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">上一节说了 ECC 是「操作系统」——那系统里到底住了谁？</h2>
+        <p>上一节你知道了 ECC 是 AI 的<span class="term" data-definition="操作系统：这里是个比喻——指一整套「管理和调度各种资源」的基础环境。ECC 把各种 AI 编程能力组织成一个统一平台，就像操作系统把硬件和软件组织起来。">操作系统</span>。现在我们打开这个系统，看看里面住了谁。</p>
+        <p>把 ECC 想成一家「AI 开发公司」。这家公司里不只有一两个人，而是有六种岗位各司其职——点开 <code>agents/</code> 文件夹，里面躺着 67 份 <code>.md</code> 文件，每一份都是一位「专家同事」的简历。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">AGENTS.md</span>
+            <pre><code><span class="code-line">This is a **production-ready AI coding plugin** providing</span>
+<span class="code-line">67 specialized agents, 278 skills, 94 commands,</span>
+<span class="code-line">and automated hook workflows.</span>
+<span class="code-line"></span>
+<span class="code-line">## Agent Orchestration</span>
+<span class="code-line"></span>
+<span class="code-line">Use agents proactively without user prompt:</span>
+<span class="code-line">- Complex feature requests → **planner**</span>
+<span class="code-line">- Code just written/modified → **code-reviewer**</span>
+<span class="code-line">- Bug fix or new feature → **tdd-guide**</span>
+<span class="code-line">- Architectural decision → **architect**</span>
+<span class="code-line">- Security-sensitive code → **security-reviewer**</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐段翻译</span>
+            <div class="translation-lines">
+              <p class="tl">这行相当于公司的「自我介绍」：ECC 是一个生产就绪的 AI 编程<span class="term" data-definition="插件：一种可以「插到主程序里、给它加功能」的扩展模块。ECC 作为一个插件装进你的 AI 编程客户端，就给它带来一大堆新能力。">插件</span>。</p>
+              <p class="tl">列出了家底：67 位专家同事、278 本工作手册、94 条快捷口令，还有一堆自动化工序。</p>
+              <p class="tl">「Agent <span class="term" data-definition="Orchestration（编排）：指协调多个角色按顺序、按规则协同完成一件复杂工作的过程——就像指挥一个乐队，谁先吹、谁后敲都安排好。">Orchestration</span>」=「专家调度」：公司怎么自动派活。</p>
+              <p class="tl"><strong>关键一句</strong>：「无需用户开口，主动派 agent」——遇到复杂功能找规划师，刚写完代码找审查员。</p>
+              <p class="tl">这就像公司通讯录：不用你点名，系统看情况就知道该把活儿派给哪位同事。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">把 ECC 想成一家「公司」</strong>
+            <p>后面所有概念都套这个比喻：agent 是同事、skill 是工作手册、command 是你喊的口令、hook 是质检员、rule 是铁律、MCP 是外线电话。记住这六个岗位，你就掌握了调试 AI 的「组织架构图」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: HERO VISUAL — 群聊动画 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">偷瞄一眼「公司内部群聊」：你提个需求，同事们怎么接力</h2>
+        <p>你在群里喊一句「帮我加个支付功能」——然后<strong>调度员、规划师、架构师、审查员、安全员</strong>一个接一个冒泡。这条接力链，就是 ECC 干活的真实样子。点「下一条」慢慢看。</p>
+
+        <div class="chat-window" id="chat-module2">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-3)">U</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-3)">你（老板）</span>
+                <p>帮我加个支付功能，要能扫码付款。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="1" data-sender="system" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">S</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">调度员（系统）</span>
+                <p>这是复杂功能，不是随手改改——按规矩先派 <strong>规划师</strong> 拆步骤。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="2" data-sender="planner" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">P</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">规划师（planner）</span>
+                <p>我拆成了 5 步。第 3 步要动数据库表结构，建议请 <strong>架构师</strong> 把关。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="3" data-sender="architect" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">A</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">架构师（architect）</span>
+                <p>数据库这层改动，建议走「不可变更新」——只新增、不覆盖，方便回滚。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="4" data-sender="reviewer" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">R</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">审查员（code-reviewer）</span>
+                <p>代码我看过了，整体没大问题，但有 2 处命名要改、1 处缺注释。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="5" data-sender="security" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">Sec</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">安全员（security-reviewer）</span>
+                <p>停一下——发现一个<span class="term" data-definition="密钥（secret/key）：用来证明身份或解锁权限的一串私密字符，比如支付接口的 API Key。绝不能直接写死在代码里，否则被人看到就能冒充你。">密钥</span>写死在代码里了，必须删掉、换成环境变量。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-module2-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module2-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一条</button>
+            <button class="btn chat-all-btn">连续播放</button>
+            <button class="btn chat-reset-btn">重播</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔗</div>
+          <div class="callout-content">
+            <strong class="callout-title">注意他们是一条「链」，不是各干各的</strong>
+            <p>系统调度 → 规划师拆活 → 架构师把关 → 审查员挑刺 → 安全员兜底。这条指挥链正是 ECC 区别于「一个 AI 瞎写」的关键——每个环节都有专人负责。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 六大角色 — pattern cards 网格 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">点名认人：这家公司的六种岗位</h2>
+        <p>把群聊里出现的角色推广一下——ECC 一共六种岗位。每张卡就是一个角色 + 它管的文件夹 + 一句话职责。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🧑‍💻</div>
+            <h4 class="pattern-title"><span class="term" data-definition="agent（专家同事）：ECC 里被派去独立干「一类活」的专家角色，每个 agent 是一个 .md 文件，里面有简历（YAML 头）和工作指南（提示词）。比如规划师、审查员。">agents</span> · 专家同事</h4>
+            <p class="pattern-desc">住在 <code>agents/</code>，共 <strong>67 位</strong>。每位是一类活的专家，被系统派去独立扛一摊事。</p>
+          </div>
+
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📘</div>
+            <h4 class="pattern-title"><span class="term" data-definition="skill（工作手册）：一份可复用的标准操作流程（SOP），教 AI「这类活该怎么一步步干」。agent 干活时按需翻阅对应的手册。">skills</span> · 工作手册</h4>
+            <p class="pattern-desc">住在 <code>skills/</code>，共 <strong>278 本</strong>。可复用的标准操作流程，谁需要谁翻。</p>
+          </div>
+
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📣</div>
+            <h4 class="pattern-title"><span class="term" data-definition="command（快捷口令）：你主动喊的一条 / 开头的指令，比如 /code-review。喊一声就触发一段预设流程，还能带上参数。">commands</span> · 快捷口令</h4>
+            <p class="pattern-desc">住在 <code>commands/</code>，共 <strong>94 条</strong>。你一喊 <code>/xxx</code> 就触发，像点单。</p>
+          </div>
+
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🔍</div>
+            <h4 class="pattern-title"><span class="term" data-definition="hook（自动质检员）：在「某个事件发生时」自动触发检查的机制——比如代码一提交，hook 就自动跑一遍校验，不用人喊。">hooks</span> · 自动质检员</h4>
+            <p class="pattern-desc">住在 <code>hooks/</code>，<strong>多个</strong>。事件一发生就自动检查，全程盯着不吭声。</p>
+          </div>
+
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📏</div>
+            <h4 class="pattern-title"><span class="term" data-definition="rule（公司铁律）：AI 永远要守的规矩，不管干啥活都适用——比如「提交前必须写测试」。写在 rules/ 里，全局生效。">rules</span> · 公司铁律</h4>
+            <p class="pattern-desc">住在 <code>rules/</code>，<strong>23 类</strong>。全局铁律，AI 干啥都得守。</p>
+          </div>
+
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📞</div>
+            <h4 class="pattern-title"><span class="term" data-definition="MCP（Model Context Protocol）：一种让 AI 连接外部服务的「外线电话」协议。通过 MCP，AI 能调数据库、查 API、操作外部工具——本身不在公司里，但能打过去。">MCPs</span> · 外线电话</h4>
+            <p class="pattern-desc">住在 <code>.mcp.json</code> 等，<strong>按需</strong>。连外部服务，要查数据库、调<span class="term" data-definition="API：程序之间互相调用、交换数据的接口——相当于「点菜窗口」，你报要什么、它给你返回对应的数据。">API</span> 时打过去。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 一个 agent 长什么样 — Code↔English 翻译 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">拆一位同事的「简历」：一个 agent 长什么样</h2>
+        <p>每位专家同事的简历都是同一个结构：<span class="term" data-definition="YAML：一种用缩进和「键: 值」来表示数据的格式，常用来写配置文件。这里的 YAML 头（被 --- 包住的那段）就是 agent 的「档案卡」。">YAML</span> 头（档案卡）+ 提示词（工作指南）。左边是规划师 planner 的简历原文。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">agents/planner.md</span>
+            <pre><code><span class="code-line"><span class="code-keyword">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: <span class="code-string">planner</span></span>
+<span class="code-line"><span class="code-property">description</span>: Expert planning specialist for complex</span>
+<span class="code-line">  features and refactoring. Use PROACTIVELY when users</span>
+<span class="code-line">  request feature implementation, architectural changes,</span>
+<span class="code-line">  or complex refactoring.</span>
+<span class="code-line"><span class="code-property">tools</span>: [<span class="code-string">"Read"</span>, <span class="code-string">"Grep"</span>, <span class="code-string">"Glob"</span>]</span>
+<span class="code-line"><span class="code-property">model</span>: <span class="code-string">opus</span></span>
+<span class="code-line"><span class="code-keyword">---</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>name: planner</strong> —— 这位同事的工号/名字叫 planner（规划师）。系统派活时就喊这个名字。</p>
+              <p class="tl"><strong>description</strong> —— 自我介绍，也是「何时该派他」的触发条件：处理复杂功能和规划专家。<strong>PROACTIVELY</strong>（主动）是关键词——用户一提复杂需求，系统不用等点名，主动就派他。</p>
+              <p class="tl"><strong>tools</strong> —— 他被允许用的工具清单：Read（读文件）、Grep（搜内容）、Glob（找文件）。规划师只读不写——他只负责想，不动手改代码。</p>
+              <p class="tl"><strong>model: opus</strong> —— 用哪个大脑干活。opus 是更强的模型，规划这种费脑子的活配最强大脑，反过来简单活可以配小模型省钱。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🪪</div>
+          <div class="callout-content">
+            <strong class="callout-title">四字段 = 一个 agent 的全部身份证</strong>
+            <p>name（名字）、description（何时派他）、tools（能用啥工具）、model（用哪个大脑）。记住这四个字段，下次想新增一位专家同事，你就知道该往 YAML 头里填什么。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 指挥链洞察 + command 的 $ARGUMENTS -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">关键洞察：六种角色是一条「指挥链」，不是平铺六摊</h2>
+        <p>很多人第一次看 ECC，会以为这六种角色是「并排的六个抽屉」。错——它们是一条<strong>有先后顺序的指挥链</strong>。搞清这条链，你就知道下次该改哪个文件。</p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>你喊 command</strong><br><code>/code-review</code></p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>系统派 agent</strong><br>调审查员上岗</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>agent 翻 skill</strong><br>按手册一步步干</p>
+          </div>
+        </div>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p><strong>全程被 hook 盯</strong><br>事件触发自动查</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">5</div>
+            <p><strong>大家都守 rule</strong><br>铁律全局生效</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">6</div>
+            <p><strong>要外部数据走 MCP</strong><br>打外线电话</p>
+          </div>
+        </div>
+
+        <p>那条 command 怎么接你的口令？看它原文怎么写——<code>$ARGUMENTS</code> 就是「你喊命令时后面跟的那句话」。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">commands/code-review.md</span>
+            <pre><code><span class="code-line"><span class="code-keyword">---</span></span>
+<span class="code-line"><span class="code-property">description</span>: Code review — local uncommitted changes</span>
+<span class="code-line">  or GitHub PR (pass PR number/URL for PR mode)</span>
+<span class="code-line"><span class="code-property">argument-hint</span>: [pr-number | pr-url | blank for local review]</span>
+<span class="code-line"><span class="code-keyword">---</span></span>
+<span class="code-line"></span>
+<span class="code-line"># Code Review</span>
+<span class="code-line"></span>
+<span class="code-line">**Input**: $ARGUMENTS</span>
+<span class="code-line"></span>
+<span class="code-line">If `$ARGUMENTS` contains a PR number, PR URL, or `--pr`:</span>
+<span class="code-line">→ Jump to **PR Review Mode** below.</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">YAML 头里 <strong>argument-hint</strong> 提示你：这条命令后面可以跟一个 <span class="term" data-definition="PR（Pull Request）：一种「请别人审阅我改的代码」的协作方式——你把改动提交出来，队友审查通过后再合并进主代码库。GitHub 上常见。">PR</span> 编号、网址，或啥也不跟（默认审本地改动）。</p>
+              <p class="tl"><strong>$ARGUMENTS</strong> 是个<span class="term" data-definition="前缀（这里指变量前缀）：$ 这种符号用来标记「这是一个变量占位符」——系统运行时会把 $ARGUMENTS 替换成你实际输入的那段话，而不是把它当成普通文字。">前缀</span>变量：代表「你喊命令时后面跟的那段话」。你喊 <code>/code-review 123</code>，它就变成 <code>123</code>。</p>
+              <p class="tl">下面是分支逻辑：如果你传的是 PR 编号或网址，就跳到「PR 审查模式」；否则默认审查本地没提交的改动。</p>
+              <p class="tl">同一条命令，靠 $ARGUMENTS 接不同输入，就能干两件相关但不同的活——这就是 command 的灵活之处。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">知道指挥链 = 能精准「调试」你的 AI</strong>
+            <p>下次你说「它老是忘记写测试」——你别干着急。你知道这条链之后，就该明白：这种「永远要守的规矩」该往 <code>rules/</code> 里加一条铁律，而不是去改 agent。角色分得清，调 AI 才调得准。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6: 小测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下：这六种角色你分清了吗</h2>
+        <p>四道情景题——不是考你背定义，而是考「遇到这种事，你该去找哪种角色」。这正是你将来指挥 AI 时天天要做的判断。</p>
+
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="完全正确。「永远要守的规矩」正是 rule 的定义——它全局生效、不管干啥活都适用。往 rules/ 加一条「提交前必须写测试」的铁律，AI 之后每次都会自觉遵守。"
+               data-explanation-wrong="再想想「永远要守」这四个字。agent 是干一类活的专家、command 是你喊的口令、hook 是事件触发的自动检查——它们都不是「铁律」该住的地方。「不管干啥都适用」的规矩，对应 rules/ 文件夹。">
+            <div class="scenario-block">
+              <div class="scenario-context">
+                <span class="scenario-label">场景</span>
+                <p>你发现 AI 老是忘记写测试。你想让它「从此以后每次提交代码前，都必须先写测试」——这种<strong>永远要守的规矩</strong>，该去改哪个文件夹？</p>
+              </div>
+            </div>
+            <h3 class="quiz-question">Q1：该往哪种角色里加这条「铁律」？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>往 <code>agents/</code> 新增一位「测试监督员」专家同事</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>往 <code>commands/</code> 加一条 <code>/write-tests</code> 口令</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>往 <code>rules/</code> 加一条「提交前必须写测试」的铁律</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>往 <code>skills/</code> 写一本「怎么写测试」的工作手册</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正是如此。/code-review 是一条 / 开头的快捷口令，正是 command 的定义——你一喊就触发一段预设流程。command 的特征就是「/ 前缀 + 你主动喊」。"
+               data-explanation-wrong="看那个 / 前缀——它是关键线索。agent 是被系统派出去干活的专家（不是你喊的）、skill 是被翻阅的工作手册、rule 是铁律。带 / 的、你主动喊一声就触发的，是 command。">
+            <h3 class="quiz-question">Q2：你在 ECC 里看到 <code>/code-review</code> 这种写法。它属于六种角色里的哪一种？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>agent（专家同事）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>skill（工作手册）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>command（快捷口令）</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>rule（公司铁律）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="漂亮——你抓住了「事件触发、自动执行」这个特征。这正是 hook 的定义：在某个事件（比如代码一提交）发生时自动跑检查，不需要任何人喊口令。把它做成 hook，就能保证「每次都查、绝不漏」。"
+               data-explanation-wrong="注意题目里两个关键词：「每次提交时」和「自动」。command 要你主动喊、rule 是静态的规矩（不会自己跑）、agent 是被派去干活的专家。能在「某个事件发生时自动触发」的，只有 hook。">
+            <div class="scenario-block">
+              <div class="scenario-context">
+                <span class="scenario-label">场景</span>
+                <p>你想要「每次代码一提交，就自动检查有没有把密钥写死在代码里」——不用人喊、每次都查、绝不漏。这个「自动质检」该做成哪种角色？</p>
+              </div>
+            </div>
+            <h3 class="quiz-question">Q3：这种「事件触发、自动执行」的检查，对应哪种角色？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>command（快捷口令）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>hook（自动质检员）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>rule（公司铁律）</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>MCP（外线电话）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正是如此。MCP 是「外线电话」——当 AI 需要它本身没有的能力（查数据库、调外部 API）时，通过 MCP 连过去。ECC 公司内部再怎么分工，也连不上外部服务，必须打这通外线电话。"
+               data-explanation-wrong="想想「外部」这个词。agent/skill/command/hook/rule 都是公司「内部」的角色，处理不了「去别的服务拿数据」这种事。能让 AI 连上外部数据库或第三方 API 的，是 MCP——「外线电话」那个角色。">
+            <h3 class="quiz-question">Q4：你的 AI 需要去查一个外部数据库、还要调一个第三方支付 API。该用六种角色里的哪一个去连接这些「公司外面」的东西？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>agent（专家同事）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>skill（工作手册）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>MCP（外线电话）</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>hook（自动质检员）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">重做</button>
+        </div>
+      </section>
+
+      <!-- SCREEN 7: 收尾 + 下一模块钩子 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小结：记住这张「组织架构图」</h2>
+        <p>这一节我们只是<strong>点名认人</strong>——知道了 ECC 这家公司里有六种同事，以及它们怎么接力。但每一种角色内部到底长什么样、怎么写，还没展开。</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🧑‍💻</div>
+            <div>
+              <strong>六种角色各司其职</strong>
+              <p>agent 干活、skill 教怎么干、command 你喊、hook 自动查、rule 永远守、MCP 连外面。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🔗</div>
+            <div>
+              <strong>它们是一条指挥链</strong>
+              <p>command → agent → skill，全程被 hook 盯、守 rule、按需走 MCP。不是六个并排的抽屉。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">🎯</div>
+            <div>
+              <strong>分清角色 = 能精准调试 AI</strong>
+              <p>下次 AI 出问题，你第一反应是「这该改哪个文件夹」——而不是干着急或乱改一气。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🪝</div>
+          <div class="callout-content">
+            <strong class="callout-title">下一模块的钩子</strong>
+            <p>六种角色里，<strong>skills</strong> 是数量最多、也最核心的一种（278 本！）。它就是「教 AI 怎么干活」的那套工作手册。下一模块我们挑几本手册翻开看，搞清楚一份可复用的 SOP 是怎么写出来的——这是你以后「教会 AI 新本事」的关键。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

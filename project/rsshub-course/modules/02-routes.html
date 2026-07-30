@@ -1,0 +1,477 @@
+<section class="module" id="module-2" data-module-num="2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <!-- ════════════════ HEADER ════════════════ -->
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h2 class="module-title">一条订阅源的诞生 · 路由文件解剖</h2>
+      <p class="module-subtitle">看懂一个文件，就看懂了 RSSHub 八成的代码。</p>
+    </header>
+
+    <!-- ════════════════ SCREEN 1: 钩子 + 餐厅隐喻 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">RSSHub 的「灵魂」长什么样？</h3>
+      <p>上一模块我们看到 <code>/bilibili/user/dynamic/2267573</code> 能订阅一个 B站 UP 主。但 RSSHub 是怎么知道「遇到 bilibili 就调 B站、遇到 weibo 就调微博」的？</p>
+      <p>答案藏在一种叫<span class="term" data-definition="路由文件：RSSHub 里一个 .ts 文件，负责声明一个订阅源——它告诉系统「我负责哪种 URL」以及「遇到这种 URL 该怎么抓数据」。可以理解成餐厅菜单上一道菜对应的一页后厨配方。">路由文件</span>的东西里——它就是 RSSHub 的灵魂。</p>
+
+      <div class="callout callout-info" style="margin-top: var(--space-8)">
+        <div class="callout-icon">🍽️</div>
+        <div class="callout-content">
+          <strong class="callout-title">核心比喻：外卖菜单 + 后厨配方</strong>
+          <p>把整个 <code>lib/routes/</code> 想象成一条美食街。每个文件夹就是「一家餐厅」（比如 B站、微博、GitHub），文件夹里每个 <code>.ts</code> 文件就是菜单上的一道菜。菜单上写这道菜叫什么、长什么样；后厨配方（<span class="term" data-definition="handler 函数：路由文件里真正干活的函数。它负责去目标网站抓数据、把数据解析出来、最后打包成一个纯数据对象返回。可以理解成这道菜在后厨的具体做法。">handler</span> 函数）写怎么买菜、怎么炒、怎么装盘。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 2: 文件树 — 餐厅街 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">这条街上有 1600 多家「餐厅」</h3>
+      <p>RSSHub 用一个极简约定组织了 1600+ 个网站源：<strong>一个文件夹 = 一个网站，一个 <code>.ts</code> 文件 = 一条订阅源</strong>。</p>
+
+      <div class="file-tree">
+        <div class="ft-folder open">
+          <span class="ft-name">lib/routes/</span>
+          <span class="ft-desc">这条「美食街」——所有网站源都在这里</span>
+          <div class="ft-children">
+            <div class="ft-folder open">
+              <span class="ft-name">bilibili/</span>
+              <span class="ft-desc">「B站这家餐厅」(namespace)</span>
+              <div class="ft-children">
+                <div class="ft-file">
+                  <span class="ft-name">namespace.ts</span>
+                  <span class="ft-desc">这家店的「身份证」</span>
+                </div>
+                <div class="ft-file">
+                  <span class="ft-name">article.ts</span>
+                  <span class="ft-desc">一道菜：UP主图文</span>
+                </div>
+                <div class="ft-file">
+                  <span class="ft-name">dynamic.ts</span>
+                  <span class="ft-desc">一道菜：UP主动态</span>
+                </div>
+                <div class="ft-file">
+                  <span class="ft-name">video.ts</span>
+                  <span class="ft-desc">一道菜：视频</span>
+                </div>
+                <div class="ft-file">
+                  <span class="ft-name">…</span>
+                  <span class="ft-desc">50 多个文件 = 50 多道菜</span>
+                </div>
+              </div>
+            </div>
+            <div class="ft-folder">
+              <span class="ft-name">weibo/</span>
+              <span class="ft-desc">「微博这家餐厅」</span>
+            </div>
+            <div class="ft-folder">
+              <span class="ft-name">github/</span>
+              <span class="ft-desc">「GitHub这家餐厅」</span>
+            </div>
+            <div class="ft-folder">
+              <span class="ft-name">…</span>
+              <span class="ft-desc">1600+ 个文件夹</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-top: var(--space-4)">每个餐厅还有一个 <code>namespace.ts</code>——它的<span class="term" data-definition="namespace（命名空间）：这里指 lib/routes/ 下代表一个网站的文件夹，以及文件夹里 namespace.ts 声明的「这家餐厅的身份证」——显示名、网址、语言。一个 namespace = 一个网站。">身份证</span>。</p>
+    </div>
+
+    <!-- ════════════════ SCREEN 3: namespace.ts 逐行翻译 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">先看「身份证」：namespace.ts</h3>
+      <p>每个网站文件夹里都有一个 <code>namespace.ts</code>，短短几行，只声明这家餐厅是谁。</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-keyword">import type</span> { Namespace } <span class="code-keyword">from</span> <span class="code-string">'@/types'</span>;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">export const</span> namespace: Namespace = {</span>
+<span class="code-line">    name: <span class="code-string">'哔哩哔哩 bilibili'</span>,</span>
+<span class="code-line">    url: <span class="code-string">'www.bilibili.com'</span>,</span>
+<span class="code-line">    lang: <span class="code-string">'zh-CN'</span>,</span>
+<span class="code-line">};</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">大白话翻译</span>
+          <div class="translation-lines">
+            <p class="tl">引入一个「类型模板」，告诉编辑器「我要写的是一份身份证」。</p>
+            <p class="tl"><code>name</code> 是显示名——用户在文档里看到的中文+英文名。</p>
+            <p class="tl"><code>url</code> 是目标网站地址——这家餐厅对应的「菜市场」。</p>
+            <p class="tl"><code>lang</code> 是语言——B站是中文站，所以标 <code>zh-CN</code>。</p>
+            <p class="tl">就这样。身份证只管「我是谁」，不管怎么做菜。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 4: route 对象 — 菜单上那一行 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">再看「菜单」：route 对象声明</h3>
+      <p>每个 <code>.ts</code> 文件都 <code>export</code> 一个 <code>route</code> 对象，声明这条源「负责什么 URL、叫什么名字、谁在维护」。</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-keyword">export const</span> route: Route = {</span>
+<span class="code-line">    path: <span class="code-string">'/user/article/:uid'</span>,</span>
+<span class="code-line">    categories: [<span class="code-string">'social-media'</span>],</span>
+<span class="code-line">    example: <span class="code-string">'/bilibili/user/article/334958638'</span>,</span>
+<span class="code-line">    parameters: { uid: <span class="code-string">'用户 id, 可在 UP 主主页中找到'</span> },</span>
+<span class="code-line">    features: {</span>
+<span class="code-line">        requireConfig: <span class="code-keyword">false</span>,</span>
+<span class="code-line">        requirePuppeteer: <span class="code-keyword">false</span>,</span>
+<span class="code-line">        antiCrawler: <span class="code-keyword">false</span>,</span>
+<span class="code-line">        supportBT: <span class="code-keyword">false</span>,</span>
+<span class="code-line">        supportPodcast: <span class="code-keyword">false</span>,</span>
+<span class="code-line">        supportScihub: <span class="code-keyword">false</span>,</span>
+<span class="code-line">    },</span>
+<span class="code-line">    radar: [</span>
+<span class="code-line">        {</span>
+<span class="code-line">            source: [<span class="code-string">'space.bilibili.com/:uid'</span>],</span>
+<span class="code-line">        },</span>
+<span class="code-line">    ],</span>
+<span class="code-line">    name: <span class="code-string">'UP 主图文'</span>,</span>
+<span class="code-line">    maintainers: [<span class="code-string">'lengthmin'</span>, <span class="code-string">'Qixingchen'</span>, <span class="code-string">'hyoban'</span>],</span>
+<span class="code-line">    handler,</span>
+<span class="code-line">};</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">大白话翻译</span>
+          <div class="translation-lines">
+            <p class="tl"><code>path</code> 是「我负责哪种地址」。<code>:uid</code> 是一个<span class="term" data-definition="参数（parameter）：URL 里用冒号开头的占位符，比如 :uid。它表示「这里填一个变化的值」——不同 UP 主有不同 uid，但处理逻辑一样。就像点单时「请填你的桌号」。">参数</span>占位符，谁填什么就抓谁。</p>
+            <p class="tl"><code>example</code> 是一个能直接用的示例地址，会显示在文档里供人复制。</p>
+            <p class="tl"><code>parameters</code> 解释每个参数是什么意思——给用户看的人话说明。</p>
+            <p class="tl"><code>features</code> 是一组开关：要不要配置、要不要开浏览器、会不会被反爬……</p>
+            <p class="tl"><code>name</code> 是这条源的人话名字（「UP 主图文」），<code>maintainers</code> 是负责这个文件的<span class="term" data-definition="维护者（maintainer）：在 GitHub 上负责照看某个文件/项目的开发者。路由文件里的 maintainers 字段列出他们的 GitHub 用户名，出问题时可以找他们。">维护者</span>。</p>
+            <p class="tl">最后一行 <code>handler</code> 指向真正干活的函数——下一幕登场。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 5: 配对练习 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">动手配对：这些字段各管什么？</h3>
+      <p style="margin-bottom: var(--space-6)">把左边的字段拖到右边对应的描述上（手机上也可以点拖）。</p>
+
+      <div class="dnd-container" id="dnd-module2">
+        <div class="dnd-chips">
+          <div class="dnd-chip" draggable="true" data-answer="path">path</div>
+          <div class="dnd-chip" draggable="true" data-answer="handler">handler</div>
+          <div class="dnd-chip" draggable="true" data-answer="name">name</div>
+          <div class="dnd-chip" draggable="true" data-answer="maintainers">maintainers</div>
+          <div class="dnd-chip" draggable="true" data-answer="example">example</div>
+        </div>
+        <div class="dnd-zones">
+          <div class="dnd-zone" data-correct="path">
+            <p class="dnd-zone-label">声明这条源负责哪种 URL 地址</p>
+            <div class="dnd-zone-target">拖到这里</div>
+          </div>
+          <div class="dnd-zone" data-correct="handler">
+            <p class="dnd-zone-label">实现抓取与解析的函数</p>
+            <div class="dnd-zone-target">拖到这里</div>
+          </div>
+          <div class="dnd-zone" data-correct="name">
+            <p class="dnd-zone-label">这条源的人话名字（如「UP 主图文」）</p>
+            <div class="dnd-zone-target">拖到这里</div>
+          </div>
+          <div class="dnd-zone" data-correct="maintainers">
+            <p class="dnd-zone-label">负责维护这个文件的 GitHub 用户</p>
+            <div class="dnd-zone-target">拖到这里</div>
+          </div>
+          <div class="dnd-zone" data-correct="example">
+            <p class="dnd-zone-label">一个可直接用的示例地址</p>
+            <div class="dnd-zone-target">拖到这里</div>
+          </div>
+        </div>
+        <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3)">
+          <button class="btn" onclick="checkDnD('dnd-module2')">检查配对</button>
+          <button class="btn" onclick="resetDnD('dnd-module2')">重置</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 6: handler 函数 — 后厨配方 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">后厨配方：handler 函数在干什么</h3>
+      <p>这是同一个 <code>article.ts</code> 里的 handler。它干三件事：① 拿到 <span class="term" data-definition="API（应用程序接口）：一个网站提供给程序调用的「服务窗口」。B站 API 就是一个网址，你按规定格式访问它，它就返回数据。handler 就是去敲这个窗口。">API</span> <span class="term" data-definition="JSON（JavaScript 对象标记）：一种用文字表示结构化数据的格式，长得像 { &quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 18 }。绝大多数现代 API 都用 JSON 返回数据。">JSON</span> 数据、② 解析每一篇文章、③ 打包返回。</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-keyword">async function</span> <span class="code-function">handler</span>(ctx) {</span>
+<span class="code-line">    <span class="code-keyword">const</span> uid = ctx.req.param(<span class="code-string">'uid'</span>);</span>
+<span class="code-line">    <span class="code-keyword">const</span> name = <span class="code-keyword">await</span> cache.getUsernameFromUID(uid);</span>
+<span class="code-line">    <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> got({</span>
+<span class="code-line">        method: <span class="code-string">'get'</span>,</span>
+<span class="code-line">        url: <span class="code-string">`https://api.bilibili.com/x/polymer/web-dynamic/v1/opus/feed/space?host_mid=${uid}`</span>,</span>
+<span class="code-line">        headers: {</span>
+<span class="code-line">            Referer: <span class="code-string">`https://space.bilibili.com/${uid}/article`</span>,</span>
+<span class="code-line">        },</span>
+<span class="code-line">    });</span>
+<span class="code-line">    <span class="code-keyword">const</span> data = response.data.data;</span>
+<span class="code-line">    <span class="code-keyword">const</span> title = <span class="code-string">`${name} 的 bilibili 图文`</span>;</span>
+<span class="code-line">    <span class="code-line">    <span class="code-comment">// ……中间省略：用 load() 解析每篇文章网页、提取正文和日期……</span></span>
+<span class="code-line">    <span class="code-keyword">return</span> {</span>
+<span class="code-line">        title,</span>
+<span class="code-line">        link,</span>
+<span class="code-line">        description,</span>
+<span class="code-line">        item,</span>
+<span class="code-line">    };</span>
+<span class="code-line">}</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">大白话翻译</span>
+          <div class="translation-lines">
+            <p class="tl">这是一个<span class="term" data-definition="异步（async）：表示「这件事要等一会儿才有结果，先让它跑着，我干别的去」。用 await 表示「在这里等它跑完」。就像点外卖后你不用盯着，等电话响了再拿。">异步</span>函数，<code>ctx</code> 是这次请求的「上下文」。</p>
+            <p class="tl">先从 URL 里取出 <code>uid</code>，再查缓存拿用户名。</p>
+            <p class="tl"><code>got(...)</code> 是<span class="term" data-definition="HTTP 客户端（这里是 got）：一个帮你「替你去别的网站发请求拿数据」的工具。你告诉它网址和方式，它跑一趟把结果带回来——就像派跑腿去菜市场。">HTTP</span> 客户端，RSSHub 派它去敲 B站 的接口拿数据。</p>
+            <p class="tl">中间省略的部分：用 <code>load()</code>（<span class="term" data-definition="cheerio（这里叫 load）：一个能像读网页一样提取内容的工具，用法像 jQuery。给它一段网页 HTML，它就能用 CSS 选择器把标题、正文挑出来。">cheerio</span>）配合 <span class="term" data-definition="CSS 选择器：一种「在网页里定位元素」的语法，比如 .title 表示所有 class 为 title 的元素。cheerio 用它来挑出想要的内容。">CSS 选择器</span>）解析每篇文章，用 <span class="term" data-definition="cookie：网站存在你浏览器里的一小段身份信息，用来证明「我是登录过的用户」。抓取时带上 cookie 才能拿到需要登录的内容。">cookie</span> 通过反爬。</p>
+            <p class="tl"><code>Promise.all</code> 是「同时跑多个任务、等它们全部完成」的写法——比如同时解析 20 篇文章。</p>
+            <p class="tl"><strong>注意最后这几行：</strong>它返回的是一个<strong>纯数据对象</strong>，不是 RSS，不是 XML。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 7: 返回对象 — 最关键的设计 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">最关键的设计：handler 只返回「数据」</h3>
+      <p>handler 不碰 <span class="term" data-definition="RSS XML：RSS 订阅源的标准输出格式，一种带 &lt;item&gt;、&lt;title&gt;、&lt;link&gt; 等标签的 XML 文档。你的阅读器只认这种格式。">RSS XML</span>，不写标签，不管输出长什么样——它只吐出一个数据对象。这是整个 RSSHub 最聪明的地方。</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-keyword">return</span> {</span>
+<span class="code-line">    title,</span>
+<span class="code-line">    link,</span>
+<span class="code-line">    description,</span>
+<span class="code-line">    item,</span>
+<span class="code-line">};</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">大白话翻译</span>
+          <div class="translation-lines">
+            <p class="tl"><code>title</code> 是这整个订阅源的名字（「某某 的 bilibili 图文」）。</p>
+            <p class="tl"><code>link</code> 是回链——点进去能去到 B站主页。</p>
+            <p class="tl"><code>description</code> 是一句话简介。</p>
+            <p class="tl"><code>item</code> 是一个数组，装着每一条内容（每篇文章一个对象）。</p>
+            <p class="tl"><strong>就这些。</strong>handler 完全不知道 RSS 长什么样——RSS 的拼接由别人管。这就是 5000+ 路由文件能共用一套渲染引擎的根本原因。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-accent" style="margin-top: var(--space-8)">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title">大智慧：分离关注点 (Separation of Concerns)</strong>
+          <p>handler 只管「去哪拿数据、拿什么」，RSS 长什么样由另一个渲染引擎负责。抓取逻辑和输出格式彻底解耦——同一套抓取代码能同时输出 RSS / Atom / <span class="term" data-definition="JSON Feed：一种用 JSON 表示订阅源的格式，和 RSS 功能一样，但对程序更友好。因为 handler 已经返回了纯数据对象，RSSHub 想输出哪种格式都行。">JSON</span>。这是软件工程里最重要的思想之一：让每个部分只干一件事。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 8: 组聊动画 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">路由文件加载时，四位「角色」在群里说了什么</h3>
+      <p>把 route 对象、handler 函数、got 工具、cheerio(load) 工具想象成四个同事。点「下一条」看它们怎么协作完成一次抓取。</p>
+
+      <div class="chat-window" id="chat-module2">
+        <div class="chat-messages">
+          <div class="chat-message" data-msg="0" data-sender="route" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">R</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">route 对象</span>
+              <p>我负责 <code>/user/article/:uid</code> 这个地址。谁来干活？</p>
+            </div>
+          </div>
+
+          <div class="chat-message" data-msg="1" data-sender="handler" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">H</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">handler 函数</span>
+              <p>我来！我先从 URL 里拿到 <code>uid</code> 参数。</p>
+            </div>
+          </div>
+
+          <div class="chat-message" data-msg="2" data-sender="route" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-1)">R</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-1)">route 对象</span>
+              <p>记住，example 是 <code>/bilibili/user/article/334958638</code>，文档里给人抄的。</p>
+            </div>
+          </div>
+
+          <div class="chat-message" data-msg="3" data-sender="handler" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">H</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">handler 函数</span>
+              <p>got，帮我请求一下 B站 的 API。</p>
+            </div>
+          </div>
+
+          <div class="chat-message" data-msg="4" data-sender="got" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-3)">G</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-3)">got 工具</span>
+              <p>拿到 JSON 了，数据给你。</p>
+            </div>
+          </div>
+
+          <div class="chat-message" data-msg="5" data-sender="handler" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">H</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">handler 函数</span>
+              <p>load，帮我解析每篇文章的网页。</p>
+            </div>
+          </div>
+
+          <div class="chat-message" data-msg="6" data-sender="load" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-4)">L</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-4)">load 工具 (cheerio)</span>
+              <p>正文和日期都提取出来了。</p>
+            </div>
+          </div>
+
+          <div class="chat-message" data-msg="7" data-sender="handler" style="display:none">
+            <div class="chat-avatar" style="background: var(--color-actor-2)">H</div>
+            <div class="chat-bubble">
+              <span class="chat-sender" style="color: var(--color-actor-2)">handler 函数</span>
+              <p>好，我把所有内容打包成 <code>{ title, link, description, item }</code> 返回。RSS 长什么样？不归我管。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-typing" id="chat-module2-typing" style="display:none">
+          <div class="chat-avatar" id="chat-module2-typing-avatar">?</div>
+          <div class="chat-typing-dots">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <button class="btn chat-next-btn">下一条</button>
+          <button class="btn chat-all-btn">全部播放</button>
+          <button class="btn chat-reset-btn">重播</button>
+          <span class="chat-progress"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 9: 为什么要在乎 ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">看懂这个文件 = 看懂 RSSHub 八成</h3>
+      <p>以后你想「给某个还没收录的网站加一个源」，或者想让 AI「仿照这个结构写一个抓取器」，你现在都能精确描述需求了。</p>
+
+      <div class="pattern-cards">
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+          <div class="pattern-icon" style="background: var(--color-actor-1)">📐</div>
+          <h4 class="pattern-title">结构就是契约</h4>
+          <p class="pattern-desc">一个 path、一个 handler、返回 <code>{ title, link, description, item }</code>。RSSHub 1600+ 个源全遵守这个约定。</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+          <div class="pattern-icon" style="background: var(--color-actor-2)">🤖</div>
+          <h4 class="pattern-title">能跟 AI 说清楚</h4>
+          <p class="pattern-desc">你可以说「仿照 lib/routes/bilibili/article.ts 写一个抓 XX 网站的源」，AI 就知道该输出什么结构。</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+          <div class="pattern-icon" style="background: var(--color-actor-3)">🔍</div>
+          <h4 class="pattern-title">能判断对错</h4>
+          <p class="pattern-desc">如果 AI 给你的 handler 在自己拼 XML、自己 <code>ctx.body(...)</code>，那它就写错了——抓住这一点，你就成了审查者。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 10: Quiz ════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">小测验：你真的看懂了吗？</h3>
+
+      <div class="quiz-container" id="quiz-module2">
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="没错——这就是「分离关注点」。抓取逻辑只管拿数据，输出格式由统一的渲染引擎负责。所以同一套 handler 能同时产出 RSS、Atom、JSON，加新格式也不用改任何路由文件。"
+             data-explanation-wrong="再想想方向。关键不在「XML 难写」或「性能」，而在于把「抓什么」和「怎么输出」分开——这样 5000+ 个 handler 才能共用一套渲染引擎，还能同时支持多种输出格式。">
+          <h3 class="quiz-question">Q1. 为什么 RSSHub 让 handler 只返回一个数据对象，而不让它直接生成 RSS XML？</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>因为 XML 太长，handler 写起来费劲</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>分离关注点：抓取逻辑和输出格式解耦，一套抓取代码能同时输出 RSS / Atom / JSON</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>因为 handler 函数跑得慢，生成 XML 会更慢</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-c"
+             data-explanation-right="完全正确。正确的 handler 应该返回 { title, link, description, item } 这个数据对象，由 RSSHub 的渲染引擎去拼 XML。AI 自己拼 XML 说明它没搞懂这个架构——这也是你审查 AI 代码时的关键检查点。"
+             data-explanation-wrong="问题不在性能或 API，而在「职责错位」。handler 的职责是返回数据对象 { title, link, description, item }，不该自己拼 XML 输出——那是渲染引擎的活。看到 ctx.body 输出 XML 就该警觉。">
+          <h3 class="quiz-question">Q2. 你让 AI 给一个新网站写 RSSHub 源，它返回的 handler 里直接写了 <code>ctx.body('&lt;rss&gt;...&lt;/rss&gt;')</code> 输出 XML。哪里不对？</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>没什么不对，handler 本来就该输出 XML</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>不对，因为 XML 应该用双引号</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>不对——应该返回 { title, link, description, item } 数据对象，不该自己拼 XML</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-a"
+             data-explanation-right="对的。got 是 RSSHub 内置的 HTTP 客户端，这一步就是「RSSHub 代替你，用 HTTP 去访问 B站的接口拿数据」。拿到的是 JSON，handler 再去解析它。"
+             data-explanation-wrong="再想想。got 是 HTTP 客户端，不是缓存或解析器。这一步的实际含义是「RSSHub 代替你，用 HTTP 去访问 B站的接口拿数据」，拿到的是 JSON。">
+          <h3 class="quiz-question">Q3. 在 B站图文的 handler 里，<code>got({ url: '...', headers: {...} })</code> 这一步实际发生了什么？</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>RSSHub 代替你，用 HTTP 去访问 B站的接口拿数据</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>把数据写进缓存里存起来</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>把 JSON 解析成网页 HTML</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="btn quiz-check-btn" onclick="checkQuiz('quiz-module2')">提交答案</button>
+        <button class="btn quiz-reset-btn" onclick="resetQuiz('quiz-module2')">重做一遍</button>
+      </div>
+    </div>
+
+    <!-- ════════════════ SCREEN 11: 衔接下一模块 ════════════════ -->
+    <div class="screen animate-in">
+      <div class="callout callout-info">
+        <div class="callout-icon">🎬</div>
+        <div class="callout-content">
+          <strong class="callout-title">下一站：请求的旅程</strong>
+          <p>你已经看到了 handler 长什么样——但请求是怎么一路走到 handler 的？从你的阅读器发请求，到中间件一道道处理，到最终被某个 handler 接住，中间又经过了哪些「关卡」？下一模块揭晓。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

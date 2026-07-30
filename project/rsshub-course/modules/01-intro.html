@@ -1,0 +1,331 @@
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">这是什么：一个把「不能订阅的网站」翻译成 RSS 的同声传译</h1>
+      <p class="module-subtitle">你天天刷的 B站、微博、推特为什么偏偏订阅不了？答案需要一个「中间人」。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 开场钩子 + 翻译官比喻 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先抛个问题：为什么博客能订阅，B站 却不能？</h2>
+        <p>你可能已经用 <span class="term" data-definition="RSS 阅读器是一款专门汇总和阅读多个订阅源的工具，类似一个「统一收件箱」——你把各种 RSS 地址加进去，它就自动帮你定期拉取每个源的最新内容。">RSS 阅读器</span>订阅过博客。但你有没有想过——为什么 <span class="term" data-definition="RSS 是一种标准化的「订阅格式」——网站把更新按固定规范写成一份清单，阅读器定期来读这份清单，从而让你在一个地方看到所有订阅源的新内容。">RSS</span> 这种好东西，B站、微博、推特偏偏不提供？</p>
+        <p>因为它们各自只说自己的「方言」，而你的阅读器只听得懂一种「世界语」。中间需要一个翻译——这个翻译就是 RSSHub。</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📺</div>
+            <div>
+              <strong>你喜欢的网站（B站 / 微博 / 推特 / GitHub）</strong>
+              <p>各说各的「方言」：有的吐 <span class="term" data-definition="JSON 是一种用大括号和键值对表示数据的文本格式，机器读起来很方便——可以理解为「给程序看的数据清单」。">JSON</span>，有的只有网页。没有一个统一的订阅格式。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📖</div>
+            <div>
+              <strong>你的 RSS 阅读器</strong>
+              <p>只听得懂一种「世界语」：RSS 格式。它不会去 B站 爬数据，也不会读网页——给它 RSS，它才认。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🌐</div>
+            <div>
+              <strong>RSSHub —— 中间的同声传译</strong>
+              <p>你递一个 B站地址给它，它替你去 B站 抓数据，翻译成 RSS，再交还给你的阅读器。这就是它的全部存在意义。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">记住这个比喻：RSSHub = 网站翻译官</strong>
+            <p>整个项目的灵魂就一句话——把「不提供 RSS 的网站」变成「能订阅的 RSS 源」。后面所有架构细节，都是为了让这个翻译又快又稳又多语种。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 全程追踪 — 数据流动画（hero visual） -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">全程追踪：一次订阅请求的往返旅程</h2>
+        <p>你把一条 RSSHub 地址粘进阅读器，背后其实有<strong>三个人</strong>在接力。点「下一步」看清楚这场同声传译怎么完成的。</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"你的阅读器发出订阅请求：我想要最新内容"},
+          {"highlight":"flow-actor-2","label":"RSSHub 收到 /bilibili/user/dynamic/2267573 这条地址","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"RSSHub 看懂了：这是要我抓 B站 某个 UP 主动态"},
+          {"highlight":"flow-actor-2","label":"RSSHub 替你去访问 B站 的数据接口","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-3","label":"B站 返回原始数据（一坨 JSON）","packet":true,"from":"actor-3","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"RSSHub 把这坨 JSON 翻译成标准的 RSS 格式"},
+          {"highlight":"flow-actor-1","label":"标准 RSS 送回你的阅读器，你刷到了 UP 主最新动态","packet":true,"from":"actor-2","to":"actor-1"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">📖</div>
+              <span>RSS 阅读器</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">🌐</div>
+              <span>RSSHub</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">📺</div>
+              <span>B站</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点「下一步」开始这场同声传译</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重头再来</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔁</div>
+          <div class="callout-content">
+            <strong class="callout-title">注意 RSSHub 干了哪两件事</strong>
+            <p>它<strong>先去抓</strong>（替你访问 B站），<strong>再翻译</strong>（把 JSON 变成 RSS）。这两件事就是后面所有模块要拆的核心——抓取 + 翻译。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 一条真实 URL 长什么样 — Code↔English -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">拆一条真实的 RSSHub 地址</h2>
+        <p>左边就是那条能订阅 B站 UP 主动态的地址。右边逐段告诉你每一部分在告诉 RSSHub 什么。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">地址真身</span>
+            <pre><code><span class="code-line">https://rsshub.app/bilibili/user/dynamic/2267573</span>
+<span class="code-line">              ─┬────  ────┬────  ────┬──  ───┬───</span>
+<span class="code-line">               │         │          │       │</span>
+<span class="code-line">          服务器地址   命名空间(网站)  路径   参数(用户ID)</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐段翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>rsshub.app</strong> —— <span class="term" data-definition="服务器地址（域名）告诉浏览器或阅读器：RSSHub 这个程序跑在哪台服务器上。rsshub.app 是官方提供的公开服务器。">服务器地址</span>：RSSHub 这个翻译官住在哪台服务器上。</p>
+              <p class="tl"><strong>bilibili</strong> —— <span class="term" data-definition="命名空间是用来分组和区分同类事物的标签。在 RSSHub 里它通常对应「这是哪个网站」，比如 bilibili、weibo、github。">命名空间</span>：告诉 RSSHub「这次要去 B站 这个网站抓」。</p>
+              <p class="tl"><strong>user/dynamic</strong> —— <span class="term" data-definition="路径是 URL 中标识具体资源位置的片段，像文件夹层级一样指明要找的是这个网站下的哪一类内容。">路径</span>：要的是「某个用户的动态」这一类内容。</p>
+              <p class="tl"><strong>2267573</strong> —— <span class="term" data-definition="参数是 URL 里用来指定具体对象的那一段，这里是一个 B站 用户 ID——告诉你到底抓哪个 UP 主。">参数</span>：具体抓哪个 UP 主（这是 B站 用户 ID）。</p>
+              <p class="tl">整条地址粘进任何阅读器，就能刷到这位 UP 主的最新动态——RSSHub 已经替你把 B站 数据翻译好了。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">🔑</div>
+          <div class="callout-content">
+            <strong class="callout-title">一个 URL = 一个订阅源</strong>
+            <p>换一个命名空间、换一个参数，就是完全不同的订阅源。RSSHub 用「地址本身」来描述你想要什么——这是它最巧妙的设计，也是理解后面「路由」的钥匙。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: RSSHub 能做什么 — 4 张卡片 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">RSSHub 凭什么这么好用</h2>
+        <p>它不只翻译一个网站。下面四件事合在一起，才让它成了「万物皆可 RSS」的那个工具。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🌐</div>
+            <h4 class="pattern-title">1600+ 个网站源</h4>
+            <p class="pattern-desc">B站、微博、推特、GitHub、知乎、豆瓣……几乎你想得到的主流网站，都已经有人写好了翻译规则，开箱即用。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🔗</div>
+            <h4 class="pattern-title">一个 URL 就能订阅</h4>
+            <p class="pattern-desc">不用装插件、不用配账号。把一条 RSSHub 地址丢进阅读器，就开始收更新。地址本身就是「我想要什么」。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">⚡</div>
+            <h4 class="pattern-title">自带 <span class="term" data-definition="缓存是把常用结果暂时存起来、下次直接返回的技术——像把查过的电话号码抄在小本子上，免得每次都重新翻通讯录找。">缓存</span>省流量</h4>
+            <p class="pattern-desc">同一个源短时间内被多次请求时，RSSHub 不会傻乎乎每次都去爬一遍目标网站，而是先返回缓存好的结果，又快又省事。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🛠️</div>
+            <h4 class="pattern-title">可以自己部署</h4>
+            <p class="pattern-desc">除了用官方公开服务器，你也能在自己电脑或服务器上跑一份 RSSHub，完全掌控数据和速度。代码是开源的。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: RSSHub 是用什么搭的 — 技术栈 badge list -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">RSSHub 是用什么技术搭起来的</h2>
+        <p>下面这些是它 <code>package.json</code> 里的关键 <span class="term" data-definition="依赖是项目借助的外部代码包——你的项目调用它们提供的功能，而不必从零实现，相当于站在别人的肩膀上。">依赖</span>。现在看不懂名字没关系，先记住每个工具「替 RSSHub 干了什么活」。</p>
+
+        <div class="badge-list">
+          <div class="badge-item">
+            <code class="badge-code">Hono</code>
+            <span class="badge-desc"><span class="term" data-definition="Web 框架是专门用来搭建网站或网络服务的框架，负责接收 HTTP 请求、分发到对应处理函数、再返回响应——相当于「网站骨架」。">Web 框架</span>：接收你的请求、分发到对应翻译规则。轻量、快速。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Node.js</code>
+            <span class="badge-desc"><span class="term" data-definition="运行时是「程序跑起来时所处的那个环境」——它提供文件、网络、内存等基础能力，让代码真正能执行。Node.js 是让 JavaScript 能在服务器上跑的运行时。">运行时</span>：让 JavaScript 能在服务器上跑起来的环境。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">TypeScript</code>
+            <span class="badge-desc"><span class="term" data-definition="TypeScript 是 JavaScript 的加强版，给变量和函数加上「类型标注」，能在写代码时就发现潜在错误，是大型项目的常用语言。">TypeScript</span>：带类型的 JavaScript，项目大了也不容易写错。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">ofetch</code>
+            <span class="badge-desc"><span class="term" data-definition="HTTP 客户端是程序里用来「主动向别的网站发请求」的工具——相当于代码版的浏览器，替你去访问目标网址并把数据拿回来。">HTTP 客户端</span>：替 RSSHub「去别的网站抓数据」的那个工具。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">cheerio</code>
+            <span class="badge-desc">用来「读网页」：像 jQuery 一样从一堆 HTML 里提取你要的那块内容。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">Playwright</code>
+            <span class="badge-desc"><span class="term" data-definition="浏览器自动化是用程序控制真实浏览器去操作网页的技术——对付那些必须登录、点击、滚动才会加载数据的网站时特别有用。">浏览器自动化</span>：对付必须真打开浏览器才能抓的网站。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">端口 1200</code>
+            <span class="badge-desc"><span class="term" data-definition="端口是服务器上区分不同服务的编号，像大楼的门牌号——同一台机器可以同时跑很多服务，靠端口区分谁是谁。">端口</span>：RSSHub 自己部署时默认监听 1200 这个门牌号。</span>
+          </div>
+        </div>
+
+        <p>这些工具各司其职，拼起来就是一个能跑的「网站翻译官」。你现在不用记名字——只要知道 RSSHub 用它们完成了「接收请求 → 抓取 → 翻译 → 返回」这一整套活。</p>
+      </section>
+
+      <!-- SCREEN 6: 三段式 aha + 钩子 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一张图看懂：为什么 RSSHub 必然是「三段式」</h2>
+        <p>回到那个翻译官的比喻。一个翻译官要做的事，天然就分成三步——这也正是 RSSHub 整个代码库的骨架。</p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>入口</strong>：接收你的请求</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>抓取 + 翻译</strong>：去目标网站拿数据，翻译成 RSS</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>输出</strong>：把 RSS 还给你的阅读器</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这是后面所有模块的主线</strong>
+            <p>模块 2 拆「入口」——RSSHub 怎么知道一条地址对应哪段抓取代码；模块 3 跟着请求走完「抓取 + 翻译」的旅程；模块 4 看「输出」怎么把数据包成 RSS。把这三段记牢，整个项目就不会乱。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🪝</div>
+          <div class="callout-content">
+            <strong class="callout-title">下一模块的钩子</strong>
+            <p>RSSHub 怎么知道 <code>/bilibili/user/dynamic/2267573</code> 对应哪一段抓取代码？1600 多个网站、成千上万条订阅源，它怎么不搞混？答案藏在它的「路由文件」里——一个文件夹 = 一个网站，一个文件 = 一条订阅源。下一模块我们就打开它。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 7: 小测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下</h2>
+        <p>三道情景题，看看这个「翻译官」的心智模型你建起来没有。</p>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="完全正确。RSSHub 就是专门干这个的——你给它一个 B站 UP 主的标识，它替你把 B站 数据翻译成 RSS 源，你再用阅读器订阅。这正是「网站翻译官」的本职。"
+               data-explanation-wrong="再想想「翻译官」这个角色。浏览器插件和脚本都得你自己维护，而 RSSHub 已经为 1600 多个网站写好了翻译规则，开箱即用——它是专门解决「这个网站没 RSS」的工具。">
+            <h3 class="quiz-question">Q1：你想订阅某个 B站 UP 主，但 B站 本身不提供 RSS。最该用什么工具？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>给浏览器装个插件，每天自动帮你刷新 B站</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>用 RSSHub 给这位 UP 主生成一个 RSS 源，再用阅读器订阅</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>自己写个脚本，每天定时去抓 B站 页面</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>放弃吧，B站 这种网站根本不可能订阅</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正是如此。RSSHub 收到地址后，并不会把请求直接转给 B站，而是它自己替你去访问 B站 拿数据，再把这些数据翻译成标准的 RSS 格式返回给阅读器。这就是「先抓再翻译」的两步。"
+               data-explanation-wrong="注意 RSSHub 在中间扮演的角色。它不是简单转发请求，也不是一个静态文件服务器。它会主动去访问目标网站、拿到原始数据，再把这些数据翻译成 RSS——关键是它「替你」去抓，而不是让你直接连 B站。">
+            <h3 class="quiz-question">Q2：当你的阅读器请求 <code>/bilibili/user/dynamic/2267573</code> 时，RSSHub 实际上在做什么？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把请求原样转发给 B站，让 B站 直接返回 RSS</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>从硬盘里读出提前存好的静态 RSS 文件返回</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>替你去访问 B站 拿数据，再把数据翻译成 RSS 返回</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>告诉阅读器「B站 没有 RSS」，让阅读器自己想办法</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-d"
+               data-explanation-right="漂亮——你已经抓住了「网站翻译官」的三要素：① 一个 URL 入口让人能访问；② 抓取目标网站拿到原始数据；③ 翻译成统一格式（RSS）再返回。用这种结构去描述需求，AI 就能照着 RSSHub 的套路帮你搭起来。"
+               data-explanation-wrong="想想 RSSHub 为什么能成立——它同时具备三样东西。只说「抓数据」缺了翻译；只说「翻译格式」缺了抓取；只给 URL 入口却没有背后那两步，入口就是个空壳。最完整的描述要把「入口 + 抓取 + 翻译成统一格式」三件事都说齐。">
+            <h3 class="quiz-question">Q3：你想让 AI 帮你做一个「把某网站变成可订阅源」的服务。下面哪种描述能让 AI 一次就懂你要什么？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>「帮我写个程序，能去抓那个网站的数据」</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>「帮我做个网页，能把数据展示成 RSS 那种格式」</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>「帮我给那个网站配一个 URL，点了就能打开」</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>「做一个服务：给一个 URL 入口，背后去抓目标网站，再把结果翻译成统一的 RSS 格式返回」</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

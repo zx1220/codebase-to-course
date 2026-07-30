@@ -1,0 +1,367 @@
+<section class="module" id="module-4" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <!-- ════════════════════ HEADER ════════════════════ -->
+    <header class="module-header">
+      <span class="module-number">04</span>
+      <h2 class="module-title">数据变 RSS · 渲染输出的魔法</h2>
+      <p class="module-subtitle">同一个数据对象，三种摆盘方式——这一站叫 template。</p>
+    </header>
+
+    <!-- ════════════════════ SCREEN 1 · 开场比喻 ════════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">一个问题：handler 从不碰 XML，那 RSS 是哪来的？</h3>
+      <p>前面模块你看到的 <span class="term" data-definition="handler 是 RSSHub 里负责「抓数据」的函数——它去 B站、微博、GitHub 等网站把内容抓回来，整理成一个数据对象交出去，但从不负责输出格式。">handler</span>，自始至终只返回一个数据对象，从不碰 <span class="term" data-definition="XML 是一种用尖括号标签（像 &lt;title&gt;）来标记数据的文本格式——很像 HTML，但标签名是自定义的，机器和人都能读懂。">XML</span>。</p>
+      <p>那这个数据对象是怎么「变成」阅读器能认的 RSS 的？秘密在流水线最后一站——一个叫 template 的<span class="term" data-definition="渲染是把数据按某种格式「画」成最终文本的过程。RSSHub 里就是把数据对象变成 RSS / Atom / JSON 文本。">渲染</span>中间件。而且它不止会一种摆盘。</p>
+
+      <div class="callout callout-accent" style="margin-top: var(--space-8)">
+        <div class="callout-icon">🍽️</div>
+        <div class="callout-content">
+          <strong class="callout-title">同一个菜，三种摆盘</strong>
+          <p>handler 端上来的是一盘「半成品」——一个数据对象 <code>{ title, link, item }</code>。但阅读器们口味不同：有的只吃 RSS，有的爱吃 Atom，有的要 <span class="term" data-definition="JSON 是一种用花括号和键值对来组织数据的文本格式——程序读起来最方便，是现在互联网数据交换的通用语言。">JSON</span>。template 就像会三种摆盘手艺的厨师，同一锅菜按你的口味摆成不同样子端上桌。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════ SCREEN 2 · HERO · Layer Toggle Demo ════════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">点下面的 tab：同一份数据，三种长相</h3>
+      <p>下面这三种格式，背后是<strong>同一个</strong>数据对象（某 UP 主的动态）。点 tab 切换，亲眼看看「摆盘」的区别。</p>
+
+      <div class="layer-demo">
+        <div class="layer-tabs">
+          <button class="layer-tab active" onclick="showLayer('layer-rss', this)">RSS（默认）</button>
+          <button class="layer-tab" onclick="showLayer('layer-atom', this)">Atom</button>
+          <button class="layer-tab" onclick="showLayer('layer-json', this)">JSON Feed</button>
+        </div>
+        <div class="layer-viewport">
+          <!-- ── RSS ── -->
+          <div class="layer" id="layer-rss" style="display:block">
+            <pre style="margin:0; padding: var(--space-6); background: var(--color-bg-code); color:#CDD6F4; font-family: var(--font-mono); font-size: var(--text-sm); line-height:1.7; white-space:pre-wrap; word-break:break-word;"><span style="color:#9CA3AF">&lt;!-- ?format=rss （默认，不加也行）--&gt;</span>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;rss version="2.0"&gt;
+  &lt;channel&gt;
+    &lt;title&gt;某UP主的动态&lt;/title&gt;
+    &lt;link&gt;https://bilibili.com/...&lt;/link&gt;
+    &lt;item&gt;
+      &lt;title&gt;新视频&lt;/title&gt;
+      &lt;link&gt;https://b23.tv/...&lt;/link&gt;
+      &lt;pubDate&gt;Mon, 13 Jul 2026 10:00:00 GMT&lt;/pubDate&gt;
+    &lt;/item&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;</pre>
+          </div>
+          <!-- ── Atom ── -->
+          <div class="layer" id="layer-atom" style="display:none">
+            <pre style="margin:0; padding: var(--space-6); background: var(--color-bg-code); color:#CDD6F4; font-family: var(--font-mono); font-size: var(--text-sm); line-height:1.7; white-space:pre-wrap; word-break:break-word;"><span style="color:#9CA3AF">&lt;!-- ?format=atom --&gt;</span>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;feed xmlns="http://www.w3.org/2005/Atom"&gt;
+  &lt;title&gt;某UP主的动态&lt;/title&gt;
+  &lt;link href="https://bilibili.com/..."/&gt;
+  &lt;entry&gt;
+    &lt;title&gt;新视频&lt;/title&gt;
+    &lt;link href="https://b23.tv/..."/&gt;
+    &lt;updated&gt;2026-07-13T10:00:00Z&lt;/updated&gt;
+  &lt;/entry&gt;
+&lt;/feed&gt;</pre>
+          </div>
+          <!-- ── JSON ── -->
+          <div class="layer" id="layer-json" style="display:none">
+            <pre style="margin:0; padding: var(--space-6); background: var(--color-bg-code); color:#CDD6F4; font-family: var(--font-mono); font-size: var(--text-sm); line-height:1.7; white-space:pre-wrap; word-break:break-word;"><span style="color:#9CA3AF">// ?format=json</span>
+{
+  <span style="color:#F9E2AF">"version"</span>: <span style="color:#A6E3A1">"https://jsonfeed.org/version/1.1"</span>,
+  <span style="color:#F9E2AF">"title"</span>: <span style="color:#A6E3A1">"某UP主的动态"</span>,
+  <span style="color:#F9E2AF">"items"</span>: [
+    {
+      <span style="color:#F9E2AF">"title"</span>: <span style="color:#A6E3A1">"新视频"</span>,
+      <span style="color:#F9E2AF">"url"</span>: <span style="color:#A6E3A1">"https://b23.tv/..."</span>,
+      <span style="color:#F9E2AF">"date_published"</span>: <span style="color:#A6E3A1">"2026-07-13T10:00:00Z"</span>
+    }
+  ]
+}</pre>
+          </div>
+        </div>
+        <p class="layer-description">三种长相，菜是同一道——区别只是「标签叫什么」和「用尖括号还是花括号」。厨师（template）按你 URL 里写的口味上菜。</p>
+      </div>
+
+      <div class="step-cards" style="margin-top: var(--space-8)">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>不加任何参数</strong>
+            <p>默认走 RSS 分支，端出来的是 <code>&lt;rss&gt;&lt;channel&gt;&lt;item&gt;</code> 这种 XML。</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>URL 后加 <code>?format=atom</code></strong>
+            <p>走 Atom 分支，端出来的是 <code>&lt;feed&gt;&lt;entry&gt;</code> 这种 XML。</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>URL 后加 <code>?format=json</code></strong>
+            <p>走 JSON 分支，端出来的是花括号格式的 JSON Feed，程序最爱。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════ SCREEN 3 · Code↔English · switch 语句 ════════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">厨师怎么决定摆哪种盘？看 URL 里的 ?format=</h3>
+      <p>这段是 template 中间件的核心。左边是真实代码，右边是逐句翻译——同一个 <code>result</code> 数据对象，喂给不同的渲染器。</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+<pre><code><span class="code-line">    <span class="code-keyword">switch</span> (outputType) {</span>
+<span class="code-line">        <span class="code-keyword">case</span> <span class="code-string">'ums'</span>:</span>
+<span class="code-line">        <span class="code-keyword">case</span> <span class="code-string">'rss3'</span>:</span>
+<span class="code-line">            <span class="code-keyword">return</span> ctx.<span class="code-function">json</span>(<span class="code-function">rss3</span>(result));</span>
+<span class="code-line">        <span class="code-keyword">case</span> <span class="code-string">'json'</span>:</span>
+<span class="code-line">            ctx.<span class="code-function">header</span>(<span class="code-string">'Content-Type'</span>, <span class="code-string">'application/feed+json; charset=UTF-8'</span>);</span>
+<span class="code-line">            <span class="code-keyword">return</span> ctx.<span class="code-function">body</span>(<span class="code-function">json</span>(result));</span>
+<span class="code-line">        <span class="code-keyword">case</span> <span class="code-string">'atom'</span>:</span>
+<span class="code-line">            <span class="code-keyword">return</span> ctx.<span class="code-function">render</span>(&lt;Atom data={result} /&gt;);</span>
+<span class="code-line">        <span class="code-keyword">default</span>:</span>
+<span class="code-line">            <span class="code-keyword">return</span> ctx.<span class="code-function">render</span>(&lt;RSS data={result} /&gt;);</span>
+<span class="code-line">    }</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">中文翻译</span>
+          <div class="translation-lines">
+            <p class="tl">开一个多路开关，根据 <code>outputType</code> 决定走哪条路——它就是用户在 URL 里写的 <code>?format=</code>。</p>
+            <p class="tl">如果写的是 <code>rss3</code>，把数据交给 <code>rss3()</code> 函数转成 JSON 返回（一种特殊格式）。</p>
+            <p class="tl">如果写的是 <code>json</code>：先设一个 <span class="term" data-definition="Content-Type 是一个 HTTP 响应头，告诉浏览器/阅读器「我发给你的是什么格式的数据」，比如 application/feed+json 表示这是 JSON Feed。">Content-Type</span> 告诉对方「这是 JSON」，再把数据交给 <code>json()</code> 渲染。</p>
+            <p class="tl">如果写的是 <code>atom</code>，把数据塞进一个叫 <code>&lt;Atom&gt;</code> 的<span class="term" data-definition="组件是一个可复用的代码块，接收输入（属性）、产出输出（界面或 XML）。像一块能拼搭的积木。">组件</span>去渲染。</p>
+            <p class="tl"><code>default</code> 是「以上都不是」的兜底——默认走 RSS。所以不加 <code>?format=</code> 时，你拿到的就是 RSS。</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: var(--space-6)"><strong>注意一个细节：</strong>所有分支用的都是<strong>同一个</strong> <code>result</code>。数据没变，变的只是「把它喂给哪个渲染器」。这就是「同数据多视图」。</p>
+    </div>
+
+    <!-- ════════════════════ SCREEN 4 · Code↔English · JSX 写 RSS ════════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">更妙的：RSS 居然是用 JSX「搭」出来的</h3>
+      <p>你可能以为 XML 是一行行字符串拼出来的。错——RSSHub 用 <span class="term" data-definition="JSX 是一种 JavaScript 语法扩展，让你在 JS 代码里直接写类似 HTML 的标签。React 用它写网页，RSSHub 借它来写 XML。">JSX</span> 把 XML 标签当成组件来搭，像拼积木。左边是真实代码（<code>lib/views/rss.tsx</code>）。</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+<pre><code><span class="code-line"><span class="code-keyword">const</span> RSS: FC&lt;{ data: Data }&gt; = ({ data }) =&gt; {</span>
+<span class="code-line">    <span class="code-keyword">const</span> hasItunes = data.itunes_author || data.itunes_category</span>
+<span class="code-line">        || (data.item &amp;&amp; data.item.<span class="code-function">some</span>((i) =&gt; i.itunes_item_image || i.itunes_duration));</span>
+<span class="code-line">    <span class="code-keyword">const</span> hasMedia = data.item?.<span class="code-function">some</span>((i) =&gt; i.media);</span>
+<span class="code-line">    <span class="code-keyword">const</span> isTelegramLink = data.link?.<span class="code-function">startsWith</span>(<span class="code-string">'https://t.me/s/'</span>);</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-keyword">return</span> (</span>
+<span class="code-line">        &lt;rss xmlns:atom=<span class="code-string">"http://www.w3.org/2005/Atom"</span></span>
+<span class="code-line">             xmlns:itunes={hasItunes ? <span class="code-string">'http://...dtd'</span> : <span class="code-keyword">undefined</span>}</span>
+<span class="code-line">             version=<span class="code-string">"2.0"</span>&gt;</span>
+<span class="code-line">            &lt;channel&gt;</span>
+<span class="code-line">                &lt;title&gt;{data.title || <span class="code-string">'RSSHub'</span>}&lt;/title&gt;</span>
+<span class="code-line">                &lt;link&gt;{data.link || <span class="code-string">'https://docs.rsshub.app'</span>}&lt;/link&gt;</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">中文翻译</span>
+          <div class="translation-lines">
+            <p class="tl">定义一个叫 <code>RSS</code> 的组件，它接收 <code>data</code> 作为输入（就是 handler 端上来的那盘半成品）。</p>
+            <p class="tl">先做几个判断：这批数据里有没有 iTunes 播客字段？有没有媒体（media）？链接是不是 Telegram？</p>
+            <p class="tl">这些判断用来决定要不要在 XML 里加额外的命名空间标签——按需启用，不是死写。</p>
+            <p class="tl">然后 <code>return</code> 一段 JSX：直接写 <code>&lt;rss&gt;</code>、<code>&lt;channel&gt;</code>、<code>&lt;title&gt;</code> 这些 XML 标签，跟写 HTML 一模一样。</p>
+            <p class="tl">花括号 <code>{data.title}</code> 是「把数据塞进来」的语法——标题来自数据对象，没有就用默认值 <code>'RSSHub'</code>。</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: var(--space-8)"><strong>那一条条内容是怎么变成 XML 的？</strong>下面这段是 <code>rss.tsx</code> 的下一节——用 <code>map</code> 把数组「展开」成一堆 <code>&lt;item&gt;</code> 标签：</p>
+
+      <div class="translation-block">
+        <div class="translation-code">
+          <span class="translation-label">CODE</span>
+<pre><code><span class="code-line">                {data.item?.<span class="code-function">map</span>((item) =&gt; (</span>
+<span class="code-line">                    &lt;item&gt;</span>
+<span class="code-line">                        &lt;title&gt;{item.title}&lt;/title&gt;</span>
+<span class="code-line">                        &lt;description&gt;{item.description}&lt;/description&gt;</span>
+<span class="code-line">                        &lt;link&gt;{item.link}&lt;/link&gt;</span>
+<span class="code-line">                        &lt;guid isPermaLink=<span class="code-string">"false"</span>&gt;{item.guid || item.link || item.title}&lt;/guid&gt;</span>
+<span class="code-line">                        {item.pubDate &amp;&amp; &lt;pubDate&gt;{item.pubDate}&lt;/pubDate&gt;}</span>
+<span class="code-line">                        {item.author &amp;&amp; &lt;author&gt;{item.author}&lt;/author&gt;}</span>
+<span class="code-line">                        {item.image &amp;&amp; &lt;enclosure url={item.image} type=<span class="code-string">"image/jpeg"</span> /&gt;}</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">中文翻译</span>
+          <div class="translation-lines">
+            <p class="tl">对数据里的 <code>item</code> 数组做 <code>map</code>——「数组里每一条，都给我变成一个 <code>&lt;item&gt;</code> 标签」。</p>
+            <p class="tl">每条内容的标题、描述、链接，分别塞进对应的子标签。</p>
+            <p class="tl"><code>guid</code> 是这条内容的唯一 ID，没有就用链接或标题顶上。</p>
+            <p class="tl"><code>{item.pubDate && &lt;pubDate&gt;...&lt;/pubDate&gt;}</code> 是个聪明写法：「如果有发布日期，才输出这个标签；没有就别输出」。</p>
+            <p class="tl">作者、配图同理——有才输出。所以最终 XML 是<strong>按数据动态拼出来的</strong>，不是固定模板。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-info" style="margin-top: var(--space-8)">
+        <div class="callout-icon">🧩</div>
+        <div class="callout-content">
+          <strong class="callout-title">把 XML 当积木搭</strong>
+          <p>JSX 让 XML 标签变成了可以拼接、可以判断、可以循环的「积木」。同一个思想：网页能用 JSX 搭，配置文件、XML 订阅源也能用 JSX 搭。这就是「模板」的现代写法。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════ SCREEN 5 · Pattern Cards · 三种格式 ════════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">三种格式，各有什么用？</h3>
+      <p>阅读器世界没有「唯一标准」，所以 RSSHub 三种都给。下面是它们各自的性格：</p>
+
+      <div class="pattern-cards">
+        <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+          <div class="pattern-icon" style="background: var(--color-accent)">📰</div>
+          <h4 class="pattern-title"><span class="term" data-definition="RSS 是一种基于 XML 的「订阅源」标准格式，诞生于 1999 年前后。阅读器只要懂 RSS，就能订阅全球几乎所有博客、新闻、视频更新。">RSS</span> 2.0</h4>
+          <p class="pattern-desc">最通用、最老牌。几乎所有阅读器都吃。RSSHub 的<strong>默认</strong>输出就是它。</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+          <div class="pattern-icon" style="background: var(--color-actor-2)">⚡</div>
+          <h4 class="pattern-title"><span class="term" data-definition="Atom 是 RSS 的「升级版」标准，同样是 XML，但格式更规范、日期更明确、字段更严谨。Google 力推，现代阅读器基本都支持。">Atom</span></h4>
+          <p class="pattern-desc">更现代、更规范。日期格式、必填字段都更严谨。想用它，URL 加 <code>?format=atom</code>。</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+          <div class="pattern-icon" style="background: var(--color-actor-5)">{ }</div>
+          <h4 class="pattern-title">JSON Feed</h4>
+          <p class="pattern-desc">不是 XML，是给程序读的 JSON。代码解析最省事。想用它，URL 加 <code>?format=json</code>。</p>
+        </div>
+      </div>
+
+      <p style="margin-top: var(--space-6)"><strong>怎么切换？</strong>全靠 URL 里的<span class="term" data-definition="查询参数是 URL 里问号后面那部分（如 ?format=json），用来给服务器附带指令——像点单时写在备注栏的要求。">查询参数</span> <code>?format=</code>。同一个源，加不同后缀，拿不同格式。菜没变，摆盘变了。</p>
+    </div>
+
+    <!-- ════════════════════ SCREEN 6 · Callout · 模型-视图 ════════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">背后的大智慧：把数据和展示分开</h3>
+      <p>handler 只管「抓数据」，template 只管「摆盘」——这种分工有个大名堂。</p>
+
+      <div class="callout callout-accent">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title"><span class="term" data-definition="模型-视图（Model-View，MVC 里的 M 和 V）是一种经典软件设计思想：把「数据（模型）」和「展示（视图）」分开写。改展示不影响数据，改数据不影响展示，两边各管各的。">模型-视图</span>思想</strong>
+          <p>把「<strong>数据</strong>」（模型 M）和「<strong>展示</strong>」（视图 V）分开来写。这是从桌面软件到 Web 到现在所有界面设计的通用大智慧。RSSHub 里：handler = 模型（抓数据），template = 视图（摆盘）。</p>
+          <p style="margin-top: var(--space-3)">好处很实在：想加一种新输出格式？写个新视图就行，<strong>handler 一行都不用改</strong>。想换个数据源？换 handler，视图照常工作。这就是「关注点分离」。</p>
+        </div>
+      </div>
+
+      <p style="margin-top: var(--space-6)">以后你跟 AI 聊「把数据和展示分开」「我要加一种新的输出格式」，脑子里就想到 RSSHub 这套 handler / template 的分工——你已经掌握了一个能用一辈子的设计思想。</p>
+    </div>
+
+    <!-- ════════════════════ SCREEN 7 · Quiz ════════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">小测验：你会用这个超能力了吗？</h3>
+
+      <div class="quiz-container" id="quiz-module4">
+
+        <!-- Q1 -->
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="完全正确！加 ?format=json 就走 JSON 分支，拿到的 JSON 程序用 json.loads 一下就能读，比解析 XML 省事得多。这正是「同数据多视图」的好处。"
+             data-explanation-wrong="再想想——程序解析数据时，哪种格式最方便？XML 需要专门的解析器，而 JSON 几乎所有编程语言都有内置支持。看 URL 后面加什么参数能拿到 JSON。">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">场景</span>
+              <p>你想用代码解析某个 RSSHub 源的内容，但觉得 XML 解析太麻烦。你该在源 URL 后面加什么？</p>
+            </div>
+          </div>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>?format=xml —— 明确要 XML 格式</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>?format=json —— 拿 JSON，程序更好处理</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>?format=html —— 拿网页直接看</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question-block"
+             data-correct="option-c"
+             data-explanation-right="对！把抓取（handler）和渲染（template）分开，一套抓取代码就能同时支持 RSS / Atom / JSON 多种输出。想加新格式只改视图，handler 不用动——这叫「关注点分离」，承接前几个模块的设计哲学。"
+             data-explanation-wrong="再想想——关键是「分工」带来的好处。如果抓数据和输出格式绑死在一起，每加一种格式就得改一遍抓取代码。分开之后呢？想想 handler 这边要不要动。">
+          <h3 class="quiz-question">为什么 RSSHub 要把 handler（抓数据）和 template（渲染输出）分成两站？</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>为了让代码文件更多，显得工程很大</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>因为 XML 太难写，必须分开找人写</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>一套抓取代码能同时支持多种输出格式，改格式不用改 handler</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question-block"
+             data-correct="option-a"
+             data-explanation-right="没错！同一个源、同一份数据，唯一的变量就是 URL 里的 ?format= 参数。它决定了走 switch 的哪个分支，于是你看到 XML、朋友看到 JSON。这恰好印证了「同数据多视图」。"
+             data-explanation-wrong="差一步——既然是同一个源，数据本身肯定一样（缓存里也是同一份）。区别只可能在「请求」上。回想一下，URL 里那个小小的参数，是怎么决定输出格式的？">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">场景</span>
+              <p>你访问某个源看到的是 XML，朋友访问<strong>同一个</strong>源看到的却是 JSON。最可能的原因是？</p>
+            </div>
+          </div>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>你们俩 URL 里的 ?format= 参数不同，走了不同的渲染分支</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>朋友的账号权限高，所以能看到 JSON</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>服务器给每个人随机返回不同格式</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">提交答案</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重做一遍</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════ SCREEN 8 · 桥接到下模块 ════════════════════ -->
+    <div class="screen animate-in">
+      <h3 class="screen-heading">输出搞定了。但新麻烦来了……</h3>
+      <p>现在你懂了：一个数据对象，能摆成 RSS、Atom、JSON 三种盘。template 这一站，干净利落。</p>
+      <p>但下一个大问题是——如果<strong>一万个</strong>阅读器同时订阅同一个源，RSSHub 难道要跑去 B 站抓<strong>一万次</strong>吗？那不得被封号、把服务器也挤爆？</p>
+
+      <div class="callout callout-info">
+        <div class="callout-icon">🛡️</div>
+        <div class="callout-content">
+          <strong class="callout-title">下一站：缓存与防护</strong>
+          <p>下个模块回到中间件，深入看 RSSHub 最聪明的两个工程：<strong>缓存</strong>（怎么防止被同一请求打爆）和<strong>访问控制</strong>（怎么保护自己的服务）。看看它怎么用「记下来」化解万次请求的危机。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

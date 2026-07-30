@@ -1,0 +1,269 @@
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">渐进式披露</h1>
+      <p class="module-subtitle">Skill 系统最聪明的设计：像洋葱一样一层层剥开，用到哪层翻哪层。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 核心问题——脑容量 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先理解一个根本限制</h2>
+        <p>AI 有个绕不开的物理限制：<span class="term" data-definition="上下文窗口（Context Window）：AI 一次对话能'同时记住'的文字总量上限。就像一张桌子，能摊开的资料有限——摊太多就会挤掉旧的。这是 AI 的'工作记忆'。">上下文窗口</span>。</p>
+        <p>如果把所有技能的全部说明书一次性塞给它，桌子立刻爆满——它反而什么都做不好。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">所以 Skill 系统的核心设计问题</strong>
+            <p>怎么做到"<strong>既装得下海量专业知识，又不撑爆脑容量</strong>"？答案就是仓库里反复强调的设计哲学：<strong>渐进式披露</strong>（Progressive Disclosure）。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: 三层架构——原文 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">三层加载，各管一摊</h2>
+        <p>这是 <code>skill-creator</code> 里白纸黑字写的官方设计。看原文怎么描述这套机制（<span class="term" data-definition="context（上下文）：AI 当前能'看见'的全部信息——你的问题、之前的对话、加载进来的文档。可以理解为它此刻'眼前摊开的所有材料'。">context</span> 在这里就是"AI 此刻脑子里装的东西"）：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">#### Progressive Disclosure</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">Skills use a three-level</span></span>
+<span class="code-line"><span class="code-comment">loading system:</span></span>
+<span class="code-line">1. <span class="code-string">Metadata</span> (name + description)</span>
+<span class="code-line">   - Always in context (~100 words)</span>
+<span class="code-line">2. <span class="code-string">SKILL.md body</span></span>
+<span class="code-line">   - In context whenever skill triggers</span>
+<span class="code-line">   - (<span class="code-number">&lt;500</span> lines ideal)</span>
+<span class="code-line">3. <span class="code-string">Bundled resources</span></span>
+<span class="code-line">   - As needed (unlimited,</span>
+<span class="code-line">   scripts can execute w/o loading)</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">小标题：<strong>渐进式披露</strong>。</p>
+              <p class="tl">技能用一套<strong>三级加载</strong>系统。</p>
+              <p class="tl"><strong>第一级：元数据</strong>（名字 + 简介）。</p>
+              <p class="tl">这个<strong>永远</strong>在 Claude 脑子里，大概才 100 个词——所以再省不过了。</p>
+              <p class="tl"><strong>第二级：SKILL.md 正文</strong>。</p>
+              <p class="tl">只有当技能被<strong>触发</strong>时才整篇加载进来。</p>
+              <p class="tl">理想情况控制在 <strong>500 行以内</strong>。</p>
+              <p class="tl"><strong>第三级：捆绑资源</strong>（scripts/references/assets）。</p>
+              <p class="tl">按需才读，<strong>不限大小</strong>——而且脚本能直接跑，根本不用读进脑子！</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 三层可视化 + 比喻 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">用"图书馆"理解这三层</h2>
+        <p>想象 Claude 是个图书管理员，面前是一座巨大的图书馆。这套三级系统就像图书馆的<strong>检索效率设计</strong>：</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📇</div>
+            <h4 class="pattern-title">第一级 · 卡片目录</h4>
+            <p class="pattern-desc"><strong>永远摊在桌面。</strong>每本书只有一张索引卡（书名+一句话简介）。管理员扫一眼就知道哪本书可能相关——但书的细节一点没读。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📖</div>
+            <h4 class="pattern-title">第二级 · 翻开那本书</h4>
+            <p class="pattern-desc"><strong>确认相关了才取下来读。</strong>读的是书的正文（SKILL.md）。这一步才真正"占脑容量"，所以要克制——500 行内。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🗄️</div>
+            <h4 class="pattern-title">第三级 · 查阅书后附录</h4>
+            <p class="pattern-desc"><strong>遇到具体难题才去翻。</strong>书的附录、参考文献（references）无限多也不怕，用到哪本翻哪本。脚本更妙——直接让机器替你跑，自己都不用读。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">这套设计的精妙之处</strong>
+            <p>100 本书的卡片目录只占一张桌面的角落，但能让管理员瞬间定位到<strong>任何一本</strong>。Skill 系统也是：你装 50 个技能，第一级才占 5000 词——而真用起来，每次只深挖其中一两个。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 4: "500行"规则的实战意义 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">"SKILL.md 控制在 500 行"——为什么？</h2>
+        <p>这条规则不是拍脑袋定的。它背后有个朴素的道理，原文是这么解释的：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">**Key patterns:**</span></span>
+<span class="code-line">- Keep SKILL.md under 500 lines;</span>
+<span class="code-line">  <span class="code-keyword">if</span> you are approaching</span>
+<span class="code-line">  this limit, add an additional</span>
+<span class="code-line">  layer of hierarchy along</span>
+<span class="code-line">  with clear pointers about</span>
+<span class="code-line">  where the model should go</span>
+<span class="code-line">  next to follow up.</span>
+<span class="code-line"></span>
+<span class="code-line">- Reference files clearly from</span>
+<span class="code-line">  SKILL.md with guidance on</span>
+<span class="code-line">  <span class="code-keyword">when</span> to read them</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>关键模式：</strong></p>
+              <p class="tl">把 SKILL.md 控制在 500 行以内。</p>
+              <p class="tl">如果你快超了……</p>
+              <p class="tl">那就<strong>再加一层结构</strong>（拆出 references 文件）……</p>
+              <p class="tl">并且写清楚<strong>"接下来该去哪读"</strong>的指引。</p>
+              <p class="tl">在 SKILL.md 里要<strong>明确引用</strong>那些外部文件……</p>
+              <p class="tl">并告诉模型<strong>"什么时候"该去读它们</strong>。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>这就引出了一条实战铁律：<strong>SKILL.md 是"目录 + 总纲"，不是"全书"</strong>。细节往 references 里塞，主文件只留主干和"路标"。</p>
+      </section>
+
+      <!-- ── Screen 5: 分域组织——多云部署的例子 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一个高级技巧：按"域"分文件</h2>
+        <p>当技能要支持好几个不同的东西（比如部署到 AWS、GCP、Azure 三朵云），仓库推荐这样组织——<strong>主文件只做调度，细节分文件存</strong>：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md（分域组织）</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">**Domain organization**: When a</span></span>
+<span class="code-line"><span class="code-comment">skill supports multiple</span></span>
+<span class="code-line"><span class="code-comment">domains/frameworks, organize</span></span>
+<span class="code-line"><span class="code-comment">by variant:</span></span>
+<span class="code-line"></span>
+<span class="code-line">cloud-deploy/</span>
+<span class="code-line">├── SKILL.md (workflow + selection)</span>
+<span class="code-line">└── references/</span>
+<span class="code-line">    ├── aws.md</span>
+<span class="code-line">    ├── gcp.md</span>
+<span class="code-line">    └── azure.md</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-string">Claude reads only the relevant</span></span>
+<span class="code-line"><span class="code-string">reference file.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>分域组织</strong>：当一个技能……</p>
+              <p class="tl">要支持多个"领域/框架"时，按"变体"来组织。</p>
+              <p class="tl">假设有个"云部署"技能，目录长这样：</p>
+              <p class="tl"><code>SKILL.md</code> 只负责"整体流程 + 选哪个云"。</p>
+              <p class="tl">具体的部署细节拆进 references 文件夹……</p>
+              <p class="tl">AWS 的归 aws.md，GCP 的归 gcp.md，Azure 的归 azure.md。</p>
+              <p class="tl">结果是：<strong>Claude 只读它真正需要的那一个文件</strong>。你说要部署到 GCP，它绝不碰 aws.md——又省一大块脑容量。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这是给 AI 写说明书的通用智慧</strong>
+            <p>无论是不是 Skill，<strong>给 AI 提供信息时，"分层 + 带路标"永远比"一锅端"好</strong>。AI 跟人一样——面对一本 5000 页的手册会懵，面对一份"目录+按需展开"的指南就能高效干活。这个原则你在指挥 AI 时随时能用上。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 真实例子——mcp-builder 就是这么干的 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">看仓库里的真实案例：mcp-builder</h2>
+        <p><code>mcp-builder</code>（教 AI 造 MCP 服务的技能）正是这么做的。它的 SKILL.md 主文件做调度，把 Python 和 TypeScript 两种语言的具体玩法拆进了 reference 文件夹：</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">mcp-builder/</span>
+            <span class="ft-desc">支持两种语言的复杂技能</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">SKILL.md</span>
+                <span class="ft-desc">主流程 + "选哪种语言"的指引</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">reference/</span>
+                <span class="ft-desc">按需加载的深度文档</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">scripts/</span>
+                <span class="ft-desc">评测代码（不读，直接跑）</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>当你说"用 Python 写个 MCP 服务"，它只读 <code>python_mcp_server.md</code>；说 TypeScript，就读 <code>node_mcp_server.md</code>。两条线互不干扰，脑容量省一半。</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">小细节：reference 还是 references？</strong>
+            <p>注意 <code>mcp-builder</code> 用的是 <code>reference/</code>（单数），而 <code>skill-creator</code> 规范里写的是 <code>references/</code>（复数）。文件夹名其实没有强制要求——<strong>关键是 SKILL.md 里要写清楚"去哪里读、什么时候读"</strong>。AI 看的是你的指引，不是文件夹名。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">检测你的理解</h2>
+
+        <div class="quiz-container" id="quiz-module3">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你做了个"全平台部署"技能，内容超多：AWS 800 行、GCP 700 行、Azure 600 行。你把它们全塞进了一个 SKILL.md（共 2100 行）。结果 Claude 用起来又慢又容易串台。基于本模块的渐进式披露原则，下面哪个改法最对症？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正是此理。这正是仓库里 cloud-deploy 示例的做法：SKILL.md 只留总流程和"选哪个云"的判断（轻量、永远只读这一份），三朵云的细节分别拆进 references 下的独立文件，Claude 只加载它真正要用的那一份。既瘦身又防串台。"
+               data-explanation-wrong="没抓到要害。问题根源是'一次性把 2100 行全塞进脑子'违反了渐进式披露。光压缩文字或加工具限制，都没解决'按需只读相关部分'这个核心。想想：怎么才能让 Claude 在部署 GCP 时，完全不去读 AWS 的那 800 行？">
+            <h3 class="quiz-question">最对症的改法是？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把每朵云的内容都压缩到 200 行以内，还是全放 SKILL.md</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把 description 写得更详细，让 Claude 更小心地读</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>SKILL.md 只保留"总流程 + 如何选择云平台"，三朵云的具体步骤分别拆进 references/aws.md、gcp.md、azure.md</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>拆成三个独立的 Skill（aws-deploy、gcp-deploy、azure-deploy）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

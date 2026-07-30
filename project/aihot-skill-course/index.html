@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI HOT Skill 课：让 AI 助手替你刷 AI 资讯</title>
+
+  <!-- Google Fonts: Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!--
+    CUSTOMIZE PER COURSE — change only the three accent variables below.
+    Options:
+      vermillion  #D94F30 / #C4432A / #FDEEE9 / #E8836C  (default)
+      coral       #E06B56 / #C85A47 / #FDECEA / #E89585
+      teal        #2A7B9B / #1F6280 / #E4F2F7 / #5A9DB8
+      amber       #D4A843 / #BF9530 / #FDF5E0 / #E0C070
+      forest      #2D8B55 / #226B41 / #E8F5EE / #5AAD7A
+  -->
+  <style>
+    :root {
+      --color-accent:       #D94F30;
+      --color-accent-hover: #C4432A;
+      --color-accent-light: #FDEEE9;
+      --color-accent-muted: #E8836C;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">AI HOT Skill 课</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="1 · 这是什么" role="tab" aria-label="模块 1：这是什么"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="2 · 四方会谈" role="tab" aria-label="模块 2：四方会谈"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="3 · 路由的艺术" role="tab" aria-label="模块 3：路由的艺术"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="4 · 四扇窗口" role="tab" aria-label="模块 4：四扇窗口"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="5 · 地板下的暗门" role="tab" aria-label="模块 5：地板下的暗门"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->
+<section class="module" id="module-1" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">这是什么：让 AI 助手替你「刷」AI 资讯</h1>
+      <p class="module-subtitle">一句话问出去，一份中文 AI 简报回来——中间发生了什么？</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 这玩意儿是干什么的 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先说结论：两个东西，一个名字</h2>
+        <p>这个项目叫 <code>aihot</code>，但它其实是<strong>两层东西</strong>叠在一起——很多人会搞混，先拆清楚：</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🌐</div>
+            <div>
+              <strong>AI HOT 网站（aihot.virxact.com）</strong>
+              <p>一个公开网站，每天自动收录、翻译、摘要全网 AI 资讯。它是<strong>数据源</strong>——资讯住在那里。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-accent)">📜</div>
+            <div>
+              <strong>aihot 这个 Skill（就是 SKILL.md 这份文档）</strong>
+              <p>一份教 AI 助手「怎么去那个网站拿数据、怎么翻译成人话」的说明书。它是<strong>中间人</strong>——本身不含任何资讯。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">关键区分</strong>
+            <p>整个项目其实只有一个文件：<code>SKILL.md</code>。它不是 App、不是后端、没有数据库——它是一份<strong>写给 AI 看的说明书</strong>。网站是别人的，这个 Skill 只是教你的 AI 助手「怎么开口问那个网站要数据」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 那「Skill」到底是个啥 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">「Skill」是个啥？为什么能教 AI 新本事</h2>
+        <p>你可能在 Claude Code、Cursor、Codex 这些工具里见过「Skill」这个词。说人话：它就是<strong>一张塞进 AI 口袋的便签</strong>。</p>
+        <p>AI 助手本身是个聪明但什么都「大致知道一点」的通才。它<strong>不会</strong>知道：aihot 这个网站存在、它的 API 长什么样、为什么 curl 会被挡、日报和精选有什么区别。这些「这里特有的规矩」就写在这张便签上。AI 一旦读到了，就<strong>临时拥有</strong>了这个能力。</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🧠</div>
+          <div class="callout-content">
+            <strong class="callout-title">「Skill」这个词的两种读法</strong>
+            <p>读作「技能」：它是 AI 助手的一种<strong>扩展机制</strong>——一份按约定格式写的 markdown 文件，平台发现它、在合适时机把它喂给 AI。读作「这个项目本身」：<code>aihot</code> 这个 Skill 特指 <code>/aihot/SKILL.md</code> 这一份文档。这节课讲的是后者。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 全程追踪 — 一次查询的旅程 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">全程追踪：一句「今天 AI 圈有啥」的旅程</h2>
+        <p>想象你在 Claude Code 里敲下这句中文。点「下一步」看你的问题怎么一路变成屏幕上那份排版漂亮的 AI 简报——<strong>四个人</strong>在幕后接龙。</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"你随口问一句：今天 AI 圈有什么？"},
+          {"highlight":"flow-actor-2","label":"AI 助手先判断：这是在问 AI 资讯，我得去查实时数据，不能靠记忆瞎编","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"AI 助手发现自己装了 aihot 这个技能，翻开它的便签 SKILL.md 读规矩"},
+          {"highlight":"flow-actor-3","label":"SKILL.md 说：默认走精选接口，记得给 curl 戴上浏览器 UA，否则会被 403 挡掉"},
+          {"highlight":"flow-actor-2","label":"AI 助手照办，拼出一条 curl 命令，带上 UA 头去请求","packet":true,"from":"actor-2","to":"actor-4"},
+          {"highlight":"flow-actor-4","label":"aihot.virxact.com 收到请求，从数据库捞出最近 24 小时的精选条目，打包成 JSON"},
+          {"highlight":"flow-actor-2","label":"JSON 原始数据传回 AI 助手","packet":true,"from":"actor-4","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"AI 助手按 SKILL.md 的输出规矩：按版块分组、时间转人话、绝不暴露参数名，整理成中文简报","packet":true,"from":"actor-2","to":"actor-1"},
+          {"highlight":"flow-actor-1","label":"你看到一份清爽的 AI 日报，全程没碰浏览器、没配 API Key"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-accent)">你</div>
+              <span>用户</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">AI</div>
+              <span>AI 助手</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">📜</div>
+              <span>SKILL.md</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🌐</div>
+              <span>aihot API</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点「下一步」开始这场接力</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重头再来</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这一趟旅程的本质</strong>
+            <p>AI 助手<strong>自己没有</strong>今天的新闻——它的训练数据是过去的、静态的。它真正干的活是「会读说明书 + 会发网络请求 + 会排版」。把过时记忆当今日新闻讲，是这个课程要帮你<strong>识别并拒绝</strong>的头号 AI 翻车模式。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 这张便签长什么样 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">这张「便签」长什么样</h2>
+        <p>SKILL.md 的开头是这么几行——左边是它的真身，右边是说人话版本。注意那个 <span class="term" data-definition="YAML 是一种用缩进表示层级的配置格式，常用在配置文件开头。用三个减号 --- 包起来的区块叫 frontmatter，专门放机器读取的元信息。">YAML frontmatter</span>，它是整份文档的「身份证」。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">SKILL.md 真身</span>
+            <pre><code><span class="code-line"><span class="code-keyword">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: aihot</span>
+<span class="code-line"><span class="code-property">description</span>: AI HOT 中文 AI 资讯查询 Skill。</span>
+<span class="code-line">  当用户想知道今天 AI 圈有什么、AI 日报、</span>
+<span class="code-line">  AI 热点、最近 OpenAI/Anthropic/Google 发布了</span>
+<span class="code-line">  什么...时使用。Skill 会直接 curl 公开 REST API</span>
+<span class="code-line">  拉数据并整理成中文 markdown 简报...</span>
+<span class="code-line"><span class="code-keyword">---</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>三减号</strong>是开关：从这里到下一个三减号之间，是给<strong>平台</strong>看的元信息，不是给人读的正文。</p>
+              <p class="tl"><strong>name</strong>：这个技能叫 aihot——平台靠它建索引、做去重。</p>
+              <p class="tl"><strong>description</strong>：这段才是<strong>灵魂</strong>。它告诉 AI「什么时候该把我掏出来用」——列了一大堆触发词（AI 日报、AI 热点、最近 OpenAI…）。</p>
+              <p class="tl">末尾那句「会直接 curl 公开 REST API」是给 AI 的<strong>能力预告</strong>：别瞎编，去查实时数据。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">description 写得好不好，决定这个 Skill 会不会「睡大觉」</strong>
+            <p>AI 是靠<strong>语义匹配</strong> description 来决定要不要用这个 Skill 的。SKILL.md 里特意写了一句「<strong>不要 undertrigger</strong>」——意思是触发词列得不够全，AI 就会在该用时不用，转而拿过时记忆糊弄你。这正是「便签写得清楚」比「便签写得简短」更重要的原因。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下</h2>
+        <p>这节课的核心是分清「数据源」「Skill」「AI 助手」三者的关系。来一道情景题：</p>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="完全正确。资讯住在 aihot.virxact.com 的数据库里，SKILL.md 只是一份说明书。AI 助手读了说明书才知道去哪里 curl、怎么 curl，但它和 SKILL.md 本身都不存任何新闻。把三者分清，你就理解了为什么这个项目只有一个文件。"
+               data-explanation-wrong="再想想「资讯」这个东西到底物理上存在哪。SKILL.md 是一份 markdown 文档，里面只有命令和规矩，没有新闻正文；AI 助手的记忆是过时的。今天的资讯只可能来自一个会实时更新的地方。">
+            <h3 class="quiz-question">你的朋友说：「装了 aihot 这个 Skill，我的 AI 助手就自带今天的 AI 新闻了。」这句话哪里错了？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>没错啊，Skill 装上就等于资讯装上了</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>错在 AI 助手不该查实时数据，应该用记忆</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>错在「自带」——资讯始终住在网站上，Skill 只是教 AI 怎么去拿</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">四方会谈：谁在幕后跑这场戏</h1>
+      <p class="module-subtitle">把「用户 / AI 助手 / SKILL.md / aihot API」当四个有性格的角色，戏就好看懂了</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 演员表 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">演员表：四个角色，各司其职</h2>
+        <p>一场 AI 资讯查询不是「一个人在干活」——是<strong>四个角色</strong>在接力。记住这四张脸，后面所有事都是他们之间的对手戏。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+            <div class="pattern-icon" style="background: var(--color-accent)">🙋</div>
+            <h4 class="pattern-title">用户</h4>
+            <p class="pattern-desc">说人话的那个人。只会用中文提需求，看不懂参数名，要的是「一份能直接读的简报」。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🤖</div>
+            <h4 class="pattern-title">AI 助手</h4>
+            <p class="pattern-desc">聪明的执行者。会读说明书、会拼命令、会排版——但本身<strong>没有任何今日资讯</strong>，必须现场去查。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">📜</div>
+            <h4 class="pattern-title">SKILL.md</h4>
+            <p class="pattern-desc">一张静默的便签。不会主动说话，只在被 AI 翻开时，把「该走哪个接口、怎么排版」的规矩亮出来。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🌐</div>
+            <h4 class="pattern-title">aihot API</h4>
+            <p class="pattern-desc">真正的数据仓库。住在网站上，收请求、吐 <span class="term" data-definition="JSON 是一种用大括号和键值对组织数据的文本格式，人和机器都能读。可以理解成「填好格式的清单」——键是栏目名，值是内容。">JSON</span>。所有今天的新闻都从它这里出。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 群聊动画 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">偷听他们的群聊</h2>
+        <p>把这四个角色拉进一个微信群，看一次真实查询里他们各自说了什么。点「下一条」一条条放，或者「全部播放」一气呵成。</p>
+
+        <div class="chat-window" id="chat-module2">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-accent)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-accent)">用户</span>
+                <p>今天 AI 圈有啥大新闻？</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="1" data-sender="ai" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">AI</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">AI 助手</span>
+                <p>这是要实时 AI 资讯，我记忆里的都过时了。让我看看口袋里有没有合适的技能……找到了，aihot。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="2" data-sender="skill" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">📜</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">SKILL.md</span>
+                <p>宽问题默认走「精选」接口。两件事别忘：① curl 必须戴浏览器 UA，否则 403；② 输出别暴露参数名。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="3" data-sender="ai" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">AI</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">AI 助手</span>
+                <p>收到。算一下「过去 24 小时」的时间戳，拼好 curl，发车。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="4" data-sender="api" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">🌐</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">aihot API</span>
+                <p>给你 50 条精选 JSON，category 已分类，publishedAt 是 UTC 时间，自己转人话哦。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="5" data-sender="ai" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">AI</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">AI 助手</span>
+                <p>按版块分组、时间换算成「2 小时前」、URL 保留、绝不写「mode=selected」这种参数名。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="6" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-accent)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-accent)">用户</span>
+                <p>这排版舒服，还能点链接看原文。👍</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-module2-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module2-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一条</button>
+            <button class="btn chat-all-btn">全部播放</button>
+            <button class="btn chat-reset-btn">重播</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">SKILL.md 是「沉默的配角」</strong>
+            <p>注意 SKILL.md 从头到尾没有<strong>主动</strong>发过一条消息——它只在 AI 翻开它时亮出规矩，AI 读完就合上。这是 Skill 这种扩展形态的本质：它是<strong>被查阅的说明书</strong>，不是常驻的后台服务。理解这一点，你就明白为什么 SKILL.md 里写得越清楚，AI 表现越好——因为它只有这一次「被读到」的机会。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 角色间的「接口」 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">他们之间用什么「语言」对话</h2>
+        <p>四个角色用<strong>三种不同的语言</strong>交流。搞清楚谁说什么话，你就掌握了整个系统的协议。</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num" style="background: var(--color-accent)">1</div>
+            <div class="step-body">
+              <strong>用户 ⇄ AI 助手：自然语言</strong>
+              <p>中文大白话，进和出都是。「今天 AI 圈有啥」进去，「AI HOT — 最近 30 条精选」出来。中间一切技术细节都对用户<strong>隐形</strong>。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num" style="background: var(--color-actor-4)">2</div>
+            <div class="step-body">
+              <strong>AI 助手 ⇄ SKILL.md：markdown 规矩</strong>
+              <p>AI 读的是这份文档的正文——表格、curl 示例、「不要做」清单。这是一场<strong>单向阅读</strong>：AI 读，SKILL.md 不回话。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num" style="background: var(--color-actor-5)">3</div>
+            <div class="step-body">
+              <strong>AI 助手 ⇄ aihot API：HTTP + JSON</strong>
+              <p>AI 拼 <span class="term" data-definition="curl 是命令行里发网络请求的工具，发音像「curl」。你可以理解成「在终端里点一个会打开网页、把内容抓回来的按钮」。">curl</span> 命令发出去，API 回 <span class="term" data-definition="HTTP 是浏览器和服务器之间通信的协议。一个 HTTP 请求 = 「我要这个网址的东西」；HTTP 响应 = 「给你，状态码告诉你成没成」。状态码 200 是成功，403 是被拒绝，429 是太频繁被限流。">HTTP</span> 状态码 + JSON 正文。请求里塞参数（mode、since、category），响应里塞数据条目。这是唯一一段<strong>机器对机器</strong>的对话。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">为什么这个分层很值钱</strong>
+            <p>用户永远不必学 curl 和 JSON；AI 助手永远不必自己开发爬虫；aihot 网站永远不必关心用户长什么样。<strong>每层只做自己擅长的事</strong>，靠明确的接口对接。这种「分层 + 协议」的思路，是几乎所有软件系统的底层骨架——你以后看任何项目，都可以先问一句：「它分了几层？层与层之间用什么语言说话？」</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下</h2>
+
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确。SKILL.md 在整个流程里从不主动开口，它只在 AI 翻开它、需要规矩的那一刻被读到。AI 读完就合上，带着规矩去执行。这正解释了为什么 SKILL.md 要写得详尽——它只有这一次被读的机会，写得含糊 AI 就只能靠猜。"
+               data-explanation-wrong="再想想 SKILL.md 在前面那个群聊里是什么状态。它有没有自己发起对话、自己发请求、自己存数据？都不是。它是一份静态文档——它的价值全在「被读到」的那一刻。">
+            <h3 class="quiz-question">如果要用一句话概括 SKILL.md 这个角色的本质，哪个最准？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>一个常驻后台、时刻监听用户提问的服务</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>一份被动查阅的说明书，只在被翻开时才发挥作用</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>一个会自己发网络请求、自己存数据的程序</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">路由的艺术：一句话选对接口</h1>
+      <p class="module-subtitle">同一个 aihot，能问出五种不同的答案——全看你怎么把话说出口</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 三种数据，三种意图 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先认识三位「同父异母」的兄弟</h2>
+        <p>用户说「看 AI 资讯」，听起来是一个需求，其实背后藏着<strong>三种不同的数据池</strong>。aihot 把它们分得很细——选错池子，答案就跑偏。这就是整个 Skill 最核心的「路由」逻辑。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+            <div class="pattern-icon" style="background: var(--color-accent)">⭐</div>
+            <h4 class="pattern-title">精选（selected）</h4>
+            <p class="pattern-desc">每天精挑细选的「主菜单」。覆盖用户关心的大事，质量高、数量适中。<strong>宽问题的默认去处。</strong></p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">📰</div>
+            <h4 class="pattern-title">日报（daily）</h4>
+            <p class="pattern-desc">每天北京时间 08:00 自动生成的「成品报」，按 UTC 整日切片，分 5 个固定版块。时间精度是「一整天」。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-text-muted)">
+            <div class="pattern-icon" style="background: var(--color-text-muted)">📚</div>
+            <h4 class="pattern-title">全部（all）</h4>
+            <p class="pattern-desc">含未精选的次要条目。量大但杂，像没筛过的原矿。<strong>只有用户主动点单才去。</strong></p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">「默认走精选」是这份便签的第一原则</strong>
+            <p>SKILL.md 把这句话放在「路由优先级」最显眼的位置。为什么？因为<strong>精选是主菜单，日报和全部是用户特意点单的备选</strong>。AI 如果把宽问题错路由到日报或全部，要么时间对不上，要么信息过载。这个「默认值」的设计，替用户挡掉了 90% 的选择负担。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 关键词触发表 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">AI 怎么靠「关键词」判断去哪个池</h2>
+        <p>SKILL.md 给 AI 立了一张「听到什么词、走什么接口」的对照表。AI 的工作就是<strong>扫描用户那句话里的关键词</strong>，对号入座。这就是 <span class="term" data-definition="启发式是「不保证完美但通常有效的经验法则」。AI 听到「日报」两字就猜用户要日报接口，不一定 100% 对，但绝大多数时候管用——这就是启发式。">启发式</strong></span>路由：靠几个词快速猜意图。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">SKILL.md 里的对照表</span>
+            <pre><code><span class="code-line"><span class="code-comment">| 用户在说 | 应该走的接口 |</span></span>
+<span class="code-line"><span class="code-comment">|---|---|</span></span>
+<span class="code-line">| <span class="code-string">默认（宽问题）</span>："今天AI圈" |</span>
+<span class="code-line">|   "过去24小时大新闻"     |</span>
+<span class="code-line">|   "最近AI圈有啥"        | items?mode=selected</span>
+<span class="code-line">|                          |   &amp;since=<span class="code-keyword">&lt;语义时间窗&gt;</span></span>
+<span class="code-line"><span class="code-comment">|----</span></span>
+<span class="code-line">| <span class="code-string">明确说"日报"</span>："AI 日报"   | daily</span>
+<span class="code-line"><span class="code-comment">|----</span></span>
+<span class="code-line">| <span class="code-string">明确说"全部/完整/</span>     |</span>
+<span class="code-line"><span class="code-string">   所有/全量"</span>           | items?mode=all</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">第一档是<strong>兜底默认</strong>：只要问题够「宽」（没指定具体形式），就走精选 + 时间窗。</p>
+              <p class="tl">第二档要<strong>显式触发词</strong>：「日报」两个字出现，才切到 daily 接口——否则别去。</p>
+              <p class="tl">第三档更严格：要「全部/完整/所有/全量」这种<strong>明确的扩量词</strong>，才去捞杂的 all 池。</p>
+              <p class="tl">三层是<strong>从严到宽</strong>的漏斗：越具体的词，越往特殊接口走；没词就走默认。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">「日报」和「过去 24 小时」为什么不能混</strong>
+            <p>这是 SKILL.md 反复强调的坑：日报是按 <strong>UTC 0 点</strong>切片的（比如「5 月 7 日的日报」= 5/6 00:00 到 5/7 00:00 这一整段）。而「过去 24 小时」是<strong>此刻往回数 24 小时</strong>的滚动窗口。两个时间概念根本对不上——用户说「过去 24 小时大新闻」却去查日报，可能拿到的内容已经超出或短于 24 小时。所以宽问题坚决走 selected + since，不走 daily。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 时间窗的艺术 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">时间窗：怎么把「最近」翻译成机器懂的时刻</h2>
+        <p>用户说「最近」，AI 不能就这么含糊地发请求——得算出一个具体的时刻。这就是 <code>since</code> 参数的活：把人类语言里的「最近 X」<strong>翻译成</strong>一个 <span class="term" data-definition="ISO 8601 是一种国际标准的日期时间写法，形如 2026-06-25T15:30:00Z。结尾的 Z 表示这是 UTC 协调世界时，全球统一基准，不跟任何时区绑。机器读它从不出错。">ISO 8601</span> 时间戳。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">真身（bash 命令）</span>
+            <pre><code><span class="code-line"><span class="code-comment"># 用户问"最近 3 天" → 算 3 天前这一刻</span></span>
+<span class="code-line">since=<span class="code-function">$</span>(date -u -v-3d +%Y-%m-%dT%H:%M:%SZ \</span>
+<span class="code-line">  2>/dev/null \</span>
+<span class="code-line">  || date -u -d <span class="code-string">'3 days ago'</span> +%Y-%m-%dT%H:%M:%SZ)</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-function">curl</span> -sH <span class="code-string">"User-Agent: $UA"</span> \</span>
+<span class="code-line">  <span class="code-string">".../items?mode=selected&amp;since=$since&amp;take=100"</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">第一行用 <code>date</code> 命令算「此刻往前 3 天」的 UTC 时刻，格式化成 ISO 8601 字符串。</p>
+              <p class="tl">中间的 <code>2>/dev/null || ...</code> 是<strong>跨系统兜底</strong>：macOS 的 date 认 <code>-v-3d</code>，Linux 认 <code>-d '3 days ago'</code>——哪个能用走哪个。</p>
+              <p class="tl">最后把算出来的时间塞进 <code>since=$since</code>，API 就知道「只给我这之后的内容」。</p>
+              <p class="tl">这一整段就是把人类的「最近 3 天」<strong>翻译成</strong>机器能执行的精确查询。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🛡️</div>
+          <div class="callout-content">
+            <strong class="callout-title">服务端的「7 天硬上限」是兜底保险</strong>
+            <p>就算 AI 忘了带 since，items 接口服务端也会<strong>强制</strong>按「最近 7 天」截断——绝不会拉出几个月前的老条目。这是一种<strong>防御式设计</strong>：不让上游的一个疏忽拖垮服务器。但 SKILL.md 仍然建议显式带 since，因为用户说「最近 3 天」时，让服务端默认 7 天会多带 4 天的冗余内容——<strong>精确永远比省事好</strong>。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 测验 — 路由情景题 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">你来当路由器</h2>
+        <p>下面是几个真实用户说法。根据 SKILL.md 的路由表，AI 该把它们送去哪个接口？选错了，用户拿到的就不是想要的答案。</p>
+
+        <div class="quiz-container" id="quiz-module3">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="对。这句话是典型的「宽问题」——没说「日报」也没说「全部」。按路由表，宽问题默认走精选 + 时间窗（since=过去24小时）。日报是按 UTC 整日切片，跟「过去 24 小时」的滚动窗口对不上。"
+               data-explanation-wrong="重点看用户有没有说出「日报」「全部」这类显式触发词。这句话里两个都没有——它是个宽问题。再想想宽问题的默认去处是哪个池？">
+            <h3 class="quiz-question">用户说：「过去 24 小时 AI 圈有什么大新闻？」AI 应该走哪个接口？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/daily（拉最新日报）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/items?mode=all（拉全部）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/items?mode=selected&amp;since=&lt;24小时前&gt;（精选+时间窗）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="没错。「看下今天的日报」里明确有「日报」二字，这是 daily 接口的显式触发词。走 /api/public/daily 就能拿到最新的成品日报。注意它和「过去 24 小时大新闻」不一样——后者是滚动窗口，前者是固定整日切片。"
+               data-explanation-wrong="这句话里有个关键词决定了路由。找找看——用户明确说出了哪个词？SKILL.md 规定只要这个词出现，就走专门的接口，而不是默认的精选池。">
+            <h3 class="quiz-question">用户说：「看下今天的日报。」这次该走哪个？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/items?mode=selected&amp;since=今天（精选+今天）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/daily（拉最新日报）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>/api/public/items?mode=all（拉全部）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-4" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">四扇窗口：API 端点详解</h1>
+      <p class="module-subtitle">aihot 一共就开四扇窗，看懂它们就掌握了全部入口</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 先理解「端点」 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">「端点」是啥？把 API 想成一栋大楼</h2>
+        <p>把 aihot.virxact.com 想成一栋大楼。大楼有<strong>一个总门</strong>（域名），进去之后有<strong>好几个窗口</strong>，每个窗口办不同的事。这个「窗口」就是 <span class="term" data-definition="端点（endpoint）是 API 上一个具体的网址路径，像 /api/public/daily。每个端点对应一种数据或一个动作——你可以理解成「大楼里某个办事窗口的编号」。">端点</span>（endpoint）。</p>
+
+        <p>aihot 这栋楼对外开放<strong>四个窗口</strong>，全在 <code>/api/public/</code> 这个楼层下。AI 助手就是个跑腿的，根据你要办的事，去不同的窗口排队。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">「公开、匿名」是这栋楼的规矩</strong>
+            <p>这四个窗口全在 <code>/api/public/</code> 路径下——「public」就是「公开」。<strong>不需要登录、不需要 API Key、不需要 token</strong>。任何人（任何 AI）带着浏览器 UA 来都能办。这是设计前提：降低使用门槛，让这个 Skill 能跨平台一行装上就用。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 四扇窗口对照 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">四扇窗口，各办各的事</h2>
+
+        <div class="badge-list">
+          <div class="badge-item">
+            <code class="badge-code">/api/public/daily</code>
+            <span class="badge-desc">最新一份日报（成品报，分 5 版块）</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">/api/public/daily/{日期}</code>
+            <span class="badge-desc">指定那一天（如 2026-05-07）的日报</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">/api/public/dailies</code>
+            <span class="badge-desc">日报存档索引（只有日期+头条，不含正文）</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">/api/public/items</code>
+            <span class="badge-desc">全部 AI 动态（靠参数 mode/since/category 筛）</span>
+          </div>
+        </div>
+
+        <p>前三个窗口都围绕「日报」——是<strong>已打包好的成品</strong>。第四个 <code>items</code> 是<strong>原矿池</strong>，靠一堆参数自己筛，最灵活也最常用。下面分别拆开看。</p>
+      </section>
+
+      <!-- SCREEN 3: items 端点的参数 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">items 这扇窗：靠参数「点单」</h2>
+        <p>items 端点是<strong>主力窗口</strong>，但它不会一股脑全倒给你——你得用参数告诉它「我要什么样的」。这些参数就像点单时的附加要求。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">items 的参数表</span>
+            <pre><code><span class="code-line"><span class="code-comment"># 一条典型请求长这样：</span></span>
+<span class="code-line">/api/public/items?</span>
+<span class="code-line">  mode=selected       <span class="code-comment"># 精选池（默认）还是 all 全池</span></span>
+<span class="code-line">  &amp;category=paper     <span class="code-comment"># 只要"论文"那一类（可省）</span></span>
+<span class="code-line">  &amp;since=<span class="code-keyword">&lt;ISO时间&gt;</span>   <span class="code-comment"># 只要这个时刻之后的（默认7天）</span></span>
+<span class="code-line">  &amp;take=50            <span class="code-comment"># 这次给我 50 条（上限100）</span></span>
+<span class="code-line">  &amp;cursor=<span class="code-keyword">&lt;token&gt;</span>     <span class="code-comment"># 翻页用的"继续上一次"凭证</span></span>
+<span class="code-line">  &amp;q=RAG              <span class="code-comment"># 关键词搜索（2-200字）</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>mode</strong>：选「精选」还是「全量」——上一模块讲过的路由。</p>
+              <p class="tl"><strong>category</strong>：五个分类挑一个：模型/产品/行业/论文/技巧。不填就全都要。</p>
+              <p class="tl"><strong>since / take</strong>：时间窗 + 这次拿几条。两个一起控制「量」。</p>
+              <p class="tl"><strong>cursor</strong>：翻页用的「书签」——第一次没有，拿完 API 给你一个，下次带上接着拿。</p>
+              <p class="tl"><strong>q</strong>：关键词搜索，在标题+摘要里全文匹配。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🧩</div>
+          <div class="callout-content">
+            <strong class="callout-title">参数是「正交」的，能自由组合</strong>
+            <p>这六个参数<strong>互不冲突</strong>，像乐高积木随便拼。你可以「精选 + 论文 + 最近7天 + 关键词 RAG + 拿50条」五个条件一起叠。这种「每个参数管一件事、彼此独立」的设计叫<strong>正交参数</strong>——是 API 设计里最舒服的形态，也是你以后给 AI 描述需求时可以用的词：「把这几个筛选条件正交叠加」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 翻页与关键词两个暗号 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">两个容易踩坑的暗号：cursor 和 q</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🔖</div>
+            <h4 class="pattern-title">cursor（翻页书签）</h4>
+            <p class="pattern-desc">拿第一页时没有，API 回一个不透明的 token；下次请求原样塞回去就拿第二页。SKILL.md 反复警告：<strong>别解析、别递增、别跨端点复用</strong>——当黑盒。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🔍</div>
+            <h4 class="pattern-title">q（关键词搜索）</h4>
+            <p class="pattern-desc">服务端在「标题+中文标题+中文摘要」三列全文匹配，走数据库索引，毫秒级。<strong>别再拉一批数据自己 grep</strong>——那只能在前 100 条里找，关键词在 100 条外就彻底漏掉。</p>
+          </div>
+        </div>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">真身：翻页接龙</span>
+            <pre><code><span class="code-line"><span class="code-comment"># 第 1 页</span></span>
+<span class="code-line">resp1=<span class="code-function">$</span>(curl -sH <span class="code-string">"User-Agent: $UA"</span> \</span>
+<span class="code-line">  <span class="code-string">".../items?mode=all&amp;take=100"</span>)</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 从响应里抠出翻页书签</span></span>
+<span class="code-line">cursor=<span class="code-function">$</span>(echo <span class="code-string">"$resp1"</span> | jq -r .nextCursor)</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 第 2 页：原样塞回 cursor 参数</span></span>
+<span class="code-line">curl -sH <span class="code-string">"User-Agent: $UA"</span> \</span>
+<span class="code-line">  <span class="code-string">".../items?mode=all&amp;take=100&amp;cursor=$cursor"</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">第一页请求不带 cursor——从头开始拿 100 条。</p>
+              <p class="tl">用 jq 把响应里的 <code>nextCursor</code> 字段抠出来——这就是「下次从哪继续」的凭证。</p>
+              <p class="tl">第二页请求把 cursor 原样塞进参数，API 就知道接着上次的拿。</p>
+              <p class="tl"><strong>hasNext=false 或 cursor=null 时停</strong>——没后续了。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">「不透明 token」是什么意思</strong>
+            <p>cursor 长得像乱码（<code>eyJhIjoxNzgy...</code>），其实是 base64 编码的 JSON，里面藏了「上次拿到哪」。但 SKILL.md 明确说<strong>别去解码、别去改它</strong>——因为它的内部格式服务端随时可能改，你今天能解析不代表明天还行。<strong>把它当一个不透明的黑盒凭证</strong>：拿到啥原样回传。这是调用任何带分页 API 的通用生存智慧。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下</h2>
+
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确。用户说「Sora 相关的全部条目」——「全部」是 mode=all 的触发词，「Sora 相关」要用 q 参数做服务端搜索。绝不能拉一批自己 grep，那样只能在前 100 条里找，Sora 在更后面就漏了。server-side 的 q 搜索覆盖全池。"
+               data-explanation-wrong="关键词搜索有两种做法：客户端 grep（拉一批自己筛）和服务端 q 参数（让数据库找）。SKILL.md 明确反对前者——为什么？想想如果 Sora 相关的条目排在第 300 条，客户端 grep 还找得到吗？">
+            <h3 class="quiz-question">用户想找「Sora 相关的全部条目」。AI 的正确做法是？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>拉 100 条 mode=all，然后用 jq 在客户端 grep "Sora"</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>直接用 /items?mode=all&amp;q=Sora 让服务端搜全池</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>翻日报找，因为日报覆盖最全</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="没错。cursor 是服务端发的「不透明黑盒」，内部编码格式不稳定，跨端点复用、自己解析递增都可能拿到错误数据甚至报错。正确做法永远是：拿到啥原样回传，它就是一张一次性书签。"
+               data-explanation-wrong="想想 SKILL.md 对 cursor 的态度。它建议把这个 token 当什么对待？如果你今天解码出来了、明天服务端改了格式会怎样？正确做法其实最省心——根本不动它。">
+            <h3 class="quiz-question">关于 cursor（翻页书签），下面哪种做法符合 SKILL.md 的建议？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>解码出里面的数字，自己加 1 拿下一页</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把 items 接口的 cursor 拿去给 daily 接口用</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>当黑盒：拿到啥原样塞回 cursor 参数</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-5" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">地板下的暗门：坑与输出哲学</h1>
+      <p class="module-subtitle">这个 Skill 真正的智慧，藏在「不要做」清单和输出规矩里</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: UA 这个坑 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">最大的坑：忘了戴「面具」就被 403</h2>
+        <p>如果整个 Skill 只能记一件事，就是这条：调 API 时 curl <strong>必须</strong>带浏览器 User-Agent，否则直接被挡。SKILL.md 把它单列成「先决条件」，放在所有工作流之前——可见踩过多少次坑。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">先决条件（真身）</span>
+            <pre><code><span class="code-line">UA=<span class="code-string">"Mozilla/5.0 (Macintosh; Intel Mac OS</span></span>
+<span class="code-line"><span class="code-string">  X 10_15_7) AppleWebKit/537.36 (KHTML,</span></span>
+<span class="code-line"><span class="code-string">  like Gecko) Chrome/124.0.0.0 Safari/537.36"</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 之后所有调 API 的 curl 都要带它：</span></span>
+<span class="code-line">curl -sH <span class="code-string">"User-Agent: $UA"</span> \</span>
+<span class="code-line">  <span class="code-string">"https://aihot.virxact.com/api/public/daily"</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">先把一串「伪装成 Chrome 浏览器」的身份字符串存进 <code>UA</code> 变量。</p>
+              <p class="tl">后面<strong>每一条</strong>调 API 的 curl，都要加 <code>-H "User-Agent: $UA"</code> 把它带上。</p>
+              <p class="tl">不带会怎样？服务器以为是商业爬虫，直接回 <strong>403 Forbidden</strong>。</p>
+              <p class="tl">你会以为「接口挂了」，其实只是没戴面具被保安拦下了。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">为什么需要这层面具</strong>
+            <p>网站的 nginx（服务器软件）配了一个 <span class="term" data-definition="黑名单是一种「拒绝列表」——凡匹配某些特征的请求一律拒绝。这里 nginx 用 User-Agent 黑名单挡掉默认 curl 的请求（UA 形如 curl/7.x），因为商业爬虫常用这种 UA 大量抓取。换成浏览器 UA 就能混过这道关卡。">UA 黑名单</span>，专挡默认的 <code>curl/X.Y</code> 身份——因为那是商业爬虫的典型特征。但<strong>装 Skill 的入口路径</strong>（<code>/aihot-skill/install.sh</code>）特意豁免了这道关卡，因为它的设计前提就是 <code>curl -fsSL ... | bash</code> 一行装。<strong>UA 要求只针对 /api/public/* 数据端点</strong>——别误推广到全站。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 输出哲学 — 别泄漏基础设施 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">输出哲学：把基础设施藏到地板下面</h2>
+        <p>SKILL.md 花了整整一节讲「给用户的输出格式」。核心原则一句话：<strong>用户看到的是资讯简报，不是 API 调试日志</strong>。所有基础设施细节都必须对用户隐形。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">SKILL.md 的红线清单</span>
+            <pre><code><span class="code-line"><span class="code-comment">✅ OK（用户能直接懂）：</span></span>
+<span class="code-line">- "时间窗 2026-05-05 ~ 2026-05-07"</span>
+<span class="code-line">- "最近 3 天命中 OpenAI 的全部条目"</span>
+<span class="code-line">- "按发布时间倒序" / "共 50 条"</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">❌ 不 OK（基础设施泄漏）：</span></span>
+<span class="code-line">- mode=selected / category=paper</span>
+<span class="code-line">- /api/public/items?since=2026-04-30T...</span>
+<span class="code-line">- "限流 600 req/min" / "nginx 缓存 60s"</span>
+<span class="code-line">- "cursor" / "hasNext=true"</span>
+<span class="code-line">- 任何 HTTP 状态码 / cache 状态</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>判断标准很简单</strong>：用户能直接看懂吗？能 → 留；不能 → 删。</p>
+              <p class="tl">「时间窗」「共 50 条」是<strong>人话</strong>，留。</p>
+              <p class="tl">「mode=selected」「cursor」「600 req/min」是<strong>开发者黑话</strong>，删。</p>
+              <p class="tl">数据源最多一句「来自 aihot.virxact.com」，甚至不提也行。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这条规矩的深意：AI 的「翻译」职责</strong>
+            <p>这其实是给 AI 立的<strong>角色边界</strong>：你是用户和机器之间的<strong>翻译</strong>，不是传声筒。机器说的话（JSON、参数名、状态码）你要<strong>消化成人话</strong>再转述，不能原样倒给用户。这个原则不只适用于 aihot——你以后让 AI 做任何「对接外部系统再汇报」的活，都可以搬这句话：「别把基础设施细节泄漏给最终用户」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 时间转人话 + 保留 URL -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">两条容易忘的细节规矩</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🕐</div>
+            <h4 class="pattern-title">时间必须转人话</h4>
+            <p class="pattern-desc"><code>2026-05-08T01:48:00.000Z</code> 这种 ISO 串用户看不懂——要换成「今天上午 09:48」「2 小时前」。机器精确，但人只懂相对时间。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+            <div class="pattern-icon" style="background: var(--color-accent)">🔗</div>
+            <h4 class="pattern-title">每条都得留 URL</h4>
+            <p class="pattern-desc">即使为了篇幅把三条合并成一句总结，<strong>每条 item 的 url 都不能丢</strong>。没 URL 的条目用户追溯不到原文，等于不可信。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🚫</div>
+            <h4 class="pattern-title">别脑补、别当原文</h4>
+            <p class="pattern-desc">summary 是 LLM 生成的摘要，<strong>不是原文</strong>。要引用得回 url 核对。AI 永远以 API 返回为准，绝不凭记忆编内容。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 全局回顾 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">把整栋楼装进一张图</h2>
+        <p>五节课走完，我们把整个系统画成一张图。点击任何一个角色，看它的职责回顾——这是你以后给 AI 描述需求、或者排查问题时的「地图」。</p>
+
+        <div class="arch-diagram">
+          <div class="arch-zone arch-zone-browser">
+            <h4 class="arch-zone-label">用户侧</h4>
+            <div class="arch-component" data-desc="说中文大白话的那个人。只会提需求、读简报，看不懂任何技术细节。整个系统的存在就是为了让这个人不必懂技术。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🙋</div>
+              <span>用户</span>
+            </div>
+          </div>
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">AI 助手侧</h4>
+            <div class="arch-component" data-desc="聪明的执行者。会读说明书、拼 curl、排版输出——但本身没有任何今日资讯。它的核心能力是「翻译」：把用户的人话翻成机器请求，把机器 JSON 翻成人话简报。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🤖</div>
+              <span>AI 助手</span>
+            </div>
+            <div class="arch-component" data-desc="一份静态 markdown 文档。不主动说话、不发请求、不存数据——只在被 AI 翻开时亮出规矩：走哪个接口、怎么戴 UA、怎么排版。它是整个系统唯一的「知识载体」。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">📜</div>
+              <span>SKILL.md</span>
+            </div>
+          </div>
+          <div class="arch-zone arch-zone-external">
+            <h4 class="arch-zone-label">外部数据源</h4>
+            <div class="arch-component" data-desc="真正的数据仓库。四个公开端点（daily / daily/{date} / dailies / items），匿名免 token，但要戴浏览器 UA。所有今天的 AI 资讯都住在这里的数据库里。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🌐</div>
+              <span>aihot API</span>
+            </div>
+          </div>
+          <div class="arch-description" id="arch-desc">点任何一个角色，回顾它在系统里的职责</div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">你现在已经拥有的能力</strong>
+            <p>学完这五节，你已经能：① 看懂任何「Skill」类项目的本质——一份写给 AI 的说明书；② 理解 API 端点、参数、路由、翻页这些核心概念；③ 识别 AI 何时在「拿过时记忆糊弄你」、何时在「真去查实时数据」；④ 给 AI 下达更精确的指令——比如「默认走精选」「带上 since 时间窗」「输出别暴露参数名」。这些就是「用 AI 指挥 AI」的底座。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 综合测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">最后一关：综合诊断</h2>
+        <p>这是一道「排查问题」的情景题——最能检验你是不是真的理解了整个系统。</p>
+
+        <div class="quiz-container" id="quiz-module5">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情景</span>
+              <p>用户问「今天 AI 圈有啥」，但 AI 助手回复说：「抱歉，aihot 接口好像挂了，返回 403。」用户什么都没改过，网站网页也能正常打开。最可能的原因是什么？</p>
+            </div>
+
+            <div class="quiz-question-block"
+                 data-correct="option-b"
+                 data-explanation-right="完全正确。403 + 网页正常 = 典型的「UA 没戴」症状。aihot 的 /api/public/* 端点用 nginx UA 黑名单挡默认 curl UA，但网页和安装入口是豁免的。AI 忘了加 -H User-Agent 就会撞这道墙，却误以为「接口挂了」。这就是 SKILL.md 把 UA 要求单列为「先决条件」的原因——它是最容易踩、最容易被误诊的坑。"
+                 data-explanation-wrong="注意两个线索：① 网页能正常打开，说明网站本身没挂；② 报的是 403（被拒绝），不是 500（服务器错）或超时。403 在 aihot 这个语境下最常见的原因是什么？回想模块开头那个「先决条件」。">
+              <h3 class="quiz-question">最可能的根因是？</h3>
+              <div class="quiz-options">
+                <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                  <div class="quiz-option-radio"></div>
+                  <span>aihot 网站服务器宕机了，需要等恢复</span>
+                </button>
+                <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                  <div class="quiz-option-radio"></div>
+                  <span>AI 拼 curl 时漏了 User-Agent 头，被 UA 黑名单挡了</span>
+                </button>
+                <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                  <div class="quiz-option-radio"></div>
+                  <span>用户没配 API Key，需要先去注册</span>
+                </button>
+              </div>
+              <div class="quiz-feedback"></div>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="对。「日报」是 daily 接口的显式触发词，而 daily 按 UTC 0 点切片，跟「过去 24 小时」的滚动窗口根本对不上。正确做法是走 selected + since=24小时前。这个区分是整个路由逻辑里最容易踩的坑——SKILL.md 反复强调「宽问题别走 daily」。"
+               data-explanation-wrong="想想用户真正想要的是什么——是「此刻往回数 24 小时」的内容。daily 接口返回的是哪种时间切片？它和滚动窗口能对上吗？回想模块 3 里「日报 vs 过去 24 小时」那段警告。">
+            <h3 class="quiz-question">另一题：用户说「过去 24 小时大新闻」，AI 却走了 /daily 接口。这会出什么问题？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>时间对不上——daily 是 UTC 整日切片，不是滚动 24 小时窗</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>没问题，daily 就是干这个的</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>会触发 403，因为 daily 不允许带时间参数</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">重做</button>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: var(--space-8)">
+          <div class="callout-icon">🎓</div>
+          <div class="callout-content">
+            <strong class="callout-title">课程到此结束</strong>
+            <p>你刚刚把一个真实的 AI Skill 项目从外到内拆了一遍。下次你看到任何「教 AI 新本事」的项目——不管是 Cursor 的规则、Claude 的 Skill、还是 Codex 的指令——它骨子里都是同一件事：一份写给 AI 的、告诉它「该做什么、别做什么」的说明书。能读懂这份说明书，你就能<strong>指挥 AI 而不是被 AI 指挥</strong>。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+  </main>
+
+</body>
+</html>

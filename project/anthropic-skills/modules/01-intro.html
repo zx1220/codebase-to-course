@@ -1,0 +1,226 @@
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">什么是 Skill？</h1>
+      <p class="module-subtitle">你每天都在用 AI 做事——但你有没有想过，能不能给它装一个"专门技能"？</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 开场问题 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先想一个场景</h2>
+        <p>想象一下：你让 AI 帮你处理一个 Excel 表格。可它根本不懂你们公司那一套特殊的"利润率要按蓝色、年份不带千位分隔符"的规矩。每次都要重新解释一遍，对吧？</p>
+        <p>如果能<strong>一次性把这些规矩教会它</strong>，以后它每次碰到表格都自动照办——那该多省心。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这就是 Skill 想解决的问题</strong>
+            <p>Skill 是一个装满说明书、脚本和资源的<strong>文件夹</strong>，让 Claude（以及其他 AI）在碰到特定任务时"自动加载"这些知识，不用你每次重复啰嗦。</p>
+            <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-secondary);">提示：文中的 <span class="term" data-definition="脚本（script）：一段可以自动运行的程序代码。你不用懂怎么写，机器会照着一步步执行——就像一份'机器食谱'。">虚线词语</span> 都可以悬停/点击查看大白话解释。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: 核心定义 + 隐喻 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">用最直白的话说</h2>
+        <p>官方的定义是这样写的：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">README.md</span>
+            <pre><code>
+<span class="code-line">Skills are folders of instructions,</span>
+<span class="code-line">scripts, and resources that Claude</span>
+<span class="code-line">loads dynamically to improve performance</span>
+<span class="code-line">on specialized tasks.</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">大白话翻译</span>
+            <div class="translation-lines">
+              <p class="tl">Skill 就是一个装着<strong>说明书</strong>的文件夹……</p>
+              <p class="tl">里面还可能有<strong>脚本</strong>（能直接运行的代码）和各种<strong>资源</strong>（比如模板、字体）……</p>
+              <p class="tl">Claude 会根据需要<strong>动态加载</strong>它——用到时才翻开，不用时收起来。</p>
+              <p class="tl">目的只有一个：让它在<strong>某个专业任务</strong>上做得更好、更稳定。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">打一个比方：技能包</strong>
+            <p>想象 Claude 是个聪明的实习生。它什么都能学，但你没教过的规矩它就不知道。一个 Skill 就像是你递给它的一份<strong>"岗位手册"</strong>——只在这个岗位需要时才拿出来看，平时不占它脑子。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 一个真实的 Skill 长啥样 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一个真实的 Skill 长什么样？</h2>
+        <p>这个仓库里就有 17 个现成的 Skill。咱们挑一个最直观的看看它的"身份证"——也就是它最核心的那个文件 <code>SKILL.md</code>：</p>
+        <p>下面这段是 <span class="term" data-definition="YAML：一种用缩进和冒号来组织数据的简洁格式，人类和机器都容易读。这里的'配置区'就是用 YAML 写的，三道杠 --- 是它的边界标记。">YAML</span> 写的"配置区"，夹在两组三道杠 <code>---</code> 中间：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skills/pdf/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: pdf</span>
+<span class="code-line"><span class="code-property">description</span>: <span class="code-string">Use this skill whenever the</span></span>
+<span class="code-line"><span class="code-string">  user wants to do anything with PDF</span></span>
+<span class="code-line"><span class="code-string">  files. This includes reading or</span></span>
+<span class="code-line"><span class="code-string">  extracting text...</span></span>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># PDF 处理指南</span></span>
+<span class="code-line"><span class="code-comment">（后面是详细的操作步骤）</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">这三道杠 <code>---</code> 是一个分隔标记，告诉 AI "上面这部分是配置信息"。</p>
+              <p class="tl"><strong>name</strong>：这个技能叫 <code>pdf</code>，是它的唯一名字。</p>
+              <p class="tl"><strong>description</strong>：这段话才是真正的"触发开关"——它告诉 Claude 什么时候该用这个技能。</p>
+              <p class="tl">意思是："只要用户想对 PDF 文件做任何事，就用我。"</p>
+              <p class="tl">第二个 <code>---</code> 表示配置结束。</p>
+              <p class="tl">下面就是真正的"教学内容"了。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>就这么简单。一个文件夹、一个 <code>SKILL.md</code> 文件，就是一个完整的 Skill。</p>
+      </section>
+
+      <!-- ── Screen 4: 它解决的根本问题 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">它到底解决什么问题？</h2>
+        <p>本质上是<strong>两个矛盾</strong>：</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🧠</div>
+            <h4 class="pattern-title">矛盾一：AI 的脑容量有限</h4>
+            <p class="pattern-desc">你没法把世界上所有的规矩一次性塞进对话里。AI 每次"记不住"那么长的上下文。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🔄</div>
+            <h4 class="pattern-title">矛盾二：你不想重复劳动</h4>
+            <p class="pattern-desc">每次开新对话都要重新解释一遍"我们公司表格怎么排版"，太累，还容易出错。</p>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)">Skill 的解法是<strong>"按需加载"</strong>：</p>
+        <ul style="list-style: none; padding: 0;">
+          <li style="margin-bottom: var(--space-2)">✅ 把专业知识<strong>打包进文件夹</strong>，一次写好</li>
+          <li style="margin-bottom: var(--space-2)">✅ AI 平时只看它的<strong>名字和简介</strong>（省脑容量）</li>
+          <li style="margin-bottom: var(--space-2)">✅ 真要用到了，<strong>自动翻开</strong>详细说明</li>
+          <li style="margin-bottom: var(--space-2)">✅ 用完就收起来，<strong>不干扰</strong>其他任务</li>
+        </ul>
+      </section>
+
+      <!-- ── Screen 5: 数据流动画——一次 Skill 调用发生了什么 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">你说一句话，背后发生了什么？</h2>
+        <p>假设你装了 <code>pdf</code> 这个 Skill，然后对 Claude 说："帮我把这份合同的关键条款提取出来。" 点下面的按钮，一步步看数据是怎么流动的：</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+          {"highlight":"flow-actor-1","label":"你说：「帮我把这份合同的关键条款提取出来。」"},
+          {"highlight":"flow-actor-1","label":"Claude 看到你的请求里有「合同」「提取」「PDF」这些关键词","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"它扫一眼所有已安装 Skill 的 description（每个才几十个字）"},
+          {"highlight":"flow-actor-2","label":"命中！pdf 这个 Skill 的简介说「处理 PDF 文件就用我」"},
+          {"highlight":"flow-actor-3","label":"Claude 把 SKILL.md 的完整内容加载进上下文","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-3","label":"按照里面的步骤操作，可能还会调用 Skill 自带的脚本"},
+          {"highlight":"flow-actor-4","label":"把提取好的关键条款交还给你","packet":true,"from":"actor-3","to":"actor-4"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">你</div>
+              <span>你的请求</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">C</div>
+              <span>Claude 决策</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">📄</div>
+              <span>加载 SKILL.md</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">✓</div>
+              <span>返回结果</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点击"下一步"开始演示</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重新开始</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">关键洞察</strong>
+            <p>Claude 自己决定要不要用某个 Skill——你不需要手动"调用"。它靠的就是那个 <code>description</code> 字段。写得好，它就准；写得差，它就漏。这就是为什么后面我们会专门讲怎么写好这个字段。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 本模块测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试身手</h2>
+        <p>下面这道题考的不是记忆，而是你有没有真正理解 Skill 的本质。</p>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你是一位设计师，每次让 Claude 帮你做海报都要反复强调"用我们公司的字体、主色号是 #D4A843、logo 要放右下角"。你受够了，想一劳永逸。基于本模块学到的，下面哪种做法最符合 Skill 的设计思想？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="没错。Skill 的核心就是"把重复的专业规矩打包成可按需加载的文件夹"。你只需写一次，Claude 以后碰到海报任务就自动套用——这正是它解决"重复劳动 + 脑容量有限"两大矛盾的思路。"
+               data-explanation-wrong="再想想。Skill 的精髓是"一次写好、按需自动加载"，而不是临场输入、或者靠 Claude 死记硬背。想想哪种方式能让规矩'永久驻扎'又不占地方。">
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>每次开新对话时，把这些规矩重新打字告诉 Claude</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把这些规矩写进一个超长的提示词，希望 Claude 每次都记住</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>创建一个 Skill 文件夹，把这些规矩写进 SKILL.md，让 Claude 在碰到海报任务时自动加载</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>让 Claude 把这些规矩"背下来"，以后永远不用再说</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

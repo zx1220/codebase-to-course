@@ -1,0 +1,370 @@
+<section class="module" id="module-4" style="background: var(--color-surface-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">Hooks:给 AI 装上「自动刹车」的隐形质检员</h1>
+      <p class="module-subtitle">skill 靠 AI 自觉翻开,可它偶尔偷懒跳过怎么办?hook 是那个「事件一发生,不管你想不想就强制执行」的自动闸。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 开场钩子 + 自动刹车比喻 + skill vs hook 对比 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">上一节那本 TDD 手册写得再好,也架不住 AI 偶尔偷懒</h2>
+        <p>上一节我们说,<span class="term" data-definition="skill 是 ECC 里「给 AI 看的工作手册」——一个文件夹加一个 SKILL.md,告诉 AI 在某种情况下该按什么步骤干活。skill 需要 AI 主动翻开、主动照着做,所以本质是「靠自觉」。">skill</span> 是一本 AI 主动翻开的手册。你写了 TDD skill,写着「先写测试、再写代码」——AI 大概率会照做。可万一哪次它觉得「这次我赶时间,跳过吧」呢?</p>
+        <p>手册管不住「偷懒」。但如果你在提交代码的瞬间,装一道自动闸:「<strong>系统</strong>先帮你跑一遍测试,跑不过就物理拦住,谁都别想提交」——AI 想跳都跳不掉。这道闸,就是 <span class="term" data-definition="hook 是「事件触发的自动开关」——你指定一个事件(比如提交代码、写文件),事件一发生,系统就自动执行一段检查或动作。它不需要 AI 同意,是 ECC 里「被动强制」的那一半。">hook</span>。</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🚗</div>
+            <div>
+              <strong>skill = 司机自觉系安全带</strong>
+              <p>司机大部分时候会记得系——但他可能忘、可能犯懒、可能赶时间跳过。手册是好东西,可它管不住「不愿意」。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🛑</div>
+            <div>
+              <strong>hook = 车的自动刹车系统</strong>
+              <p>你不用想着「该不该踩」,车自己判断。要追尾了——它替你刹死。<strong>不需要你同意,事件一到就强制触发</strong>。这是 hook 和 skill 最根本的不同。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">⚙️</div>
+            <div>
+              <strong>一句话定义 hook</strong>
+              <p>在某个<span class="term" data-definition="事件在这里指「系统运行中某个值得关注的时刻」——比如 AI 准备用某个工具、AI 回答完毕、你按下回车。hook 就是绑在这些时刻上的自动开关。">事件</span>发生时,<strong>自动</strong>执行一段检查,该放行放行、该<span class="term" data-definition="拦截在这里是动词——指 hook 在事件发生的瞬间把 AI 的动作物理挡下来,不让它继续。这是 hook「强制」二字的来源,也是它和 skill「靠自觉」最大的不同。">拦截</span>拦截。AI 同意与否,无关紧要。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">全课最该记住的一句话:skill 靠自觉,hook 靠强制</strong>
+            <p>这是 ECC 治理 AI 的两把钥匙。skill 把「正确做法」写成手册,靠 AI 主动遵循;hook 把「绝不能跳过的事」绑在事件上,靠系统强制触发。一个是软约束,一个是硬闸门。对付「AI 老犯同样的错」,你的终极武器永远是 hook。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: HERO VISUAL —— 数据流动画「AI 想 git push → 拦截 → review → 放行」 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">全程追踪:AI 想直接 <span class="term" data-definition="git push 是把本地代码推送到远程仓库的命令——一旦推送成功,代码就进了团队共享的历史,其他人能看到、能拉取。所以「推送」是个关键时刻,值得拦一下。">git push</span>,被 hook 一把拦下</h2>
+        <p>真实场景:ECC 里配了这么一条 hook——AI 每次想推送代码,系统会先拦住,逼它打开 <span class="term" data-definition="编辑器在这里指用来查看和修改代码文本的工具(比如 VS Code)。hook 把要推送的内容塞进编辑器,是为了强制人或 AI 过一遍,确认没问题。">编辑器</span> review 一遍,确认无误才放行。点「下一步」看这道关卡怎么运作。</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"AI 觉得代码写完了,准备直接推送上远程仓库"},
+          {"highlight":"flow-actor-1","label":"推送请求先穿过一道关卡:PreToolUse hook","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"hook 守卫匹配上了「这是 git push」,拦住:先别急着推"},
+          {"highlight":"flow-actor-2","label":"把要推送的内容塞进编辑器,强制过一遍 review","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-3","label":"编辑器里逐行看一遍,确认这次改动没问题"},
+          {"highlight":"flow-actor-3","label":"review 通过,给 hook 回一个退码 0,意思是「放行」","packet":true,"from":"actor-3","to":"actor-2"},
+          {"highlight":"flow-actor-4","label":"hook 看到退码 0,松开闸门,推送才真正执行","packet":true,"from":"actor-2","to":"actor-4"},
+          {"highlight":"flow-actor-4","label":"代码进仓库。整个过程 AI 没法跳过,也没法商量"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">🤖</div>
+              <span>AI</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">🛑</div>
+              <span>PreToolUse hook 守卫</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">📝</div>
+              <span>编辑器 review</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">☁️</div>
+              <span>git push 目标仓库</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点「下一步」看 hook 怎么在推送前插一道关卡</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重头再来</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">注意 hook 在哪一步插入</strong>
+            <p>它不在「推送之后」,也不在「AI 想之前」,而是<strong>卡在「AI 已经要推、但还没真推」的那个瞬间</strong>。这个「事件发生前的拦截点」就是 <span class="term" data-definition="PreToolUse 是六种 hook 事件之一——在 AI 准备使用某个工具(比如执行命令、写文件)的前一刻触发,正好用来「拦一下、检查检查再放行」。">PreToolUse</span>。记住这个时机,你就懂了 hook 为什么能「拦得住」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 六种事件卡片 + 最小 hook 代码翻译 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">hook 能绑在哪些时刻?六种事件</h2>
+        <p>一个 hook 配置 = 一个 <span class="term" data-definition="matcher「匹配器」是一段规则,告诉 hook「在什么情况下才触发我」。比如「只在执行 git push 时」「只在写 .md 文件时」。matcher 越精确,hook 越不会误伤。">matcher</span>(匹配什么情况)+ 一段 command(执行什么检查)。ECC 用的核心<span class="term" data-definition="触发在这里指「让某段代码开始执行的那个动作」。hook 的全部奥秘就在于:它把一段检查绑在「事件触发」上,事件一到,检查自动开跑。">触发</span>时刻一共六种,每个时刻都能挂自己的 hook。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🛑</div>
+            <h4 class="pattern-title">PreToolUse</h4>
+            <p class="pattern-desc">AI 准备用某个<span class="term" data-definition="工具在这里指 AI 能调用的具体动作,比如执行一条命令、读一个文件、改一段代码。PreToolUse 就是「用工具之前」的拦截点。">工具</span><strong>之前</strong>。拦还是放、提醒还是格式化,都靠它。这是最能「挡」的时刻。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">✅</div>
+            <h4 class="pattern-title"><span class="term" data-definition="PostToolUse 是六种 hook 事件之一——在 AI 刚用完某个工具(执行完命令、写完文件)之后触发。它不拦动作,而是用来「善后」,比如自动跑格式化、自动补注释。">PostToolUse</span></h4>
+            <p class="pattern-desc">AI 用完某个工具<strong>之后</strong>。常用来「自动善后」——比如刚改完代码,立刻自动跑一遍格式化。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">⌨️</div>
+            <h4 class="pattern-title">UserPromptSubmit</h4>
+            <p class="pattern-desc">你按下回车、把话发给 AI <strong>那一刻</strong>。能在话送进 AI 之前先过一道筛子(比如补上下文)。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">🏁</div>
+            <h4 class="pattern-title">Stop</h4>
+            <p class="pattern-desc">AI 回答完毕、准备停下来时。可以在它「收工」前再做最后一道检查或总结。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">📦</div>
+            <h4 class="pattern-title">PreCompact</h4>
+            <p class="pattern-desc"><span class="term" data-definition="上下文窗口是 AI 一次对话能「同时记得」的内容上限——装满了就得压缩或丢弃一部分旧内容。PreCompact 就是「压缩之前」的拦截点。">上下文窗口</span>被压缩<strong>之前</strong>。能决定哪些历史该留、哪些可以丢。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🔔</div>
+            <h4 class="pattern-title">Notification</h4>
+            <p class="pattern-desc">系统需要你授权、或要弹个通知时。比如某个动作需要你点一下「允许」,就是它。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🧩</div>
+          <div class="callout-content">
+            <strong class="callout-title">两个零件看懂所有 hook</strong>
+            <p>不管挂在哪一种事件上,每个 hook 都拆成两块:<strong>matcher</strong>(什么情况下触发我)+ <strong>command</strong>(触发后跑什么检查)。这两块组合起来,就是 hook 的全部。下面我们就拆一个真实的最小 hook 看看。</p>
+          </div>
+        </div>
+
+        <h3 class="screen-heading" style="margin-top: var(--space-10)">拆一个最小 hook:跑长命令前提醒开 <span class="term" data-definition="tmux 是一个终端复用工具——它让你的命令即使关掉窗口、断开连接也继续在后台跑,下次还能接回去看。跑耗时命令(比如装依赖、跑测试)时特别有用。">tmux</span></h3>
+        <p>下面这段是 ECC 里真实的最小 hook。AI 一旦准备跑一个长命令(装依赖、跑测试),hook 就提醒它「最好开个 tmux,免得中途断了」。左边是 <span class="term" data-definition="JSON 是一种用大括号和键值对表示数据的文本格式——hook 的配置就是用 JSON 写的,机器读起来很方便,可以理解为「给程序看的配置清单」。">JSON</span> 真身,右边拆成「事件 / matcher / command」三块讲清楚。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">JSON 配置</span>
+            <pre><code><span class="code-line">{</span>
+<span class="code-line">  <span class="code-property">"PreToolUse"</span>: [</span>
+<span class="code-line">    {</span>
+<span class="code-line">      <span class="code-property">"matcher"</span>: <span class="code-string">"tool == \"Bash\" &amp;&amp;</span></span>
+<span class="code-line"><span class="code-string">        tool_input.command matches</span></span>
+<span class="code-line"><span class="code-string">        \"(npm|pnpm|yarn|cargo|pytest)\""</span>,</span>
+<span class="code-line">      <span class="code-property">"hooks"</span>: [</span>
+<span class="code-line">        {</span>
+<span class="code-line">          <span class="code-property">"type"</span>: <span class="code-string">"command"</span>,</span>
+<span class="code-line">          <span class="code-property">"command"</span>: <span class="code-string">"if [ -z \"$TMUX\" ]; then</span></span>
+<span class="code-line"><span class="code-string">            echo '[Hook] Consider tmux...' &gt;&amp;2; fi"</span></span>
+<span class="code-line">        }</span>
+<span class="code-line">      ]</span>
+<span class="code-line">    }</span>
+<span class="code-line">  ]</span>
+<span class="code-line">}</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐块翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>"PreToolUse"(事件)</strong> —— 这条 hook 绑在「AI 准备用工具<strong>之前</strong>」这个时刻。六种事件选一个,它就只在那个时刻被触发。</p>
+              <p class="tl"><strong>"matcher"(什么时候)</strong> —— 匹配条件:「工具是 <span class="term" data-definition="Bash 在这里指「执行一条终端命令」这类工具——AI 想跑 npm、git、pytest 这些命令,走的就是它。matcher 指定 Bash,等于「只在要执行命令时才拦」。">Bash</span>,而且命令里包含 npm / pnpm / yarn / cargo / pytest」。也就是说,只有跑这些长命令才提醒,别的命令一概不烦你。</p>
+              <p class="tl"><strong>"command"(做什么)</strong> —— 触发后跑这段检查:「如果当前不在 tmux 里(说明没开持久会话),就往错误流打印一句提醒」。</p>
+              <p class="tl"><strong>整条 hook 的意思</strong>:AI 想跑长命令前,系统自动看一眼「你开 tmux 了吗」——没开就提醒你开,免得命令跑到一半断了白费功夫。<strong>AI 完全没法跳过</strong>,因为这是系统在它动手前自己跑的。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🔑</div>
+          <div class="callout-content">
+            <strong class="callout-title">matcher 越精确,越不会误伤</strong>
+            <p>注意 matcher 写的是「npm|pnpm|yarn|...」这种具体命令,而不是「所有 Bash 命令」。这是 ECC 的规矩——matcher 要精确,不要用大而无当的「一刀切」。写得越准,提醒就越只在真正该出现的时刻冒出来,不会烦你。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 退码哲学 + callout + 小测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">hook 到底靠什么「拦」?全靠一个退码</h2>
+        <p>你可能会问:hook 跑完那一段检查,凭什么就能把 AI 拦住?答案藏在程序退出时吐出的那个数字里——<span class="term" data-definition="exit code「退码」是程序跑完时返回给系统的一个数字。约定俗成:0 表示「正常结束」,非 0(最常用 1)表示「出了问题」。hook 正是靠这个数字决定「放行还是拦截」。">exit code</span>(退码)。</p>
+
+        <div class="badge-list">
+          <div class="badge-item">
+            <code class="badge-code">exit 0</code>
+            <span class="badge-desc"><strong>放行</strong>。意思是「检查通过、没问题」。AI 该干嘛干嘛,就像 hook 没存在过一样。</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">exit 1</code>
+            <span class="badge-desc"><strong>拦截</strong>。意思是「这次不行」。AI 的动作被物理挡住,没法继续——这就是 hook「强制」二字的来源。</span>
+          </div>
+        </div>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">RULES.md 节选</span>
+            <pre><code><span class="code-line"><span class="code-keyword">## Hook Format</span></span>
+<span class="code-line">- Hooks use matcher-driven JSON</span>
+<span class="code-line">  registration and shell or Node entrypoints.</span>
+<span class="code-line">- Matchers should be specific instead</span>
+<span class="code-line">  of broad catch-alls.</span>
+<span class="code-line">- Exit 1 only when blocking behavior</span>
+<span class="code-line">  is intentional; otherwise exit 0.</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐条翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>matcher-driven JSON registration</strong> —— hook 用 <span class="term" data-definition="JSON 在这里是写 hook 配置的格式,而「registration」指「登记」——把一条 hook 的「事件 + matcher + command」用 JSON 写下来登记好,系统才知道什么时候该跑它。">JSON 登记</span>,靠 matcher 驱动;具体执行可以是一段 shell,也可以是一个 Node <span class="term" data-definition="entrypoint「入口」指程序从哪一行开始执行的那个起点。hook 的 entrypoint 就是「事件触发后第一段被调用的代码」。">入口</span>。</p>
+              <p class="tl"><strong>Matchers should be specific</strong> —— matcher 要写得精确,别图省事写个「什么都匹配」的大筐。否则 hook 会到处乱触发,烦死人。</p>
+              <p class="tl"><strong>Exit 1 only when blocking is intentional</strong> —— 这句是灵魂:「只有当你<strong>故意</strong>要拦的时候,才退 1;其余情况一律退 0」。换句话说,hook 默认是「不挡」的,挡是深思熟虑后的选择。</p>
+              <p class="tl">这条规矩让 hook 既「拦得住该拦的」,又「不乱挡正常的操作」。退码 1 是把刀,要用得克制。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">退码哲学:1 是拦,0 是放</strong>
+            <p>这是 hook 能「强制」的全部秘密。hook 跑完检查,返回一个数字给系统;系统看到 1 就把 AI 的动作掐断,看到 0 就放行。没有商量、没有「再试试」——一个数字定生死。所以你写 hook 时,想清楚「什么情况下退 1」就行,剩下的系统替你执行。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">常见坑:matcher 太宽或太窄</strong>
+            <p>hook 配了却没触发,九成是 matcher 的问题。写得太宽(比如匹配所有命令),到处乱挡、烦到你想关掉它;写得太窄(比如把 <code>npm</code> 拼成了 <code>NPM</code>),该拦的时候一次都拦不住。<strong>调试 hook 的第一件事,永远是先怀疑 matcher</strong>。</p>
+          </div>
+        </div>
+
+        <h3 class="screen-heading" style="margin-top: var(--space-10)">小试一下:你会不会用 hook</h3>
+        <p>四道情景题,看看「hook = 事件触发的自动闸」这个心智模型你建起来没有。第一题就是承接上一节的关键区分——仔细想。</p>
+
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="完全正确。这正是 hook 的本职:把检查绑在「提交代码」这个事件上,事件一发生就自动跑测试、跑不过就退 1 拦死。AI 想跳都跳不掉——这是 skill 做不到的。skill 靠 AI 自觉翻开手册,hook 靠系统强制触发,本质区别就在这。"
+               data-explanation-wrong="回到那句口诀:skill 靠自觉,hook 靠强制。题目要的是「不管 AI 想不想、每次都自动跑、物理拦住」——这是被动的、强制的,只有 hook 做得到。skill 是 AI 主动翻开的手册,它管得住过程,却拦不住 AI 偷懒跳过。正确答案是 hook 那一项。">
+            <h3 class="quiz-question">Q1:关键区分——你想做到「AI 每次 commit 前,系统自动跑一遍测试,跑不过就拦住,谁都别想跳」。这该用 skill 还是 hook?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>用 skill,写一本「提交前必跑测试」的手册给 AI</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>用 hook,把「跑测试」绑在 PreToolUse 事件上,自动强制触发</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>两个都行,skill 写狠一点也能逼 AI 必须跑</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>都不行,只能靠人工每次盯着</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="一语中的。matcher 写的是「Bash 命令里包含 npm|pnpm|yarn|cargo|pytest」——也就是装依赖、跑测试这类长命令。只有这些命令会触发提醒,你敲个 ls、cd 这种快命令它一声不吭。这就是 matcher「精确匹配」的妙处。"
+               data-explanation-wrong="回到 matcher 那一行,它指定了两个条件:① 工具是 Bash(执行命令);② 命令文本里包含 npm、pnpm、yarn、cargo、pytest 这几个。换句话说,只有跑「装依赖 / 跑测试」这类长命令才会触发。敲 ls、cd、echo 这种快命令不会被打扰。正确答案是「跑长命令时」那一项。">
+            <h3 class="quiz-question">Q2:看这条 matcher——<code>tool == "Bash" &amp;&amp; command matches "(npm|pnpm|yarn|cargo|pytest)"</code>。它在什么情况下会触发?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>AI 每次敲任何命令都会触发,包括 ls、cd</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>只在 AI 写文件、改代码时触发</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>只在 AI 准备跑 npm / pnpm / yarn / cargo / pytest 这类长命令时触发</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>AI 回答完毕停下来时触发</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正是如此。hook 配了却不触发,九成是 matcher 出了问题——可能写得太窄(比如大小写拼错、关键词漏了),该匹配的情况根本没匹配上;也可能写得太宽被别的逻辑挡掉了。hook 的执行靠「事件 + matcher」两个齿轮,matcher 对不上,齿轮就不转。调试 hook 第一件事就是先怀疑 matcher。"
+               data-explanation-wrong="想想 hook 是怎么被触发的:一个事件(PreToolUse 之类)发生时,系统拿 matcher 去匹配当时的情况——匹配上了才跑 command。如果你配了 hook 却一次都没触发,最可能是 matcher 这一层没匹配上:要么写得太窄漏掉了实际情况,要么关键词拼错。退码、command 本身都是「匹配上了之后」才轮到的事,现在根本没走到那一步。正确答案是 matcher 那一项。">
+            <h3 class="quiz-question">Q3:你配了个 hook「写 .md 文件前先拦截」,可 AI 写 .md 时它一次都没触发。最可能哪出问题了?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>退码写错了,应该退 1 却退了 0</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>command 里那段 shell 脚本写得太长</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>matcher 写得太窄或写错了,没匹配上「写 .md」这个情况</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>hook 名字取得不够响亮,系统没注意到</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="完全正确。PostToolUse 是「用完工具之后」的事件,正好用来「自动善后」——代码刚改完,趁热自动跑 prettier 把格式理顺。这是 PostToolUse 最经典的用法:不拦,只补刀。而 PreToolUse 是「之前」用于拦截,UserPromptSubmit 是「你发消息那一刻」,Stop 是「AI 收工时」,都不对口。"
+               data-explanation-wrong="回到那六种事件的时机:PreToolUse 是「用工具之前」(适合拦),PostToolUse 是「用工具之后」(适合善后),UserPromptSubmit 是「你按下回车那一刻」,Stop 是「AI 停下来时」。你要的是「代码已经改完了、之后立刻自动格式化」——这是典型的「之后善后」,正属于 PostToolUse 的领地。正确答案是 PostToolUse。">
+            <h3 class="quiz-question">Q4:你希望「AI 每次改完 .ts 文件,系统就自动跑一遍 prettier 格式化」。该绑在哪种事件上?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>PreToolUse —— 改之前先拦一下</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>PostToolUse —— 改完之后自动格式化</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>UserPromptSubmit —— 你发消息时格式化</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Stop —— AI 回答完再格式化</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重做</button>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🪝</div>
+          <div class="callout-content">
+            <strong class="callout-title">下一模块的钩子:把这两把钥匙装进你的工具</strong>
+            <p>讲完 skill 和 hook 这两大核心角色,你已经握住了 ECC 治理 AI 的两把钥匙:一把靠自觉(手册),一把靠强制(自动闸)。最后一模块,我们讲怎么把这些东西按需装进你自己的工具——以及为什么同一套 ECC 能在 <span class="term" data-definition="Claude Code、Cursor、Codex 都是当下主流的 AI 编程客户端——你在这些工具里写代码时,AI 助手就在旁边帮你。ECC 的厉害之处在于:同一套配置,这套客户端基本都能用。">Claude Code、Cursor、Codex</span> 这些不同客户端之间通吃。这才是 ECC 真正的杀手锏。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

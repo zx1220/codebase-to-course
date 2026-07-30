@@ -1,0 +1,361 @@
+<section class="module" id="module-6" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">全景回顾 · 一张图看懂 RSSHub</h1>
+      <p class="module-subtitle">坐上直升机看整座城市——前面学的每一块，其实是一条精密流水线上的工位</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 开场 + 直升机比喻 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先升空，再看城</h2>
+        <p>前面五个模块，我们像在逛街：当过翻译官（模块 1）、进过路由工厂（模块 2）、跟着请求跑过流水线（模块 3）、到过包装车间（模块 4）、还见识过缓存护城河（模块 5）。现在我们坐直升机升空，看整座城市的<span class="term" data-definition="架构（architecture）是一个软件系统的整体骨架——它规定了「哪部分负责什么、各部分怎么连接」。就像城市的总规图，决定了哪块是住宅区、哪块是工业区、道路怎么连。">架构</span>全景。</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🚁</div>
+          <div class="callout-content">
+            <strong class="callout-title">城市交通总览图</strong>
+            <p>请求像一辆车：从城外（阅读器）进城 → 过收费站（<code>accessControl</code> 查密钥）→ 经停调度中心（<code>cache</code> 查缓存）→ 开到对应的工厂（路由 + handler 取货）→ 到包装车间（<code>parameter</code> 贴标）→ 最后到发货口（<code>template</code> 渲染）出城。一张图把五个模块串起来。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: HERO — Interactive Architecture Diagram -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">知识地图：点每一个方块，回想一个模块</h2>
+        <p>这是全课程的 hero 图。每个方块都对应前面学过的一个角色。点一点，把记忆串起来。</p>
+
+        <div class="arch-diagram">
+          <div class="arch-zone arch-zone-browser">
+            <h4 class="arch-zone-label">外部 · 城外</h4>
+            <div class="arch-component" data-desc="📱 阅读器（模块 1）：用户那边发起 RSS 订阅请求的 App，比如 Reeder、NetNewsWire。它只是「点菜」和「收货」，不关心 RSSHub 内部怎么运作。">
+              <div class="arch-icon">📱</div>
+              <span>阅读器</span>
+            </div>
+            <div class="arch-component" data-desc="🌐 目标网站（模块 2）：B 站、微博、知乎等真实数据源。handler 要去这里抓数据，每个网站的 API 都不一样，所以需要一个个手写。">
+              <div class="arch-icon">🌐</div>
+              <span>目标网站（B 站等）</span>
+            </div>
+          </div>
+
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">RSSHub 入口 · 城门</h4>
+            <div class="arch-component" data-desc="⚙️ Hono 服务器：RSSHub 的 web 框架，负责接收所有 HTTP 请求，把它们送进中间件流水线。它就像城市的总入口大门。">
+              <div class="arch-icon">⚙️</div>
+              <span>Hono 服务器</span>
+            </div>
+            <div class="arch-component" data-desc="🔑 accessControl（模块 3、5）：城门的「收费站」。检查请求是否带了正确的 ACCESS_KEY。这是 RSSHub 防止被滥用的第一道闸门。">
+              <div class="arch-icon">🔑</div>
+              <span>accessControl 查密钥</span>
+            </div>
+          </div>
+
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">中间件流水线 · 主干道</h4>
+            <div class="arch-component" data-desc="🗄️ cache（模块 3、5）：流水线的第一站。先查缓存里有没有结果，命中就直接返回、不再去抓。没命中才放行给 handler。还内置「单飞」机制防惊群。">
+              <div class="arch-icon">🗄️</div>
+              <span>cache 查缓存</span>
+            </div>
+            <div class="arch-component" data-desc="🏷️ parameter（模块 3）：包装车间。拿到 handler 返回的原始数据对象后，做美化，也支持 ?filter ?limit 等参数让用户筛内容。">
+              <div class="arch-icon">🏷️</div>
+              <span>parameter 美化与筛选</span>
+            </div>
+            <div class="arch-component" data-desc="📦 template（模块 4）：发货口。按 ?format= 的要求，把同一个数据对象渲染成 RSS / Atom / JSON 三种格式之一。同一个数据，三种包装。">
+              <div class="arch-icon">📦</div>
+              <span>template 渲染输出</span>
+            </div>
+          </div>
+
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">路由 · 工厂区</h4>
+            <div class="arch-component" data-desc="📁 routes 文件夹（模块 2）：约定优于配置——文件夹 = 一个网站（如 bilibili），文件 = 一个源（如 dynamic.ts）。1600+ 源靠这套文件系统约定组织得井井有条。">
+              <div class="arch-icon">📁</div>
+              <span>routes/ 文件夹</span>
+            </div>
+            <div class="arch-component" data-desc="🧩 namespace + route 约定（模块 2）：每个网站根目录的 namespace.ts 是它的「身份证」，声明这个源叫什么。路由匹配靠文件路径，不靠中央配置表——这是插件化的精髓。">
+              <div class="arch-icon">🧩</div>
+              <span>namespace.ts 身份证</span>
+            </div>
+            <div class="arch-component" data-desc="🏭 handler（模块 2）：工厂里的核心机器。它只负责一件事——调目标网站的 API、把数据装进一个统一的对象 { title, link, description, item } 返回。渲染、缓存它统统不管。">
+              <div class="arch-icon">🏭</div>
+              <span>handler 抓数据</span>
+            </div>
+          </div>
+
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">输出 · 出城</h4>
+            <div class="arch-component" data-desc="📰 RSS / Atom / JSON（模块 4）：三种标准订阅格式，都是 template 渲染出来的。阅读器认哪种，就发哪种。这是请求出城时的最终形态。">
+              <div class="arch-icon">📰</div>
+              <span>RSS / Atom / JSON</span>
+            </div>
+          </div>
+
+          <div class="arch-description" id="arch-desc">👆 点上面任意一个方块，看看它在前面的哪个模块出现过、负责什么职责。</div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 一条请求的完整旅程（文字版流程图） -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一条请求，五个模块的接力赛</h2>
+        <p>把上面的图读成一条线：这就是模块 3 学过的「请求的旅程」，现在我们把每一站对应的模块标出来。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">请求的完整旅程</span>
+            <pre><code><span class="code-line">阅读器请求</span>
+<span class="code-line">/bilibili/user/dynamic/2267573?format=json</span>
+<span class="code-line">   │</span>
+<span class="code-line">   ▼  ┌─ accessControl 查 ACCESS_KEY（模块 3）</span>
+<span class="code-line">流水线 ├─ cache 查缓存，命中就返回（模块 3、5）</span>
+<span class="code-line">      ├─ 路由匹配 找到 dynamic.ts（模块 2）</span>
+<span class="code-line">      ├─ handler 调 B 站 API，返回数据（模块 2）</span>
+<span class="code-line">      ├─ parameter 美化、支持 ?filter ?limit（模块 3）</span>
+<span class="code-line">      └─ template 按 ?format=json 渲染（模块 4）</span>
+<span class="code-line">   │</span>
+<span class="code-line">   ▼</span>
+<span class="code-line">阅读器收到 JSON 格式的订阅内容</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">一辆车（请求）进城，第一站先被<strong>查密钥</strong>。</p>
+              <p class="tl">然后问<strong>缓存</strong>有没有现货——有就直接发，省得再去抓。</p>
+              <p class="tl">没现货？按地址找到对应的<strong>工厂（handler）</strong>，让它去目标网站取数据。</p>
+              <p class="tl">取回的数据到<strong>包装车间</strong>美化、按用户要求筛选。</p>
+              <p class="tl">最后到<strong>发货口</strong>按 <code>?format=</code> 选包装，送出城。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 拖拽 — 把概念放回它的家 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">把概念送回它属于的模块</h2>
+        <p>拖动左边的卡片，放到右边它「老家」的格子里。这一步能验证你是不是真的记住了每个零件住哪。</p>
+
+        <div class="dnd-container" id="dnd-module6">
+          <div class="dnd-chips">
+            <div class="dnd-chip" draggable="true" data-answer="handler">handler</div>
+            <div class="dnd-chip" draggable="true" data-answer="namespace">namespace.ts</div>
+            <div class="dnd-chip" draggable="true" data-answer="format">?format=</div>
+            <div class="dnd-chip" draggable="true" data-answer="claim">claim 占位</div>
+            <div class="dnd-chip" draggable="true" data-answer="access">accessControl</div>
+          </div>
+          <div class="dnd-zones">
+            <div class="dnd-zone" data-correct="handler">
+              <p class="dnd-zone-label">路由模块 · 只管抓数据，返回统一对象</p>
+              <div class="dnd-zone-target">拖到这里</div>
+            </div>
+            <div class="dnd-zone" data-correct="namespace">
+              <p class="dnd-zone-label">路由模块 · 网站的「身份证」，声明这个源叫什么</p>
+              <div class="dnd-zone-target">拖到这里</div>
+            </div>
+            <div class="dnd-zone" data-correct="format">
+              <p class="dnd-zone-label">渲染模块 · 用户用它选 RSS/Atom/JSON 输出格式</p>
+              <div class="dnd-zone-target">拖到这里</div>
+            </div>
+            <div class="dnd-zone" data-correct="claim">
+              <p class="dnd-zone-label">缓存模块 · 占位防「惊群」，让后续请求等同一份结果</p>
+              <div class="dnd-zone-target">拖到这里</div>
+            </div>
+            <div class="dnd-zone" data-correct="access">
+              <p class="dnd-zone-label">流水线入口 · 查 ACCESS_KEY，挡住没授权的请求</p>
+              <div class="dnd-zone-target">拖到这里</div>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
+            <button class="btn" onclick="checkDnD('dnd-module6')">检查匹配</button>
+            <button class="btn" onclick="resetDnD('dnd-module6')">重置</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 贯穿全课程的对象 — Code↔English -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">就是这个对象，把整个 RSSHub 串起来</h2>
+        <p>它从模块 2 一路陪我们走到现在。别小看这四行——整个系统的分工，全藏在这个小对象的流转里。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE · lib/routes/bilibili/article.ts (81-87)</span>
+            <pre><code><span class="code-line">    <span class="code-keyword">return</span> {</span>
+<span class="code-line">        title,</span>
+<span class="code-line">        link,</span>
+<span class="code-line">        description,</span>
+<span class="code-line">        item,</span>
+<span class="code-line">    };</span>
+<span class="code-line">}</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">这是 handler 吐出的<strong>统一数据对象</strong>——整个 RSSHub 流水线的「标准货物」。</p>
+              <p class="tl"><strong>handler</strong> 造它（模块 2），<strong>cache</strong> 存它（模块 5）。</p>
+              <p class="tl"><strong>parameter</strong> 美化它（模块 3），<strong>template</strong> 渲染它（模块 4）。</p>
+              <p class="tl">四个字段，就是五个模块之间交接的「提货单」。谁都不关心别人怎么干，只认这个对象。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6: 设计哲学三张卡 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">RSSHub 为什么不崩溃？三句哲学</h2>
+        <p>1600+ 个源、社区维护，却没乱成一锅粥。秘密就藏在这三个设计选择里——它们也是你能搬走的核心收获。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📁</div>
+            <h4 class="pattern-title"><span class="term" data-definition="约定优于配置（convention over configuration）是一种设计思路：与其让每个人写一堆配置说明「我的东西放哪」，不如定一条大家默认遵守的规则——比如「文件夹=网站，文件=源」。只要按规矩放，系统就自动认得，零配置。">约定优于配置</span></h4>
+            <p class="pattern-desc">文件夹 = 网站，文件 = 源。1600+ 源靠这套文件系统约定组织，不用维护中央路由表。</p>
+            <p class="pattern-desc" style="margin-top: var(--space-2); padding-top: var(--space-3); border-top: 1px dashed var(--color-border);"><strong>你能怎么用：</strong>自己的项目也定死一条「放哪=是什么」的规矩，省掉一堆 if/else。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🔀</div>
+            <h4 class="pattern-title"><span class="term" data-definition="关注点分离（separation of concerns）是说：让每个模块只干一件事、只操心一件事。RSSHub 里 handler 只管抓数据、cache 只管缓存、template 只管渲染。各管一段，互不打扰，出错也容易定位是哪一段的锅。">关注点分离</span></h4>
+            <p class="pattern-desc">handler 只抓数据，缓存 / 美化 / 渲染全交给<span class="term" data-definition="中间件（middleware）是流水线上的一环——请求和响应都要穿过它。每个中间件只做一件事（鉴权、缓存、改写等），串起来就成了完整流程。就像工厂流水线上一道道工序。">中间件</span>。</p>
+            <p class="pattern-desc" style="margin-top: var(--space-2); padding-top: var(--space-3); border-top: 1px dashed var(--color-border);"><strong>你能怎么用：</strong>写函数时问自己「这段是不是在干两件事」——是，就拆成两个。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🛡️</div>
+            <h4 class="pattern-title">用聪明工程保护自己</h4>
+            <p class="pattern-desc">单飞缓存防<span class="term" data-definition="惊群效应（thundering herd）是缓存失效的一瞬间，大量请求同时涌向后端去抢同一份数据，把目标网站或自己的服务器压垮。RSSHub 用「单飞」机制——同一时刻只放一个请求去抓，其余的排队等它的结果。">惊群</span>，原子操作防竞态。</p>
+            <p class="pattern-desc" style="margin-top: var(--space-2); padding-top: var(--space-3); border-top: 1px dashed var(--color-border);"><strong>你能怎么用：</strong>凡是「很多人同时抢同一份资源」的地方，都想想「谁能帮我把并发收敛成一个」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 7: 综合测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">综合应用：你会怎么用？</h2>
+        <p>不是考记忆，是考你能不能把这套思路用到一个新场景。慢慢想，答错也有讲解。</p>
+
+        <div class="quiz-container" id="quiz-module6">
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="没错——这就是 RSSHub 的精髓：每个网站一个文件夹（约定），每个源一个文件只抓数据（handler），缓存和输出交给公共中间件（关注点分离）。这套结构能优雅地扩张到上千个源。"
+               data-explanation-wrong="不是最优解。把所有网站写进一个文件，或让每个源自己处理缓存和输出，都会让代码越加越乱、无法维护。RSSHub 的答案是用约定组织源、用中间件复用公共能力。">
+            <h3 class="quiz-question">Q1 你想做一个「把多个天气预报网站汇总成统一 API」的服务。借鉴 RSSHub，你会怎么组织代码？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>每个天气网站一个文件夹，每个源一个文件只管抓数据；缓存/输出交给公共中间件</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把所有网站的抓取逻辑写进一个大文件，集中维护</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>每个源自己负责抓数据、自己写缓存、自己渲染输出</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="对——这就是合理的排查顺序：先怀疑缓存（最常见、最便宜查），再怀疑 handler 抓取失败，最后才怀疑目标网站改版（最麻烦、需要改代码）。由易到难、由近及远。"
+               data-explanation-wrong="排查顺序可以更好。「先重写 handler」「先关掉整个服务」都太重了，而「先检查 accessControl」通常和「全是旧内容」无关——密钥错了会报错，不会返回旧数据。先怀疑缓存这种最常见、最便宜的原因。">
+            <h3 class="quiz-question">Q2 用户报「订阅源突然全是旧内容」。基于你学的架构，你会依次检查哪里？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>先重写 handler，再检查 accessControl，最后关掉服务重启</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>先检查 accessControl 密钥，再换阅读器，最后联系用户</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>先看缓存是不是太久没刷新，再看 handler 是否抓取失败，最后看目标网站是否改版</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="完全正确——这违反了关注点分离。handler 只该返回数据对象，渲染是 template 中间件的事。如果 handler 自己拼 XML，那 1600 个源每个都得自己处理三种格式，根本维护不过来。"
+               data-explanation-wrong="问题没找对。返回数据对象本身没错（它正是 RSSHub 的标准提货单）；handler 里调用 B 站 API 也是它该干的事。真正的错是「直接拼接 RSS XML」——渲染是 template 的活，handler 越界了。">
+            <h3 class="quiz-question">Q3 你让 AI 写一个新源，它返回的代码里 handler 直接拼接了 RSS XML 字符串。基于你学到的，问题在哪？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>handler 不该返回 title / link / description / item 这种对象，应该返回字符串</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>handler 应只返回数据对象，渲染成 XML 是 template 的事——AI 把关注点揉一起了</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>没问题，handler 直接输出 XML 效率更高</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="没错。缓存失效的瞬间，所有请求同时涌向后端抢同一份数据，会把目标网站或自己压垮。RSSHub 的「单飞」机制正是为此而生——同一时刻只放一个请求去抓，其余排队等它。"
+               data-explanation-wrong="不太对。「惊群」指的不是用户刷新、也不是密钥错误，而是缓存失效瞬间并发请求的集体冲击。想象一群鸽子被声响惊到，同时扑棱棱飞起来——这就是「惊群」的字面来由。">
+            <h3 class="quiz-question">Q4 术语：「惊群效应」指的是什么？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>缓存失效时，大量请求同时涌向后端去抢同一份数据</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>用户频繁刷新页面，导致服务器负载升高</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>多个管理员同时修改同一个配置文件</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module6')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module6')">重做一遍</button>
+        </div>
+      </section>
+
+      <!-- SCREEN 8: 收尾 — 好架构的本质 + 鼓励 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">好架构的本质</h2>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">aha！这就是一切的秘密</strong>
+            <p>好架构的本质，是「让简单的部分保持简单，让复杂的部分各司其职」。RSSHub 能靠社区维护 <span class="term" data-definition="插件化（plugin-based）是指系统把功能拆成一个个独立、可单独增删的「插件」。RSSHub 里每个路由文件就像一个插件——加一个源只需扔一个文件进去，删一个源只需删一个文件，核心系统完全不用改。">插件化</span>地长出 1600+ 个源却不崩溃，靠的不是某个天才，而是这套<span class="term" data-definition="约定优于配置：与其写一堆配置说明「我的东西放哪」，不如定一条大家默认遵守的规则。文件夹=网站，文件=源，按规矩放系统就自动认得。">约定</span>和<span class="term" data-definition="关注点分离：让每个模块只干一件事。handler 只抓数据、cache 只管缓存、template 只管渲染，各管一段互不打扰。">分工</span>。</p>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8); font-size: var(--text-lg); line-height: var(--leading-snug);">恭喜你走完了 RSSHub 的每一个核心部分。现在你拥有了<strong>读、理解、指挥</strong>这类项目的能力——下次遇到任何「抓取 + 转换 + 服务」型的系统，你心里已经有了一张图，知道该往哪儿看、该跟 AI 怎么说。这套架构直觉，比记任何一行代码都值钱。</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    /* showArchDesc — 本模块 arch-diagram 的点击处理。
+       main.js 已自动给 .arch-component 绑定 click（读 data-desc 写入 .arch-description），
+       这里再定义一个同名函数是为了满足 brief 里 onclick="showArchDesc(this)" 的显式调用约定，
+       逻辑与 main.js 的自动绑定一致，二者并存互不冲突。 */
+    function showArchDesc(el) {
+      var diagram = el.closest('.arch-diagram');
+      if (!diagram) return;
+      diagram.querySelectorAll('.arch-component').forEach(function (c) { c.classList.remove('active'); });
+      el.classList.add('active');
+      var desc = diagram.querySelector('.arch-description');
+      if (desc && el.dataset.desc) desc.textContent = el.dataset.desc;
+    }
+  </script>
+</section>

@@ -1,0 +1,301 @@
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">这是什么：给 AI 编程工具装一个「操作系统」</h1>
+      <p class="module-subtitle">同样一句话让 AI 写代码，为什么有人写出生产级、你却被坑？差别不在 AI,在它背后那套「操作系统」。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 开场钩子 + 操作系统比喻 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先抛个问题:你用的 Claude Code,出厂时只是块「屏幕」</h2>
+        <p>你每天对 <span class="term" data-definition="Claude Code 是 Anthropic 出的命令行 AI 编程助手——你用大白话下指令,它就帮你写代码、改代码、跑测试。你可以把它想成「住在终端里的 AI 程序员」。">Claude Code</span> 说「帮我做个功能」,它写得时好时坏。但同样一句话,有的人能让 AI 写出生产级代码、你却常被坑。</p>
+        <p>差别不在 AI,在它背后装了什么。还记得新手机刚开机吗?那时候它只会打电话。装上 <span class="term" data-definition="操作系统是一整套让硬件「真正能用」的底层软件——手机上的 iOS/安卓、电脑上的 Windows/macOS 都是。它管联系人、装 App、拍照片,把一块屏幕变成一个能干活的工具。">操作系统</span> 之后,它才会拍照、装 App、存联系人。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">核心比喻:ECC = AI 编程工具的「操作系统」</strong>
+            <p>你用的 Claude Code、Cursor、Codex 全是「<span class="term" data-definition="裸机指刚出厂、还没装任何系统或软件的设备——硬件本身能跑,但什么有用的事都还不会做,必须先装上操作系统才有能力。">裸机</span>」。ECC 就是给它们装上的那一整套系统:联系人、技能、快捷指令、自动检查。装上它,裸 AI 才真正靠谱。</p>
+          </div>
+        </div>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📱</div>
+            <div>
+              <strong>裸 AI(出厂状态)</strong>
+              <p>会写代码,但不知道该先规划还是先动手、不知道要测、不知道别把密钥写进文件。一句话下去,全靠运气。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">⚙️</div>
+            <div>
+              <strong>ECC(装上去的操作系统)</strong>
+              <p>一套「写给 AI 看的说明书」:30 个 <span class="term" data-definition="agent(智能体)是 AI 编程工具里负责某一类活儿的「专人」——比如有专门规划任务的、专门写测试的、专门查安全问题的。ECC 给 AI 配了 30 个这样的专家。">agent</span> 专家、135 个 <span class="term" data-definition="skill(技能)是一段可以被 AI 调用的「专项本事」——像手机里的某个功能模块,当任务匹配时 AI 会自动把它拿出来用。">skill</span>、60 个 <span class="term" data-definition="command(命令)是预先写好的一段指令模板,你只要敲一下就能让 AI 执行一整套动作——类似手机里的快捷指令。">command</span>、外加自动检查。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">✅</div>
+            <div>
+              <strong>装好之后的 AI</strong>
+              <p>同一句「帮我做个功能」,它会先规划、再写测试、最后查安全——稳稳输出生产级代码。操作系统,就是这层差距。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 全程追踪 — 数据流动画(hero visual) -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">全程追踪:一句话怎么变成可靠代码</h2>
+        <p>你下了一句指令,装了 ECC 的 Claude Code 背后其实有<strong>一支专家团队</strong>在接力。点「下一步」看清楚这场接力。</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"你说一句:帮我做个登录功能"},
+          {"highlight":"flow-actor-2","label":"装了 ECC 的 Claude Code 收到,先启动规划专家","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-3","label":"planner(规划专家)把任务拆成几个有序阶段"},
+          {"highlight":"flow-actor-2","label":"Claude Code 按计划动手写代码,顺手交给测试专家","packet":true,"from":"actor-2","to":"actor-4"},
+          {"highlight":"flow-actor-4","label":"tdd-guide(测试专家)先写好测试,再回头验证代码"},
+          {"highlight":"flow-actor-2","label":"写完后再交给安全专家过一遍","packet":true,"from":"actor-2","to":"actor-5"},
+          {"highlight":"flow-actor-5","label":"security-reviewer(安全专家)检查密钥泄漏、输入校验"},
+          {"highlight":"flow-actor-6","label":"可靠的代码成果交回给你:既跑通、又安全","packet":true,"from":"actor-2","to":"actor-6"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">🧑</div>
+              <span>你</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">🤖</div>
+              <span>Claude Code(装了 ECC)</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">🗺️</div>
+              <span>planner 规划专家</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">🧪</div>
+              <span>tdd-guide 测试专家</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-5">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🔒</div>
+              <span>security 安全专家</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-6">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">✅</div>
+              <span>可靠代码成果</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点「下一步」开始这场接力</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重头再来</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔁</div>
+          <div class="callout-content">
+            <strong class="callout-title">注意 ECC 让 AI 干了哪三件事</strong>
+            <p>它逼着 AI <strong>先规划</strong>(planner)、<strong>再测</strong>(tdd-guide)、<strong>最后查安全</strong>(security-reviewer)。这就是后面所有模块要拆的核心——把活儿分给对的专家,而不是让一个裸 AI 一把梭。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 反直觉洞察 + SOUL.md 翻译 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">反直觉:ECC 不是 App,是一堆「写给 AI 看的说明书」</h2>
+        <p>你以为它是个能跑起来的软件?错了。3300 多个文件里,<strong>绝大多数是 <span class="term" data-definition="Markdown 是一种用井号、星号、短横线这些符号来表示标题、加粗、列表的轻量文本格式——人类读着舒服,AI 也能轻松读懂,所以成了「写文档和写说明书」的事实标准。">Markdown</span> 文档</strong>——是写给 AI 读的说明书,教它怎么规划、怎么测试、怎么查安全。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">SOUL.md</span>
+            <pre><code><span class="code-line"><span class="code-keyword"># Soul</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">## Core Identity</span></span>
+<span class="code-line">Everything Claude Code (ECC) is a production-ready AI coding plugin with 30 specialized agents, 135 skills, 60 commands, and automated hook workflows for software development.</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">## Core Principles</span></span>
+<span class="code-line">1. <span class="code-keyword">**Agent-First**</span> — route work to the right specialist as early as possible.</span>
+<span class="code-line">2. <span class="code-keyword">**Test-Driven**</span> — write or refresh tests before trusting implementation changes.</span>
+<span class="code-line">3. <span class="code-keyword">**Security-First**</span> — validate inputs, protect secrets, and keep safe defaults.</span>
+<span class="code-line">4. <span class="code-keyword">**Immutability**</span> — prefer explicit state transitions over mutation.</span>
+<span class="code-line">5. <span class="code-keyword">**Plan Before Execute**</span> — complex changes should be broken into deliberate phases.</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐句中文</span>
+            <div class="translation-lines">
+              <p class="tl"><strong># Soul</strong> —— 整个项目的「身份证」。这一行是 <span class="term" data-definition="一级标题是 Markdown 里最高层级的标题,用一个井号开头。在 ECC 里它常被用来标记一份文件的「身份」——这个文件整体在讲什么。">一级标题</span>,宣告这份文件定义 ECC 是什么。</p>
+              <p class="tl"><strong>## Core Identity</strong> —— 核心身份。下面一句话自我介绍,是整个项目最重要的那句话。</p>
+              <p class="tl"><strong>ECC 是一个「生产级」AI 编程 <span class="term" data-definition="plugin(插件)是给一个主程序附加功能的外挂模块——主程序本身不带这些功能,装上插件后才具备。ECC 就是给 AI 编程工具挂上去的插件。">插件</span></strong>:配了 30 个专家、135 个技能、60 个命令,还有自动化的 <span class="term" data-definition="hook(钩子)是「在某个时机自动触发的一段动作」——像定了闹钟,代码走到某一步就自动执行预设检查,不用人去按。">hook</span> 工作流。</p>
+              <p class="tl"><strong>## Core Principles</strong> —— 五条「铁律」,教 AI 该怎么干活。</p>
+              <p class="tl"><strong>Agent-First</strong>:尽早把活儿交给对的专家(对应 hero 动画里的接力)。</p>
+              <p class="tl"><strong>Test-Driven</strong>:先写/更新测试,再相信改动。</p>
+              <p class="tl"><strong>Security-First</strong>:校验输入、保护密钥、保持安全默认。</p>
+              <p class="tl"><strong>Immutability</strong>:改状态时用「显式切换」而非偷偷改一个变量——避免难以追踪的副作用。</p>
+              <p class="tl"><strong>Plan Before Execute</strong>:复杂改动要先拆成清晰的阶段,而不是上来就写。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这就是整个项目的灵魂</strong>
+            <p>ECC 不是代码库,是一摞「写给 AI 的说明书」。AI 读了这些说明书,才知道该规划、该测、该查安全。理解了这一点,你就理解了整个项目——剩下的全是细节。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 文件统计 + RULES.md 铁律 + 小测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">证据:3300 个文件,大半是文档</h2>
+        <p>如果你还不信「这是个文档项目」——看看它真实的文件构成。绝大多数是给 AI 看的说明书,而不是能跑的程序。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">文件统计</span>
+            <pre><code><span class="code-line">2495 个 .md 文件     ← 给 AI 看的说明书(占绝大多数)</span>
+<span class="code-line"> 405 个 .js 文件     ← 安装和钩子的运行时代码</span>
+<span class="code-line">  62 个 .py 文件     ← 仪表盘 ecc_dashboard.py</span>
+<span class="code-line">  13 个 .hook 文件   ← 钩子配置</span>
+<span class="code-line">共 3322 个文件</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">这意味着</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>.md 占了 75%</strong> —— 这就是「写给 AI 的说明书」。每多一份,裸 AI 就多懂一点规矩。</p>
+              <p class="tl"><strong>.js 只有 405 个</strong> —— 这些是真正「跑起来」的代码,负责安装和执行 <span class="term" data-definition="hook(钩子)指在 AI 执行某一步前后自动触发的脚本——例如每次提交前自动跑一遍检查。.hook 文件就是这些钩子的配置。">hook</span>。</p>
+              <p class="tl"><strong>.py 才 62 个</strong> —— 几乎只为一个仪表盘服务,给人类看 AI 干活的统计。</p>
+              <p class="tl">所以这个项目的主要产出物,是<strong>文字</strong>,不是程序。读它的最佳方式,就是读说明书。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>那这些说明书都教 AI 什么?看一眼 <code>RULES.md</code> 里的「<span class="term" data-definition="铁律是项目给 AI 定的、不可违反的硬规矩——分「必须做」和「绝不能做」两栏,告诉 AI 哪些事一定要做、哪些事碰都不能碰。">铁律</span>」:</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">RULES.md 节选</span>
+            <pre><code><span class="code-line"><span class="code-keyword">## Must Always</span></span>
+<span class="code-line">- Delegate to specialized agents for domain tasks.</span>
+<span class="code-line">- Write tests before implementation and verify critical paths.</span>
+<span class="code-line">- Validate inputs and keep security checks intact.</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">## Must Never</span></span>
+<span class="code-line">- Include sensitive data such as API keys, tokens, secrets.</span>
+<span class="code-line">- Submit untested changes.</span>
+<span class="code-line">- Bypass security checks or validation hooks.</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">规矩翻成大白话</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>必须做</strong>:把专业活儿交给专家 agent;写实现前先写测试;始终校验输入。</p>
+              <p class="tl"><strong>绝不能做</strong>:别把 <span class="term" data-definition="API key 是一串用来证明「我是哪个账号」的密钥,相当于密码——泄漏出去别人就能冒充你调用服务。所以铁律明确禁止把它写进代码文件。">API key</span>、token、密钥写进代码;别提交没测过的改动;别绕过安全检查。</p>
+              <p class="tl">看明白了吗——它不在教 AI 怎么写代码,而在教它「<strong>什么该做、什么绝不能做</strong>」。这就是说明书的力量。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="完全正确。ECC 不是给人用的工具,而是装到 AI 编程工具(Claude Code 等)背后的一套「操作系统」,教 AI 怎么规划、测试、查安全。所以它真正的服务对象,正是你和 AI 的协作关系。"
+               data-explanation-wrong="再想想「操作系统」这个比喻。ECC 不是给人直接点的 App,也不是 AI 模型本身——它夹在中间,让 AI 编程工具变得更靠谱。它的真正用户,是正在用 AI 写代码的人。">
+            <h3 class="quiz-question">Q1:你的朋友说「ECC 是给程序员写代码用的 IDE」。基于这一模块,你该怎么纠正他?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>没错,ECC 就是像 VS Code 那样的代码编辑器</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>ECC 是给 AI 模型(Claude 本身)训练用的数据集</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>ECC 是装在 AI 编程工具背后的一套「操作系统」,教 AI 怎么规划、测试、查安全——服务的是用 AI 写代码的人</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>ECC 是一个能单独跑起来给你看数据的仪表盘 App</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正是如此。ECC 3300 多个文件里 .md 文档占了四分之三,几乎全是给 AI 读的说明书——教它规划、测试、查安全。.js/.py 那点代码只是支撑运行。理解了「文档为主」,就抓住了整个项目的本质。"
+               data-explanation-wrong="看看本模块那张文件统计表。.md 占了 75%,.js 才 405 个、.py 才 62 个。如果它是「普通代码库」,可执行代码该占大头才对——但事实正相反,大头是文档。这背后揭示的是:ECC 产出的主要是「给 AI 看的说明书」。">
+            <h3 class="quiz-question">Q2:你打开 ECC 仓库一看,发现 3300 多个文件里 .md 文档占了四分之三。这说明什么?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>这个项目写得很糙,文档多是用来凑数</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>它的主要产出是「写给 AI 看的说明书」——教 AI 怎么规划、测试、查安全,而不是可执行程序</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>说明文档多的项目一定比文档少的项目更优秀</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>这是普通代码库的常规比例,没什么特别</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-d"
+               data-explanation-right="漂亮——你抓住了 ECC 的核心机制。它不是一次性把所有能力塞进提示词,而是靠「专家分工 + 强制流程」:规划→写测试→写代码→查安全,每一步由专门的 agent / hook 兜底。这正是「操作系统」式的可靠性来源。"
+               data-explanation-wrong="想想本模块那张接力动画。ECC 让 AI 稳定,不是因为它字多,而是因为它「分工 + 立规矩」——planner 拆任务、tdd-guide 先写测试、security-reviewer 查安全、hook 自动触发检查。所以最该学的是它「怎么把活儿分给对的专家、又立了哪些铁律」。">
+            <h3 class="quiz-question">Q3:你也是个用 AI 写代码的 <span class="term" data-definition="vibe coder 指「靠跟 AI 对话来写代码、自己不一定精通编程」的人——靠直觉和自然语言指挥 AI 产出程序。这正是 ECC 想赋能的那群人。">vibe coder</span>。搞懂 ECC 之后,下面哪种说法最能让你「抄走」它的套路?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>「我把所有指令写得更长更详细,AI 就会变靠谱」</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>「我换一个更强的 AI 模型,问题就解决了」</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>「我每次都让 AI 把代码写短一点,出错就少」</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>「我给 AI 配专家分工(规划/测试/安全),再用铁律和自动检查兜底——这正是 ECC 干的事」</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">重做</button>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🪝</div>
+          <div class="callout-content">
+            <strong class="callout-title">下一模块的钩子</strong>
+            <p>ECC 给 AI 配了 30 个专家 agent——可「规划专家」「测试专家」「安全专家」具体长什么样?它们怎么知道什么时候该出场?下一模块我们就把这些「联系人」挨个认识一遍。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

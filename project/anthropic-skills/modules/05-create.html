@@ -1,0 +1,349 @@
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">创建与迭代循环</h1>
+      <p class="module-subtitle">理论都懂了——那真要从零造一个技能，到底该走什么流程？仓库里的 skill-creator 给了一套成熟方法论。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 核心心法——不是一次成型，是迭代出来 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先记住最重要的一句话</h2>
+        <p>很多人以为"造技能"就是坐下来写一份完美的 SKILL.md。仓库里的 <code>skill-creator</code> 开篇就打破了这个幻想：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">At a high level, the process of</span></span>
+<span class="code-line"><span class="code-comment">creating a skill goes like this:</span></span>
+<span class="code-line"></span>
+<span class="code-line">- Decide what you want it to do</span>
+<span class="code-line">- Write a draft of the skill</span>
+<span class="code-line">- Create a few test prompts and</span>
+<span class="code-line">  run claude-with-the-skill on them</span>
+<span class="code-line">- Evaluate the results (qual + quant)</span>
+<span class="code-line">- Rewrite based on feedback</span>
+<span class="code-line">- Repeat until satisfied</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">造一个技能，宏观上是这么个流程：</p>
+              <p class="tl">先想清楚要它干啥。</p>
+              <p class="tl"><strong>写一版草稿</strong>（注意：是草稿，不是终稿）。</p>
+              <p class="tl">准备几个测试问题，然后<strong>带着技能跑一遍</strong>。</p>
+              <p class="tl">评估结果（定性看质量 + 定量看指标）。</p>
+              <p class="tl">根据反馈<strong>重写</strong>。</p>
+              <p class="tl"><strong>循环，直到满意。</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这跟写代码、写文章是同一个道理</strong>
+            <p>没有人第一稿就写对。技能也是"<strong>草稿 → 测 → 改 → 再测</strong>"打磨出来的。接受这一点，你就不会因为第一版不完美而沮丧——因为本来就不该完美。关键是把循环转起来。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: 写作心法——讲"为什么"而非堆"MUST" ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">写作心法：讲道理，别下命令</h2>
+        <p>新手写技能容易犯一个错：通篇"<strong>MUST</strong>"、"<strong>NEVER</strong>"、"<strong>ALWAYS</strong>"，像在训狗。仓库明确反对这种写法。看原文：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">Explain the why. Try hard to</span></span>
+<span class="code-line"><span class="code-comment">explain the why behind everything.</span></span>
+<span class="code-line"><span class="code-comment">Today's LLMs are smart. They have</span></span>
+<span class="code-line"><span class="code-comment">good theory of mind... Even if</span></span>
+<span class="code-line"><span class="code-comment">feedback is terse, try to actually</span></span>
+<span class="code-line"><span class="code-comment">understand the task and transmit</span></span>
+<span class="code-line"><span class="code-comment">this understanding into instructions.</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">If you find yourself writing ALWAYS</span></span>
+<span class="code-line"><span class="code-comment">or NEVER in all caps... that is a</span></span>
+<span class="code-line"><span class="code-comment">yellow flag -- reframe and explain</span></span>
+<span class="code-line"><span class="code-comment">the reasoning.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>解释"为什么"</strong>。尽力把每条指令背后的原因讲清楚。</p>
+              <p class="tl">今天的大模型很聪明，有不错的"心智理论"（能揣摩意图）。</p>
+              <p class="tl">哪怕用户的反馈很简短，也要真正去理解任务……</p>
+              <p class="tl">然后<strong>把这份理解传递</strong>进指令里。</p>
+              <p class="tl">如果你发现自己又在写大写的 ALWAYS / NEVER……</p>
+              <p class="tl">那是<strong>黄牌警告</strong>——</p>
+              <p class="tl">换个说法，把<strong>道理</strong>讲出来。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">对比一下两种写法</strong>
+            <p><strong>差的</strong>："NEVER 用紫色背景。"<br><strong>好的</strong>："避免紫色背景——因为它和我们的品牌色冲突，会让用户混淆两家公司。" 讲清为什么，AI 遇到没见过的情况也能举一反三；只下命令，换个场景它就抓瞎。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 怎么测——with-skill vs baseline ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">怎么测？关键招式：对照实验</h2>
+        <p>评估一个技能好不好，光看它"能不能用"是不够的。要回答一个更狠的问题：<strong>"比我直接让 AI 干，强在哪？"</strong> 仓库的做法是跑<strong>对照实验</strong>（同时起两个 <span class="term" data-definition="subagent（子代理）：由主 AI 派生出去的'分身'，独立完成一个子任务后回报结果。就像主管同时派两个员工各做一版方案，互不干扰，方便对比。">子代理</span>，一个带技能一个不带）：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">For each test case, spawn two</span></span>
+<span class="code-line"><span class="code-comment">subagents in the same turn -- one</span></span>
+<span class="code-line"><span class="code-comment">with the skill, one without.</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">**With-skill run:**</span></span>
+<span class="code-line">- Skill path: &lt;path-to-skill&gt;</span>
+<span class="code-line">- Task: &lt;eval prompt&gt;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">**Baseline run** (same prompt):</span></span>
+<span class="code-line">- no skill at all</span>
+<span class="code-line">- save to without_skill/outputs/</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">每个测试问题，<strong>同时</strong>起两个子代理……</p>
+              <p class="tl">一个<strong>带着技能</strong>，一个<strong>不带</strong>。</p>
+              <p class="tl"><strong>带技能的</strong>那组：</p>
+              <p class="tl">给它技能路径 + 同一个任务。</p>
+              <p class="tl"><strong>基线组</strong>（同样的问题）：</p>
+              <p class="tl">完全不给技能。</p>
+              <p class="tl">两份结果存到不同文件夹，拿来<strong>对比</strong>。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这是科学实验的思维</strong>
+            <p>只有一个变量（有没有技能），其他全相同（同一个问题、同一时间跑）。如果带技能的明显更好，才能证明"这技能真有用"。否则可能只是这个问题恰好简单、谁都能答好——你误以为是技能的功劳。这种"<strong>对照</strong>"思想，是你日后评估任何 AI 工具的通用武器。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 4: 迭代循环——逐步演示 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一轮完整的迭代，是这样转的</h2>
+        <p>把上面这些串起来，一次迭代是个闭环。用聊天记录看一个真实的迭代对话：</p>
+
+        <div class="chat-window" id="chat-module5">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>我的"海报技能"第一版写好了，SKILL.md 里写了"做海报时用公司字体和主色"。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="sc" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🛠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">skill-creator</span>
+                <p>好，我准备了 3 个测试任务，每个都跑两遍（带技能 vs 不带）。一边跑，我一边起草评分标准。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>结果出来了，打开那个评审页面看看。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="sc" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🛠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">skill-creator</span>
+                <p>评审页有两个 tab：一个能逐个点开看输出、写评语；另一个是定量对比。你先看，看完告诉我感受。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>看了。问题在于：技能虽然用了对的颜色，但 logo 位置飘忽——三个任务里三个不同的位置。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="5" data-sender="sc" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🛠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">skill-creator</span>
+                <p>收到。这不是加一条"ALWAYS 放右下角"能解决的——我会在 SKILL.md 里解释<strong>为什么</strong> logo 要固定位置（为了跨海报的视觉一致性），再跑第二轮。这个"反馈→重写→再测"就是迭代的核心。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module5-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一条</button>
+            <button class="btn chat-all-btn">全部播放</button>
+            <button class="btn chat-reset-btn">重播</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 5: 一个超实用的洞察——发现"重复劳动" ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">迭代中藏着一个金矿：发现"重复劳动"</h2>
+        <p>这是仓库里最实用的洞察之一。当你跑测试、读子代理的对话记录时，要留意一种信号：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">Look for repeated work across</span></span>
+<span class="code-line"><span class="code-comment">test cases. Read the transcripts</span></span>
+<span class="code-line"><span class="code-comment">from the test runs and notice if</span></span>
+<span class="code-line"><span class="code-comment">the subagents all independently</span></span>
+<span class="code-line"><span class="code-comment">wrote similar helper scripts... If</span></span>
+<span class="code-line"><span class="code-comment">all 3 test cases resulted in the</span></span>
+<span class="code-line"><span class="code-comment">subagent writing a create_docx.py,</span></span>
+<span class="code-line"><span class="code-comment">that is a strong signal the skill</span></span>
+<span class="code-line"><span class="code-comment">should bundle that script.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">留意<strong>跨测试用例的重复劳动</strong>。</p>
+              <p class="tl">去读测试运行的完整对话记录……</p>
+              <p class="tl">看子代理们是不是<strong>各自独立地</strong>写了相似的辅助脚本。</p>
+              <p class="tl">举个例子：如果 3 个测试里……</p>
+              <p class="tl">子代理都各自写了一个 <code>create_docx.py</code>……</p>
+              <p class="tl">这就是个<strong>强信号</strong>——</p>
+              <p class="tl">说明这个脚本应该<strong>直接打包进技能</strong>的 scripts 文件夹，让以后每次调用都现成的。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这条原则的威力在于"举一反三"</strong>
+            <p>它的本质是：<strong>如果 AI 每次都要现造同一个轮子，那就把这个轮子预先造好</strong>。这个思想不只适用于技能——你日常用 AI 时，如果发现它反复写同一段代码、同一个函数，就该把那段沉淀成可复用的片段。识别"重复"是工程效率的核心直觉。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 最终——打包成 .skill 文件 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">打磨好了，怎么交付？打包成 .skill</h2>
+        <p>迭代满意后，最后一步是打包。<code>package_skill.py</code> 把整个文件夹压成一个 <code>.skill</code> 文件（本质是个 <span class="term" data-definition="zip：一种常见的压缩格式，把多个文件打包成一个、体积更小，便于传输。.skill 文件其实就是换了后缀名的 zip。">zip</span>），方便分发安装。看它的核心逻辑：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/scripts/package_skill.py</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment"># Patterns to exclude</span></span>
+<span class="code-line">EXCLUDE_DIRS = {<span class="code-string">"__pycache__"</span>,</span>
+<span class="code-line">  <span class="code-string">"node_modules"</span>}</span>
+<span class="code-line">EXCLUDE_GLOBS = {<span class="code-string">"*.pyc"</span>}</span>
+<span class="code-line"><span class="code-comment"># Excluded only at skill root</span></span>
+<span class="code-line">ROOT_EXCLUDE_DIRS = {<span class="code-string">"evals"</span>}</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># Run validation first</span></span>
+<span class="code-line">valid, msg = validate_skill(skill_path)</span>
+<span class="code-line"><span class="code-keyword">if</span> <span class="code-keyword">not</span> valid:</span>
+<span class="code-line">  <span class="code-keyword">return</span> <span class="code-keyword">None</span>  <span class="code-comment"># 拒绝打包</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">打包时会<strong>排除</strong>一堆不该带走的东西。</p>
+              <p class="tl"><code>__pycache__</code>、<code>node_modules</code>——这些是运行时的缓存垃圾。</p>
+              <p class="tl"><code>*.pyc</code>——编译过的临时文件。</p>
+              <p class="tl">还有根目录下的 <code>evals</code>——测试用例不打包进去（体积大，且用户不需要）。</p>
+              <p class="tl"><strong>打包前先跑一遍校验</strong>。</p>
+              <p class="tl">校验不过（字段名错、超长等）……</p>
+              <p class="tl">直接<strong>拒绝打包</strong>——把次品拦在出厂前。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">小结：整个流程的节奏感</strong>
+            <p>想清楚 → 写草稿 → 带技能测 + 对照测 → 人看 + 机器打分 → 据反馈重写（讲 why、打包重复脚本）→ 再测 → 满意了打包出厂。这套节奏，比"闷头写一份完美文档"靠谱得多。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">你会怎么做？</h2>
+
+        <div class="quiz-container" id="quiz-module5">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你做了个"代码审查"技能。测了三个真实任务，发现一个共同现象：每次子代理都会自己写一段"读取 git diff 然后按类别整理"的脚本，而且写得都不太一样、偶尔还出错。基于本模块，下一步最该做什么？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正解。这正是仓库强调的"发现重复劳动"信号：三个测试都独立造了同一个轮子（且质量不稳定），说明这段逻辑该被固化下来。把它写好、放进 scripts/，既保证每次一致可靠，又省去 AI 重复发明的消耗——一举两得。"
+               data-explanation-wrong="没抓住重点。问题不是指令不够严，而是同样的活被重复现造。本模块讲过：当多个测试用例都在独立做同一件事时，正确反应是把那件事打包成技能自带的脚本。想想怎么"一劳永逸"地消灭这个重复。">
+            <h3 class="quiz-question">最该做的下一步是？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>在 SKILL.md 里加一条"MUST 用标准的 git diff 读取方式"</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把这三个测试用例删掉，换成更简单的任务</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把"读取 diff 并按类别整理"写成一个稳定脚本，放进技能的 scripts/ 文件夹，让 SKILL.md 调用它</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>直接打包发布，相信用户用多了就稳定了</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

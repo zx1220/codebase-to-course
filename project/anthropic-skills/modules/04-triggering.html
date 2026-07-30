@@ -1,0 +1,368 @@
+<section class="module" id="module-4" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">触发：description 的魔法</h1>
+      <p class="module-subtitle">整个系统里最关键、也最容易被忽视的一个字段。它写得好不好，直接决定技能"装了等于没装"还是"指哪打哪"。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 为什么 description 是命脉 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">回顾一下：Claude 怎么决定用不用你的技能？</h2>
+        <p>还记得 Module 1 的那张流程图吗？Claude 决策时，<strong>唯一能看到的</strong>就是每个技能的 <code>description</code>。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这是整个系统的咽喉要道</strong>
+            <p>name 只是身份证号，SKILL.md 正文它还看不到。Claude 判断"这个任务要不要调某个技能"，<strong>完全</strong>依赖 description 这几十上百个字。description 写砸了，再牛的技能也永远触发不了——等于白装。</p>
+          </div>
+        </div>
+
+        <p>仓库里直接点明了这件事的分量：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">**description**: When to trigger,</span></span>
+<span class="code-line"><span class="code-comment">what it does. This is the</span></span>
+<span class="code-line"><span class="code-comment">primary triggering mechanism</span></span>
+<span class="code-line"><span class="code-comment">- include both what the skill</span></span>
+<span class="code-line"><span class="code-comment">does AND specific contexts for</span></span>
+<span class="code-line"><span class="code-comment">when to use it. All "when to use"</span></span>
+<span class="code-line"><span class="code-comment">info goes here, not in the body.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>description</strong>：什么时候触发、做什么事。</p>
+              <p class="tl">这是<strong>首要的触发机制</strong>——</p>
+              <p class="tl">要同时写清楚"技能能干啥"<strong>和</strong>"什么场景下该用它"。</p>
+              <p class="tl">所有"何时使用"的信息……</p>
+              <p class="tl">都放这里，<strong>别放到正文里</strong>（正文触发时才看，太晚了）。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: "写得 pushy 一点" ——反直觉的关键建议 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">反直觉的建议：要"强势"一点</h2>
+        <p>这里有个特别实在的洞察。Claude 有个通病——<strong>该用技能时常常不敢用</strong>（官方叫"undertrigger"，触发不足）。怎么治？看原文：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">Note: currently Claude has a</span></span>
+<span class="code-line"><span class="code-comment">tendency to "undertrigger"</span></span>
+<span class="code-line"><span class="code-comment">skills -- to not use them when</span></span>
+<span class="code-line"><span class="code-comment">they would be useful. To combat</span></span>
+<span class="code-line"><span class="code-comment">this, please make the skill</span></span>
+<span class="code-line"><span class="code-comment">descriptions a little bit</span></span>
+<span class="code-line"><span class="code-comment">"pushy".</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">注意：现在的 Claude 有个倾向……</p>
+              <p class="tl">会"<strong>触发不足</strong>"——</p>
+              <p class="tl">明明该用某个技能，它却不用。</p>
+              <p class="tl">为了对付这个毛病……</p>
+              <p class="tl">请把技能的描述写得<strong>稍微"强势"一点</strong>。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>原文还直接给了个<strong>改写示范</strong>，非常值得揣摩：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">改写示范</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment"># 原版（太含蓄）：</span></span>
+<span class="code-line"><span class="code-string">"How to build a simple fast</span></span>
+<span class="code-line"><span class="code-string"> dashboard to display internal</span></span>
+<span class="code-line"><span class="code-string"> Anthropic data."</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 改写版（pushy）：</span></span>
+<span class="code-line"><span class="code-string">"How to build a simple fast</span></span>
+<span class="code-line"><span class="code-string"> dashboard... Make sure to use</span></span>
+<span class="code-line"><span class="code-string"> this skill whenever the user</span></span>
+<span class="code-line"><span class="code-string"> mentions dashboards, data</span></span>
+<span class="code-line"><span class="code-string"> visualization, internal metrics,</span></span>
+<span class="code-line"><span class="code-string"> or wants to display any kind of</span></span>
+<span class="code-line"><span class="code-string"> company data, even if they do not</span></span>
+<span class="code-line"><span class="code-string"> explicitly ask for a dashboard."</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">对比解读</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>原版</strong>只是客观描述能干啥。</p>
+              <p class="tl">问题在于：用户可能说"我想看看销售数据"，没提"dashboard"这个词——原版就不会触发。</p>
+              <p class="tl"><strong>改写版</strong>主动列举了用户可能说的各种说法。</p>
+              <p class="tl">还专门加了一句"哪怕没明说要 dashboard，只要有这些迹象就用我"。</p>
+              <p class="tl">这就是"<strong>pushy</strong>"——不是无礼，而是<strong>把触发条件铺得足够广</strong>，把犹豫的 Claude 推一把。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 拿仓库里的真实样本对比 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">看仓库里的"教科书级"写法</h2>
+        <p>这个仓库里的 description 本身就是范本。挑两个对比着看——先看一个<strong>普通但合格</strong>的：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skills/mcp-builder/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-property">description</span>: Guide <span class="code-keyword">for</span> creating</span>
+<span class="code-line">  high-quality MCP servers that</span>
+<span class="code-line">  enable LLMs to interact <span class="code-keyword">with</span></span>
+<span class="code-line">  external services through</span>
+<span class="code-line">  well-designed tools. Use when</span>
+<span class="code-line">  building MCP servers to</span>
+<span class="code-line">  integrate APIs <span class="code-keyword">or</span> services,</span>
+<span class="code-line">  whether <span class="code-keyword">in</span> Python (FastMCP)</span>
+<span class="code-line">  <span class="code-keyword">or</span> Node/TypeScript (MCP SDK).</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">拆解它的套路</span>
+            <div class="translation-lines">
+              <p class="tl">第一句：<strong>这是什么</strong>（造 MCP 服务的指南）。</p>
+              <p class="tl">中间：<strong>价值</strong>（让大模型能跟外部服务交互）。</p>
+              <p class="tl">最后：<strong>"Use when"</strong>——明确触发时机。</p>
+              <p class="tl">还贴心地列了技术栈（Python / TypeScript），覆盖不同说法。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>再看一个<strong>把 pushy 发挥到极致</strong>的——仓库里的 <code>claude-api</code> 技能，它的 description 简直像一份"使用说明书"：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skills/claude-api/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-property">description</span>: |-</span>
+<span class="code-line">  <span class="code-string">TRIGGER — read BEFORE opening</span></span>
+<span class="code-line">  <span class="code-string">the target file; do not skip</span></span>
+<span class="code-line">  <span class="code-string">because it "looks like a</span></span>
+<span class="code-line">  <span class="code-string">one-liner" — whenever: the</span></span>
+<span class="code-line">  <span class="code-string">prompt names Claude/Anthropic...</span></span>
+<span class="code-line">  <span class="code-string">OR the task is LLM-shaped with</span></span>
+<span class="code-line">  <span class="code-string">provider unstated (agent/MCP/</span></span>
+<span class="code-line">  <span class="code-string">tool-definition/multi-agent/RAG</span></span>
+<span class="code-line">  <span class="code-string">...).</span></span>
+<span class="code-line">  <span class="code-string">SKIP only when another provider</span></span>
+<span class="code-line">  <span class="code-string">is being worked on...</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">它强在哪</span>
+            <div class="translation-lines">
+              <p class="tl">开头就喊"TRIGGER"——<strong>当命令用</strong>。</p>
+              <p class="tl">预防性地说"别因为文件看着简单就跳过我"——堵住 AI 的偷懒借口。</p>
+              <p class="tl">疯狂列举触发词：Claude、Anthropic、agent、MCP、RAG……</p>
+              <p class="tl">还写了<strong>反向条件</strong>："SKIP only when"——什么时候不要触发。</p>
+              <p class="tl">正反两面都堵死了，AI 几乎没有误判空间。这是 description 写作的<strong>天花板</strong>。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 4: description 的硬约束（长度/字符）── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">description 的两条硬规矩</h2>
+        <p>写 description 不能放飞。校验脚本 <code>quick_validate.py</code> 卡了两条硬限制，违反就打包失败：</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📏</div>
+            <h4 class="pattern-title">最多 1024 个字符</h4>
+            <p class="pattern-desc">推起来要够广，但不能啰嗦到撑爆第一级（永远在脑中的元数据）。在"覆盖足够多触发词"和"保持精炼"之间找平衡。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🚫</div>
+            <h4 class="pattern-title">不能有尖括号 &lt; &gt;</h4>
+            <p class="pattern-desc">因为 description 会被当成纯文本处理，尖括号会被误读成 HTML/XML 标签而惹乱子。想强调就用引号或大写，别用 <code>&lt;这样&gt;</code>。</p>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-6)">对应的校验代码很直白：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">quick_validate.py</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment"># Check for angle brackets</span></span>
+<span class="code-line"><span class="code-keyword">if</span> <span class="code-string">'&lt;'</span> <span class="code-keyword">in</span> description</span>
+<span class="code-line">  <span class="code-keyword">or</span> <span class="code-string">'&gt;'</span> <span class="code-keyword">in</span> description:</span>
+<span class="code-line">  <span class="code-keyword">return</span> <span class="code-keyword">False</span>,</span>
+<span class="code-line">    <span class="code-string">"Description cannot contain"</span></span>
+<span class="code-line">    <span class="code-string">"angle brackets"</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># Check description length</span></span>
+<span class="code-line"><span class="code-keyword">if</span> len(description) &gt; <span class="code-number">1024</span>:</span>
+<span class="code-line">  <span class="code-keyword">return</span> <span class="code-keyword">False</span>,</span>
+<span class="code-line">    <span class="code-string">f"...Maximum is 1024..."</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">检查 description 里有没有尖括号。</p>
+              <p class="tl">只要有一个 <code>&lt;</code> 或 <code>&gt;</code>……</p>
+              <p class="tl">校验失败："不能包含尖括号"。</p>
+              <p class="tl">再检查长度。</p>
+              <p class="tl">超过 1024 个字符……</p>
+              <p class="tl">同样失败，上限就是 1024。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 5: AI 的决策逻辑——一个关键提醒 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">但别忘了：AI 是"按需"才查技能的</h2>
+        <p>有个特别重要的细节，原文专门强调过。它会影响你怎么设计测试用例：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">Claude only consults skills for</span></span>
+<span class="code-line"><span class="code-comment">tasks it cannot easily handle on</span></span>
+<span class="code-line"><span class="code-comment">its own -- simple, one-step</span></span>
+<span class="code-line"><span class="code-comment">queries like "read this PDF" may</span></span>
+<span class="code-line"><span class="code-comment">not trigger a skill even if the</span></span>
+<span class="code-line"><span class="code-comment">description matches perfectly.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">Claude <strong>只在</strong>遇到自己搞不定的任务时，才会去翻技能。</p>
+              <p class="tl">那种简单的一步任务……</p>
+              <p class="tl">比如"读一下这个 PDF"……</p>
+              <p class="tl"><strong>可能根本不会触发</strong>技能……</p>
+              <p class="tl">哪怕 description 写得完美匹配——因为它觉得自己直接就能干。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">实战影响：测试技能时别用太简单的任务</strong>
+            <p>你想验证"PDF 技能能不能触发"，如果只输入"读一下 a.pdf"，可能根本不触发——不是技能坏了，是任务太简单 Claude 觉得自己能搞定。<strong>要用复杂、多步、专业的真实任务来测</strong>，比如"提取这份合同的违约条款并按风险排序"。这也是后面 Module 5 会讲的"评测"的关键。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: description 优化循环（数据流动画）── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">仓库还自带了一个"优化 description"的工具</h2>
+        <p>description 这么重要，仓库干脆给了个自动化优化流程（在 <code>skill-creator/scripts/</code> 里）。它会反复测试、改写、再测试，直到触发率够高。点开看看这个循环：</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+          {"highlight":"flow-m4-1","label":"准备 20 个测试问题：一半该触发、一半不该触发（故意写得接近，用来刁难）"},
+          {"highlight":"flow-m4-2","label":"把问题分成训练集（60%）和验证集（40%）","packet":true,"from":"m4-1","to":"m4-2"},
+          {"highlight":"flow-m4-2","label":"用当前的 description 跑训练集，每个问题测 3 次取平均，得到触发率"},
+          {"highlight":"flow-m4-3","label":"把没触发/误触发的案例交给 Claude，让它改写 description","packet":true,"from":"m4-2","to":"m4-3"},
+          {"highlight":"flow-m4-3","label":"改写后再测——这次用从没见过的验证集，防止死记硬背"},
+          {"highlight":"flow-m4-4","label":"循环最多 5 轮，最终挑验证集得分最高的版本","packet":true,"from":"m4-3","to":"m4-4"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-m4-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">❓</div>
+              <span>测试问题集</span>
+            </div>
+            <div class="flow-actor" id="flow-m4-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">📊</div>
+              <span>跑测试</span>
+            </div>
+            <div class="flow-actor" id="flow-m4-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">✏️</div>
+              <span>AI 改写</span>
+            </div>
+            <div class="flow-actor" id="flow-m4-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🏆</div>
+              <span>最佳版本</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点击"下一步"开始</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重新开始</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">注意"训练集 vs 验证集"的智慧</strong>
+            <p>为什么要分两份数据？因为如果只在一批问题上反复优化，AI 可能只是<strong>背会了那批问题</strong>（<span class="term" data-definition="overfitting（过拟合）：模型把训练数据'死记硬背'下来了，对新问题却不会举一反三。就像学生背答案而不是真懂知识，换个考法就露馅。">overfitting</span>，过拟合），换个说法就又不灵了。留一份"从没见过的"验证集，才能确认它是<strong>真学会了</strong>而不是死记硬背。这个思想在所有 AI 训练里都通用。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 测验——改写 description ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">实战题：哪个 description 最好？</h2>
+
+        <div class="quiz-container" id="quiz-module4">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你做了个"内部周报生成"技能。用户真实的说法五花八门："帮我总结这周干了啥"、"把我的 git 提交整理成给老板看的汇报"、"该写周报了头大"。下面四个 description，哪个最符合本模块讲的"pushy + 覆盖广 + 带反向条件"的原则？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-d"
+               data-explanation-right="漂亮。这条同时具备：① 说清能干啥（生成周报/进展汇报）；② 用 whenever 把触发场景铺得很广，覆盖了用户各种说法；③ 还暗示了边界（不是写公开新闻稿）。这正是 claude-api 范本的思路——把触发条件写厚，把犹豫的 Claude 推一把。"
+               data-explanation-wrong="这个选项偏弱。想想本模块强调的两点：一是要"pushy"、主动列举用户可能的各种说法（哪怕没提"周报"二字）；二是最好带点反向条件（什么时候别用）。哪个选项把触发面铺得最广、最主动？">
+            <h3 class="quiz-question">选最好的 description：</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"A skill for writing weekly reports."</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"帮助用户写周报的技能。"</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"生成内部周报。当用户明确说'帮我写周报'时使用。"</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"生成周报和进展汇报。Whenever 用户提到总结本周工作、整理提交记录给老板看、写周报、汇报进度——哪怕没明说'周报'两字——都该用这个技能。"</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

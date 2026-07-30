@@ -1,0 +1,372 @@
+<section class="module" id="module-5" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">聪明的缓存与防护 · 不被自己打垮</h1>
+      <p class="module-subtitle">一个热门源被一万个人同时订阅，RSSHub 却只去源头抓一次——它怎么做到的？</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 问题 + 比喻 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">把 RSSHub 想象成一个编辑部</h2>
+        <p>RSSHub 是个公开服务。一个大 V 的微博，可能被成千上万个阅读器订阅——如果每个阅读器来一次，RSSHub 就去微博抓一次，微博分分钟把它封号。</p>
+        <p>它的解法是把整个系统想成一个<strong>只有一个跑腿记者的编辑部</strong>。前台（一个 <span class="term" data-definition="夹在请求和最终处理之间的一层代码，可以提前做缓存、鉴权、日志等通用事情。RSSHub 的 cache 就是一个中间件。">中间件</span>）做了两件聪明事：</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-accent)">🗂️</div>
+            <div>
+              <strong>复印存档 · <span class="term" data-definition="把抓回来的数据先存一份，下次同样的问题直接拿存货，不用再去源头抓。像编辑部把抢来的新闻复印归档，后来的人直接拿复印件。">缓存</span>（cache）</strong>
+              <p>记者抢回来的新闻复印一份存档。后来要同一条新闻的人，直接拿复印件，记者不用再跑一趟。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">🏃</div>
+            <div>
+              <strong>候客休息区 · <span class="term" data-definition="一堆人同时要同一份数据时，只让第一个去源头抓，其他人原地等着共享结果。像编辑部只派一个跑腿记者出门，其他人都在休息区等他带回来。">单飞</span>（single-flight）</strong>
+              <p>如果记者正在抢这条新闻，其他人先进休息区坐着。记者一回来，大家一起看结果，绝不重复派第二趟。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title"><span class="term" data-definition="缓存一过期，所有等着的请求同时醒来涌向后端，像惊动了一群鸟一起飞。会把后端瞬间压垮，是高并发系统的经典陷阱。">惊群效应</span>（thundering herd）</strong>
+            <p>这是高并发系统的经典陷阱：缓存一旦失效，所有等待的请求<strong>同时</strong>涌向目标网站。RSSHub 用单飞机制化解——只放行一个，其余原地等。记住这个词，跟 AI 聊性能时它一听就懂。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: HERO 动画 — 惊群 vs 单飞 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">现场演示：两个阅读器同时到达</h2>
+        <p>下面是本模块的 hero 动画。点击「下一步」一步一步看：阅读器 A 和 B <span class="term" data-definition="很多个请求几乎同一时间涌过来。像一万个人同时挤进编辑部要同一条新闻。">并发</span>到达，<strong>只有一个</strong>会触发记者出门，另一个进休息区等，最后两人共享同一份结果。</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+          {"highlight":"flow-actor-1","label":"阅读器 A 和阅读器 B 几乎同时请求同一个热门源"},
+          {"highlight":"flow-actor-3","label":"两个请求都涌到缓存关卡，先查存货","packet":true,"from":"actor-1","to":"actor-3"},
+          {"highlight":"flow-actor-3","label":"缓存没命中。开始 claim 抢占位——只有一个能当抓取者"},
+          {"highlight":"flow-actor-4","label":"A 抢到了占位，放行去 handler 抓数据（记者出门）","packet":true,"from":"actor-3","to":"actor-4"},
+          {"highlight":"flow-actor-2","label":"B 没抢到，进候客休息区，每隔几秒查一次缓存"},
+          {"highlight":"flow-actor-4","label":"A 抓完，把结果存进缓存（记者回来了）","packet":true,"from":"actor-4","to":"actor-3"},
+          {"highlight":"flow-actor-2","label":"B 这一查发现缓存有了，直接拿结果，不用再派记者"},
+          {"highlight":"flow-actor-1","label":"A 和 B 都拿到结果，handler 全程只跑了一次","packet":true,"from":"actor-3","to":"actor-1"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">A</div>
+              <span>阅读器 A</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">B</div>
+              <span>阅读器 B</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-accent)">🗂️</div>
+              <span>缓存关卡 cache</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🏃</div>
+              <span>跑腿记者 handler</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点击「下一步」开始演示</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重新播放</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <p>看完记住一句话：<strong>handler 只跑了一次</strong>。这就是单飞的全部魔法——它把一万次重复劳动压成了一次。</p>
+      </section>
+
+      <!-- SCREEN 3: 五步时序卡片 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">单飞的五个时间步</h2>
+        <p>把上面动画拆成五张卡。这是<span class="term" data-definition="英文「认领、占位」的意思。在 RSSHub 里指抢着把自己标记成「唯一的抓取者」，抢到了才允许去源头抓数据。">claim</span>（占位）+ 等待循环的完整时序，也是高并发系统的看家本领：</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>缓存查不到</strong>
+              <p>请求先 <code>get(key)</code> 查一次存货。没命中，才进入下一步——绝大多数请求其实都死在这一步之前，直接吃缓存返回了。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>抢占位（claim）</strong>
+              <p>没命中的请求都去抢一个「占位标记」。这是一个<span class="term" data-definition="要么全做完、要么全不做，中间不可被打断的一组动作。像「看一眼座位有没有人 + 坐下」必须一口气完成，不然两个人会同时坐下。">原子操作</span>——只有第一个抢到的会拿到「true」，其余全拿到「false」。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>抢到的去抓数据</strong>
+              <p>拿到 true 的那个请求，放行去 <span class="term" data-definition="真正去目标网站抓数据的那段代码。像编辑部里负责跑腿抢新闻的记者。">handler</span>，跑完整个流水线、抓回最新内容。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>其他人原地轮询等待</strong>
+              <p>拿到 false 的请求进 <code>while</code> 循环，每隔几秒 <span class="term" data-definition="每隔一段时间就主动去查一次状态，看事情有没有完成。像在候客休息区每几分钟问一次「新闻回来了吗」。">轮询</span>（polling）一次：占位还在吗？还在就继续等。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong>抓完共享结果</strong>
+              <p>抢到的人把结果存进缓存、清掉占位。等待中的人下一次轮询发现占位没了，直接 <code>get(key)</code> 拿缓存结果返回。大家用的是同一份数据。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">原子操作：要么全做、要么不做，中间没人能插队</strong>
+            <p>第 2 步的 claim 之所以必须「原子」，是因为「检查占位 + 设置占位」如果中间能被打断，两个请求可能都查到「没人占」、然后都把自己设成抓取者——单飞当场失效。这是并发编程的基石概念，记住它，你看任何锁机制都能举一反三。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 代码↔英文 — Redis eval claim（原子性）-->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">代码里的 claim：一段 <span class="term" data-definition="一种轻量脚本语言。Redis 支持用 Lua 写一小段脚本交给它一次性执行，保证中间不被打断——这就是 claim 原子性的来源。">Lua</span> 脚本搞定原子占位</h2>
+        <p>占位逻辑由 <span class="term" data-definition="一种极快的内存数据库，常用来做缓存。它单线程顺序执行命令，所以天生适合做原子操作——一条脚本进去，跑完之前谁都插不进来。">Redis</span> 实现。核心是中间那行 <code>eval</code>：把「检查 + 设置」写成一段脚本交给 Redis <strong>一口气执行</strong>，中间没人能插队。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE · lib/utils/cache/index.ts</span>
+            <pre><code><span class="code-line">            globalCache.claim = <span class="code-keyword">async</span> (key, maxAge) =&gt; {</span>
+<span class="code-line">                <span class="code-keyword">if</span> (!key || !cacheModule.status.available || !redisClient) {</span>
+<span class="code-line">                    <span class="code-keyword">return</span> <span class="code-keyword">true</span>;</span>
+<span class="code-line">                }</span>
+<span class="code-line">                <span class="code-keyword">const</span> result = <span class="code-keyword">await</span> redisClient.<span class="code-function">eval</span>(<span class="code-string">"if redis.call('GET', KEYS[1]) == '1' then return 0 end redis.call('SET', KEYS[1], '1', 'EX', ARGV[1]) return 1"</span>, 1, key, maxAge);</span>
+<span class="code-line">                <span class="code-keyword">return</span> result === 1;</span>
+<span class="code-line">            };</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl"><code>claim</code> 就是「认领、占位」——尝试把这个 key 标记成「有人正在抓」。</p>
+              <p class="tl">没传 key、或 Redis 没连上，就直接返回 true（退化成普通模式，大家都能抓）。</p>
+              <p class="tl">真正核心是 <code>eval</code> 那行：一段 Lua 脚本交给 Redis「一口气」跑完。</p>
+              <p class="tl">脚本逻辑——先查 key 是不是已经是 1：是就返回 0（别人占了，你抢不到）；否则设成 1 带过期时间，返回 1（你抢到了）。</p>
+              <p class="tl">因为 Redis 单线程顺序执行，这段「检查 + 设置」中间<strong>不可能有人插队</strong>——这就是原子操作。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 代码↔英文 — cache.ts claim + 等待循环 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">中间件里：抢到了去抓，没抢到的进休息区</h2>
+        <p>占位的判定和等待循环，都活在 cache 中间件里。左边两段代码，右边一行行翻译成「编辑部大白话」：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE · lib/middleware/cache.ts</span>
+            <pre><code><span class="code-line">    <span class="code-keyword">let</span> value = <span class="code-keyword">await</span> cacheModule.globalCache.<span class="code-function">get</span>(key);</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-comment">// Doesn't hit the cache? Try to become the fetcher and let others know!</span></span>
+<span class="code-line">    <span class="code-keyword">let</span> isRequesting = <span class="code-keyword">false</span>;</span>
+<span class="code-line">    <span class="code-keyword">if</span> (!value) {</span>
+<span class="code-line">        isRequesting = !(<span class="code-keyword">await</span> cacheModule.globalCache.<span class="code-function">claim</span>(controlKey, config.cache.requestTimeout));</span>
+<span class="code-line">    }</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-keyword">if</span> (isRequesting) {</span>
+<span class="code-line">        <span class="code-keyword">let</span> retryTimes = process.env.NODE_ENV === <span class="code-string">'test'</span> ? 1 : 10;</span>
+<span class="code-line">        <span class="code-keyword">let</span> bypass = <span class="code-keyword">false</span>;</span>
+<span class="code-line">        <span class="code-keyword">while</span> (retryTimes &gt; 0) {</span>
+<span class="code-line">            <span class="code-comment">// eslint-disable-next-line no-await-in-loop</span></span>
+<span class="code-line">            <span class="code-keyword">await</span> <span class="code-keyword">new</span> <span class="code-function">Promise</span>((resolve) =&gt; <span class="code-function">setTimeout</span>(resolve, process.env.NODE_ENV === <span class="code-string">'test'</span> ? 3000 : 6000));</span>
+<span class="code-line">            <span class="code-comment">// eslint-disable-next-line no-await-in-loop</span></span>
+<span class="code-line">            <span class="code-keyword">if</span> ((<span class="code-keyword">await</span> cacheModule.globalCache.<span class="code-function">get</span>(controlKey)) !== <span class="code-string">'1'</span>) {</span>
+<span class="code-line">                bypass = <span class="code-keyword">true</span>;</span>
+<span class="code-line">                <span class="code-keyword">break</span>;</span>
+<span class="code-line">            }</span>
+<span class="code-line">            retryTimes--;</span>
+<span class="code-line">        }</span>
+<span class="code-line">        <span class="code-keyword">if</span> (!bypass) {</span>
+<span class="code-line">            <span class="code-keyword">throw new</span> <span class="code-function">RequestInProgressError</span>(<span class="code-string">'This path is currently fetching, please come back later!'</span>);</span>
+<span class="code-line">        }</span>
+<span class="code-line">        value = <span class="code-keyword">await</span> cacheModule.globalCache.<span class="code-function">get</span>(key);</span>
+<span class="code-line">    }</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">先 <code>get(key)</code> 查一次存货——这是「先看复印件有没有」。</p>
+              <p class="tl">没命中（<code>!value</code>）才去 <code>claim</code> 抢占位。<code>!</code> 取反：claim 返回 false（没人占）时，<code>isRequesting</code> 才是 true——意思是「该我抓了」。</p>
+              <p class="tl">注意：<code>isRequesting</code> 为 true 的是<strong>抢到的抓取者</strong>，会跳过下面整个 <code>if</code>，直接往下走去 handler。</p>
+              <p class="tl">进了 <code>if</code> 的是<strong>没抢到的人</strong>：开一个 <code>while</code> 轮询循环，默认重试 10 次。</p>
+              <p class="tl">每轮先睡 6 秒（test 环境 3 秒），再去查占位 key 还在不在——这就是在休息区坐着等的动作。</p>
+              <p class="tl">占位被清掉了（说明抓取者完工），就 <code>break</code> 跳出，去拿缓存结果。</p>
+              <p class="tl">要是重试 10 次还没好，就抛 <code>RequestInProgressError</code>——对外就是 <span class="term" data-definition="HTTP 状态码，意思是「服务暂时不可用，请稍后再来」。在 RSSHub 里通常是单飞机制主动抛的，表示「正在抓取，过会儿重试」。">503</span>「正在抓取请稍后」。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 6: 代码↔英文 — 抓完存起来（TTL）-->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">抓到之后：存进缓存，盖上 5 分钟保质期</h2>
+        <p>抢到的人抓完数据，最后一步是「归档」。除非响应明确要求不缓存，否则把结果整份存进缓存，并设一个 <span class="term" data-definition="Time To Live，缓存的存活时间。过了这个时间数据自动作废，下次请求要重新抓。RSSHub 默认 5 分钟。">TTL</span>：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE · lib/middleware/cache.ts</span>
+            <pre><code><span class="code-line">    <span class="code-keyword">const</span> data: Data = ctx.<span class="code-function">get</span>(<span class="code-string">'data'</span>);</span>
+<span class="code-line">    <span class="code-keyword">if</span> (ctx.res.headers.<span class="code-function">get</span>(<span class="code-string">'Cache-Control'</span>) !== <span class="code-string">'no-cache'</span> &amp;&amp; data) {</span>
+<span class="code-line">        data.lastBuildDate = <span class="code-keyword">new</span> <span class="code-function">Date</span>().<span class="code-function">toUTCString</span>();</span>
+<span class="code-line">        ctx.<span class="code-function">set</span>(<span class="code-string">'data'</span>, data);</span>
+<span class="code-line">        <span class="code-keyword">const</span> body = <span class="code-function">JSON</span>.<span class="code-function">stringify</span>(data);</span>
+<span class="code-line">        <span class="code-keyword">await</span> cacheModule.globalCache.<span class="code-function">set</span>(key, body, config.cache.routeExpire);</span>
+<span class="code-line">    }</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">拿到流水线抓回来的 data。</p>
+              <p class="tl">除非响应头明确写了 <code>no-cache</code>，否则进入归档流程。</p>
+              <p class="tl">给数据盖一个时间戳 <code>lastBuildDate</code>，序列化成字符串。</p>
+              <p class="tl"><code>set(key, body, routeExpire)</code>——存进缓存，过期时间默认 <strong>300 秒 = 5 分钟</strong>。</p>
+              <p class="tl">这 5 分钟内再来任何人，第一屏的 <code>get(key)</code> 直接命中，根本走不到 claim——这就是「一万次请求只抓一次」的来源。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 7: 测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">检验一下：你会怎么处理这些情况</h2>
+        <p>三道情景题。选错了没关系——每题的反馈都会补一块新知识。</p>
+
+        <div class="quiz-container" id="quiz-module5">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="没错。第一个请求抢到 claim 去抓，抓完存进缓存并设 5 分钟 TTL。之后 9999 个请求第一行 get(key) 直接命中缓存，根本不会再 claim，更不会去目标网站抓。这就是「5 分钟内只抓 1 次」的由来。"
+               data-explanation-wrong="想想缓存的第一行——let value = await cacheModule.globalCache.get(key)。如果值已经存在，后面的 claim 根本不会执行。那 9999 个后来的请求会走到哪一步？">
+            <h3 class="quiz-question">一万个阅读器在 5 分钟内同时请求同一个源，RSSHub 会去目标网站抓几次？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>10000 次（每个阅读器各抓一次）</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>1 次（其余 9999 次都吃缓存）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>0 次（缓存里永远有，从不需要抓）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="对。这是单飞机制的正常表现：当缓存没命中、且已有别的请求在抓时，你没抢到 claim，就会进 while 轮询等待。等不到（默认 10 次 × 6 秒）就抛 RequestInProgressError，对外就是 503。过几秒重试，大概率缓存已经有了。"
+               data-explanation-wrong="别急着当 bug。「This path is currently fetching, please come back later!」这句话是代码里主动抛的 RequestInProgressError。想想什么情况下会抛这个——是不是有人在前面正在抓同一份数据？">
+            <h3 class="quiz-question">你订阅的源偶尔返回 503，提示「正在抓取请稍后」。这说明什么？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>RSSHub 宕机了，得赶紧重启</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>是个 bug，缓存逻辑写错了</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>不是 bug，是单飞在起作用——过几秒重试就好</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正是如此。如果「检查 key 是不是 1」和「把 key 设成 1」是分开的两步、中间能被打断，那两个请求可能都查到「还不是 1」、然后都把自己设成抓取者——这就是经典的竞态条件（race condition），单飞当场崩掉。原子操作把两步焊成一步，中间没人能插队。"
+               data-explanation-wrong="想象两个人同时去抢唯一的座位。如果「看一眼有没有人坐」和「坐下」是分开的两步，会发生什么？两个人可能都看到「没人坐」，然后都坐下。这就是为什么 claim 必须一口气做完——这种「时序错乱导致出错」的现象叫什么？">
+            <h3 class="quiz-question">为什么 claim 必须是「原子操作」？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>为了让 Redis 跑得更快</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>否则两个请求可能都查到「没人占」然后都去抓，单飞失效（<span class="term" data-definition="多个进程同时读写同一份数据，因为时序错乱导致结果出错。典型场景：两个人同时查「没人占」，结果都以为自己抢到了。">竞态条件</span>）</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>防止缓存被错误覆盖</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">重做</button>
+        </div>
+      </section>
+
+      <!-- SCREEN 8: 收尾，桥接模块 6 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">到这里，你已经集齐了五块拼图</h2>
+        <p>缓存和单飞，解决了「被用户自己打垮」的问题——RSSHub 可以坦然面对一万个同时到达的请求。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">①</div>
+            <h4 class="pattern-title">入口</h4>
+            <p class="pattern-desc">请求从哪里进来，怎么被接住。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">②</div>
+            <h4 class="pattern-title">路由</h4>
+            <p class="pattern-desc">一句话匹配到对应的 handler。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">③</div>
+            <h4 class="pattern-title">流水线</h4>
+            <p class="pattern-desc">中间件层层加工，handler 抓回数据。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+            <div class="pattern-icon" style="background: var(--color-accent)">④</div>
+            <h4 class="pattern-title">渲染</h4>
+            <p class="pattern-desc">把数据变成 RSS / Atom / JSON。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">⑤</div>
+            <h4 class="pattern-title">缓存与防护</h4>
+            <p class="pattern-desc">单飞 + 缓存，扛住并发不崩。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🗺️</div>
+          <div class="callout-content">
+            <strong class="callout-title">下一站：把它们拼成一张大图</strong>
+            <p>现在你已经看过了入口、路由、流水线、渲染、缓存——下一模块我们把它们串成一张完整的架构图，回顾 RSSHub 整体的设计哲学。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

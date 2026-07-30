@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>解密 Agent Skills：教 AI 学会新技能</title>
+
+  <!-- Google Fonts: Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!--
+    CUSTOMIZE PER COURSE — change only the three accent variables below.
+    Options:
+      vermillion  #D94F30 / #C4432A / #FDEEE9 / #E8836C  (default)
+      coral       #E06B56 / #C85A47 / #FDECEA / #E89585
+      teal        #2A7B9B / #1F6280 / #E4F2F7 / #5A9DB8
+      amber       #D4A843 / #BF9530 / #FDF5E0 / #E0C070
+      forest      #2D8B55 / #226B41 / #E8F5EE / #5AAD7A
+  -->
+  <style>
+    :root {
+      --color-accent:       #D4A843;
+      --color-accent-hover: #BF9530;
+      --color-accent-light: #FDF5E0;
+      --color-accent-muted: #E0C070;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">解密 Agent Skills</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="什么是 Skill" role="tab" aria-label="Module 1: 什么是 Skill"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="一个 Skill 的解剖结构" role="tab" aria-label="Module 2: 一个 Skill 的解剖结构"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="渐进式披露" role="tab" aria-label="Module 3: 渐进式披露"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="触发：description 的魔法" role="tab" aria-label="Module 4: 触发：description 的魔法"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="创建与迭代循环" role="tab" aria-label="Module 5: 创建与迭代循环"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="生态与全景图" role="tab" aria-label="Module 6: 生态与全景图"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">什么是 Skill？</h1>
+      <p class="module-subtitle">你每天都在用 AI 做事——但你有没有想过，能不能给它装一个"专门技能"？</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 开场问题 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先想一个场景</h2>
+        <p>想象一下：你让 AI 帮你处理一个 Excel 表格。可它根本不懂你们公司那一套特殊的"利润率要按蓝色、年份不带千位分隔符"的规矩。每次都要重新解释一遍，对吧？</p>
+        <p>如果能<strong>一次性把这些规矩教会它</strong>，以后它每次碰到表格都自动照办——那该多省心。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这就是 Skill 想解决的问题</strong>
+            <p>Skill 是一个装满说明书、脚本和资源的<strong>文件夹</strong>，让 Claude（以及其他 AI）在碰到特定任务时"自动加载"这些知识，不用你每次重复啰嗦。</p>
+            <p style="margin-top: var(--space-2); font-size: var(--text-sm); color: var(--color-text-secondary);">提示：文中的 <span class="term" data-definition="脚本（script）：一段可以自动运行的程序代码。你不用懂怎么写，机器会照着一步步执行——就像一份'机器食谱'。">虚线词语</span> 都可以悬停/点击查看大白话解释。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: 核心定义 + 隐喻 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">用最直白的话说</h2>
+        <p>官方的定义是这样写的：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">README.md</span>
+            <pre><code>
+<span class="code-line">Skills are folders of instructions,</span>
+<span class="code-line">scripts, and resources that Claude</span>
+<span class="code-line">loads dynamically to improve performance</span>
+<span class="code-line">on specialized tasks.</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">大白话翻译</span>
+            <div class="translation-lines">
+              <p class="tl">Skill 就是一个装着<strong>说明书</strong>的文件夹……</p>
+              <p class="tl">里面还可能有<strong>脚本</strong>（能直接运行的代码）和各种<strong>资源</strong>（比如模板、字体）……</p>
+              <p class="tl">Claude 会根据需要<strong>动态加载</strong>它——用到时才翻开，不用时收起来。</p>
+              <p class="tl">目的只有一个：让它在<strong>某个专业任务</strong>上做得更好、更稳定。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">打一个比方：技能包</strong>
+            <p>想象 Claude 是个聪明的实习生。它什么都能学，但你没教过的规矩它就不知道。一个 Skill 就像是你递给它的一份<strong>"岗位手册"</strong>——只在这个岗位需要时才拿出来看，平时不占它脑子。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 一个真实的 Skill 长啥样 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一个真实的 Skill 长什么样？</h2>
+        <p>这个仓库里就有 17 个现成的 Skill。咱们挑一个最直观的看看它的"身份证"——也就是它最核心的那个文件 <code>SKILL.md</code>：</p>
+        <p>下面这段是 <span class="term" data-definition="YAML：一种用缩进和冒号来组织数据的简洁格式，人类和机器都容易读。这里的'配置区'就是用 YAML 写的，三道杠 --- 是它的边界标记。">YAML</span> 写的"配置区"，夹在两组三道杠 <code>---</code> 中间：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skills/pdf/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: pdf</span>
+<span class="code-line"><span class="code-property">description</span>: <span class="code-string">Use this skill whenever the</span></span>
+<span class="code-line"><span class="code-string">  user wants to do anything with PDF</span></span>
+<span class="code-line"><span class="code-string">  files. This includes reading or</span></span>
+<span class="code-line"><span class="code-string">  extracting text...</span></span>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># PDF 处理指南</span></span>
+<span class="code-line"><span class="code-comment">（后面是详细的操作步骤）</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">这三道杠 <code>---</code> 是一个分隔标记，告诉 AI "上面这部分是配置信息"。</p>
+              <p class="tl"><strong>name</strong>：这个技能叫 <code>pdf</code>，是它的唯一名字。</p>
+              <p class="tl"><strong>description</strong>：这段话才是真正的"触发开关"——它告诉 Claude 什么时候该用这个技能。</p>
+              <p class="tl">意思是："只要用户想对 PDF 文件做任何事，就用我。"</p>
+              <p class="tl">第二个 <code>---</code> 表示配置结束。</p>
+              <p class="tl">下面就是真正的"教学内容"了。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>就这么简单。一个文件夹、一个 <code>SKILL.md</code> 文件，就是一个完整的 Skill。</p>
+      </section>
+
+      <!-- ── Screen 4: 它解决的根本问题 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">它到底解决什么问题？</h2>
+        <p>本质上是<strong>两个矛盾</strong>：</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🧠</div>
+            <h4 class="pattern-title">矛盾一：AI 的脑容量有限</h4>
+            <p class="pattern-desc">你没法把世界上所有的规矩一次性塞进对话里。AI 每次"记不住"那么长的上下文。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🔄</div>
+            <h4 class="pattern-title">矛盾二：你不想重复劳动</h4>
+            <p class="pattern-desc">每次开新对话都要重新解释一遍"我们公司表格怎么排版"，太累，还容易出错。</p>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)">Skill 的解法是<strong>"按需加载"</strong>：</p>
+        <ul style="list-style: none; padding: 0;">
+          <li style="margin-bottom: var(--space-2)">✅ 把专业知识<strong>打包进文件夹</strong>，一次写好</li>
+          <li style="margin-bottom: var(--space-2)">✅ AI 平时只看它的<strong>名字和简介</strong>（省脑容量）</li>
+          <li style="margin-bottom: var(--space-2)">✅ 真要用到了，<strong>自动翻开</strong>详细说明</li>
+          <li style="margin-bottom: var(--space-2)">✅ 用完就收起来，<strong>不干扰</strong>其他任务</li>
+        </ul>
+      </section>
+
+      <!-- ── Screen 5: 数据流动画——一次 Skill 调用发生了什么 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">你说一句话，背后发生了什么？</h2>
+        <p>假设你装了 <code>pdf</code> 这个 Skill，然后对 Claude 说："帮我把这份合同的关键条款提取出来。" 点下面的按钮，一步步看数据是怎么流动的：</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+          {"highlight":"flow-actor-1","label":"你说：「帮我把这份合同的关键条款提取出来。」"},
+          {"highlight":"flow-actor-1","label":"Claude 看到你的请求里有「合同」「提取」「PDF」这些关键词","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"它扫一眼所有已安装 Skill 的 description（每个才几十个字）"},
+          {"highlight":"flow-actor-2","label":"命中！pdf 这个 Skill 的简介说「处理 PDF 文件就用我」"},
+          {"highlight":"flow-actor-3","label":"Claude 把 SKILL.md 的完整内容加载进上下文","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-3","label":"按照里面的步骤操作，可能还会调用 Skill 自带的脚本"},
+          {"highlight":"flow-actor-4","label":"把提取好的关键条款交还给你","packet":true,"from":"actor-3","to":"actor-4"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">你</div>
+              <span>你的请求</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">C</div>
+              <span>Claude 决策</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">📄</div>
+              <span>加载 SKILL.md</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">✓</div>
+              <span>返回结果</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点击"下一步"开始演示</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重新开始</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">关键洞察</strong>
+            <p>Claude 自己决定要不要用某个 Skill——你不需要手动"调用"。它靠的就是那个 <code>description</code> 字段。写得好，它就准；写得差，它就漏。这就是为什么后面我们会专门讲怎么写好这个字段。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 本模块测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试身手</h2>
+        <p>下面这道题考的不是记忆，而是你有没有真正理解 Skill 的本质。</p>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你是一位设计师，每次让 Claude 帮你做海报都要反复强调"用我们公司的字体、主色号是 #D4A843、logo 要放右下角"。你受够了，想一劳永逸。基于本模块学到的，下面哪种做法最符合 Skill 的设计思想？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="没错。Skill 的核心就是"把重复的专业规矩打包成可按需加载的文件夹"。你只需写一次，Claude 以后碰到海报任务就自动套用——这正是它解决"重复劳动 + 脑容量有限"两大矛盾的思路。"
+               data-explanation-wrong="再想想。Skill 的精髓是"一次写好、按需自动加载"，而不是临场输入、或者靠 Claude 死记硬背。想想哪种方式能让规矩'永久驻扎'又不占地方。">
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>每次开新对话时，把这些规矩重新打字告诉 Claude</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把这些规矩写进一个超长的提示词，希望 Claude 每次都记住</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>创建一个 Skill 文件夹，把这些规矩写进 SKILL.md，让 Claude 在碰到海报任务时自动加载</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>让 Claude 把这些规矩"背下来"，以后永远不用再说</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-2" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">一个 Skill 的解剖结构</h1>
+      <p class="module-subtitle">剥开一个 Skill 文件夹，看看里面到底装了哪些零件，各管什么用。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 最简形态 vs 完整形态 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">从一个"最小可用"的 Skill 开始</h2>
+        <p>这是仓库里自带的模板（template），一个 Skill <strong>最少</strong>需要这些东西：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">template/SKILL.md（原文）</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: template-skill</span>
+<span class="code-line"><span class="code-property">description</span>: Replace with description</span>
+<span class="code-line"><span class="code-comment">  of the skill and when Claude</span></span>
+<span class="code-line"><span class="code-comment">  should use it.</span></span>
+<span class="code-line"><span class="code-comment">---</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># Insert instructions below</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><code>---</code> 标记"配置区"开始。</p>
+              <p class="tl"><strong>name</strong>：技能的唯一 ID，只能用小写字母、数字、连字符（<span class="term" data-definition="kebab-case（烤肉串命名法）：一种命名规矩——全小写、单词之间用连字符 - 连接，比如 my-cool-skill。因样子像串起来的烤肉而得名，编程界到处都用它。">kebab-case</span>）。</p>
+              <p class="tl"><strong>description</strong>：这是<strong>触发开关</strong>——告诉 Claude 什么时候该用它。</p>
+              <p class="tl"><code>---</code> 配置区结束。</p>
+              <p class="tl">下面用 <span class="term" data-definition="Markdown：一种极简的排版语法，用普通符号就能表示标题、加粗、列表。比如 # 是标题、**文字** 是加粗。AI 和开发者都很爱用它。">Markdown</span> 写真正的"教学步骤"。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">两个必填字段，缺一不可</strong>
+            <p>整个 Skill 系统<strong>只认</strong> <code>name</code> 和 <code>description</code> 这两个字段是必须的。其他全是可选。记住这点——它会帮你理解为什么 description 那么关键（Module 4 会专门讲）。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: 文件树——完整解剖 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">完整的 Skill 长什么样？</h2>
+        <p>当任务变复杂，一个 Skill 就会"长"出更多文件夹。这是仓库里 <code>skill-creator</code> 总结的标准结构：</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">skill-name/</span>
+            <span class="ft-desc">整个技能的根文件夹</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">SKILL.md</span>
+                <span class="ft-desc">★ 必需。配置 + 主说明书</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">scripts/</span>
+                <span class="ft-desc">可执行的代码——干"确定性强"的活</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">references/</span>
+                <span class="ft-desc">文档，按需才读（省脑容量）</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">assets/</span>
+                <span class="ft-desc">输出时要用的素材：模板、图标、字体</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">evals/</span>
+                <span class="ft-desc">测试用例，用来验证技能好不好使</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>注意：只有 <code>SKILL.md</code> 是<strong>必需</strong>的，其余四个文件夹都是<strong>按需添加</strong>。简单技能啥都不用加。</p>
+      </section>
+
+      <!-- ── Screen 3: 三个零件的职责对比 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">scripts / references / assets，有啥区别？</h2>
+        <p>这三个可选文件夹最容易搞混。它们的核心区别在于<strong>"谁来执行"</strong>和<strong>"什么时候被用到"</strong>：</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">⚙️</div>
+            <h4 class="pattern-title">scripts/</h4>
+            <p class="pattern-desc"><strong>代码亲自干活。</strong>适合确定性强、重复的任务——比如"把 PDF 转成图片"。Claude 调用它运行，结果可信。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📚</div>
+            <h4 class="pattern-title">references/</h4>
+            <p class="pattern-desc"><strong>给 Claude 读的说明书。</strong>适合需要判断、灵活应变的场景——比如"各种云平台的部署差异"。Claude 读进脑子的文字。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🎨</div>
+            <h4 class="pattern-title">assets/</h4>
+            <p class="pattern-desc"><strong>现成的素材。</strong>Claude 不需要"理解"它，直接拿来用——比如公司 logo、PPT 模板、字体文件。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">判断技巧：问自己一个问题</strong>
+            <p>"这事是一步一步<strong>死步骤</strong>吗？" → 用 <code>scripts</code>。"这事需要<strong>看情况判断</strong>吗？" → 用 <code>references</code>。"这是个<strong>现成文件</strong>吗？" → 用 <code>assets</code>。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 4: SKILL.md 的 frontmatter 字段全解 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">配置区（frontmatter）能写哪些字段？</h2>
+        <p>文件顶部那段夹在三道杠之间的配置区，学名叫 <span class="term" data-definition="frontmatter（前置元数据）：放在文档最开头、用三道杠 --- 包起来的一段配置信息。它不属于正文，专门给机器读的'档案信息'。">frontmatter</span>。仓库里有个 <code>quick_validate.py</code> 校验脚本，它白纸黑字规定了<strong>哪些字段合法</strong>。看它的代码就知道规则：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/scripts/quick_validate.py</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment"># Define allowed properties</span></span>
+<span class="code-line">ALLOWED_PROPERTIES = {</span>
+<span class="code-line">  <span class="code-string">'name'</span>, <span class="code-string">'description'</span>,</span>
+<span class="code-line">  <span class="code-string">'license'</span>, <span class="code-string">'allowed-tools'</span>,</span>
+<span class="code-line">  <span class="code-string">'metadata'</span>, <span class="code-string">'compatibility'</span></span>
+<span class="code-line">}</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># Check for unexpected properties</span></span>
+<span class="code-line">unexpected_keys =</span>
+<span class="code-line">  set(frontmatter.keys())</span>
+<span class="code-line">  - ALLOWED_PROPERTIES</span>
+<span class="code-line"><span class="code-keyword">if</span> unexpected_keys:</span>
+<span class="code-line">  <span class="code-keyword">return</span> <span class="code-keyword">False</span>,</span>
+<span class="code-line">    <span class="code-string">f"Unexpected key(s)..."</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">这是脚本里定义的<strong>合法字段白名单</strong>。</p>
+              <p class="tl"><code>name</code> 和 <code>description</code>——必填，前面讲过。</p>
+              <p class="tl"><code>license</code>（许可证）、<code>allowed-tools</code>（允许用的工具）——可选。</p>
+              <p class="tl"><code>metadata</code>（元数据）、<code>compatibility</code>（兼容性）——可选。</p>
+              <p class="tl">脚本把用户写的字段跟白名单做<strong>减法</strong>。</p>
+              <p class="tl">只要有多余的字段（比如你手滑写了 <code>nmae</code>）……</p>
+              <p class="tl">校验直接<strong>失败</strong>，打包都过不了。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">常见的坑：字段名写错</strong>
+            <p>校验对字段名是<strong>严格</strong>的。你写 <code>desciption</code>（拼错）或 <code>tools</code>（简写）都会被拒。这是好事——它强迫你写规范，避免 AI 加载时困惑。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 5: name 字段的命名规则（也是从校验代码来的）── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">name 字段的命名规矩</h2>
+        <p>同一个校验脚本里，对 <code>name</code> 还有一堆细致的检查。用聊天记录的方式看看"校验器"是怎么挑刺的：</p>
+
+        <div class="chat-window" id="chat-module2">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>我给我的技能起名叫 <code>My Cool Skill</code>，行不行？</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="validator" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">V</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">校验器</span>
+                <p>不行！name 只能用<strong>小写字母、数字、连字符</strong>。空格和大写都非法。改成 <code>my-cool-skill</code> 吧。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>那叫 <code>-pdf-tool</code>？开头加个连字符挺酷的。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="validator" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">V</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">校验器</span>
+                <p>也不行！<strong>不能以连字符开头或结尾</strong>，也不能有两个连着的连字符 <code>--</code>。试试 <code>pdf-tool</code>。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>懂了。那名字最长能多长？</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="5" data-sender="validator" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">V</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">校验器</span>
+                <p>最多 <strong>64 个字符</strong>。够你用了。这种"小写+连字符"的写法有个专门的名字叫 <strong>kebab-case</strong>（烤肉串格式），编程界到处都是它。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module2-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一条</button>
+            <button class="btn chat-all-btn">全部播放</button>
+            <button class="btn chat-reset-btn">重播</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 一个真实复杂 Skill 的实例 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">看个真实的复杂例子：skill-creator</h2>
+        <p>前面看的是模板。现在看仓库里最"丰满"的 Skill——<code>skill-creator</code>，它把所有可选文件夹都用上了：</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">skill-creator/</span>
+            <span class="ft-desc">一个"用来造技能的技能"</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">SKILL.md</span>
+                <span class="ft-desc">485 行的主说明书</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">scripts/</span>
+                <span class="ft-desc">打包、校验、跑评测的代码</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">references/</span>
+                <span class="ft-desc">JSON 结构说明等深度文档</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">assets/</span>
+                <span class="ft-desc">评测评审用的 HTML 模板</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">agents/</span>
+                <span class="ft-desc">给子代理的专门指令</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">eval-viewer/</span>
+                <span class="ft-desc">可视化测试结果的工具</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">注意：结构是为内容服务的</strong>
+            <p><code>skill-creator</code> 这么复杂，是因为它本身要做的事很复杂（造+测+优化技能）。你的海报技能可能只需要一个 <code>SKILL.md</code> 加一个 <code>assets/</code> 放 logo。<strong>从简单开始，需要时再加文件夹</strong>——这是仓库里所有技能遵循的原则。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 拖拽练习 + 测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">动手配对：把素材放进对的文件夹</h2>
+        <p>假设你在做一个"PPT 制作"技能。下面这些素材，分别该放进哪个文件夹？拖一拖试试（手机上也可以点）：</p>
+
+        <div class="dnd-container" id="dnd-module2">
+          <div class="dnd-chips">
+            <div class="dnd-chip" draggable="true" data-answer="scripts">把 PPT 转成 PDF 的脚本</div>
+            <div class="dnd-chip" draggable="true" data-answer="assets">公司标准 PPT 模板.pptx</div>
+            <div class="dnd-chip" draggable="true" data-answer="references">"如何讲好一个融资故事"的写作指南</div>
+            <div class="dnd-chip" draggable="true" data-answer="assets">公司 logo.png</div>
+            <div class="dnd-chip" draggable="true" data-answer="scripts">自动生成图表的 Python 代码</div>
+            <div class="dnd-chip" draggable="true" data-answer="references">各行业配色规范说明文档</div>
+          </div>
+          <div class="dnd-zones">
+            <div class="dnd-zone" data-correct="scripts">
+              <p class="dnd-zone-label">⚙️ scripts/ — 代码干活</p>
+              <div class="dnd-zone-target">拖到这里</div>
+            </div>
+            <div class="dnd-zone" data-correct="assets">
+              <p class="dnd-zone-label">🎨 assets/ — 现成素材</p>
+              <div class="dnd-zone-target">拖到这里</div>
+            </div>
+            <div class="dnd-zone" data-correct="references">
+              <p class="dnd-zone-label">📚 references/ — 给 AI 读的说明</p>
+              <div class="dnd-zone-target">拖到这里</div>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
+            <button class="btn" onclick="checkDnD('dnd-module2')">检查配对</button>
+            <button class="btn" onclick="resetDnD('dnd-module2')">重置</button>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)">配对完，再来一道情境题：</p>
+
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="完全正确。处理 .docx 这种格式固定的、步骤明确的任务，最适合写成可执行脚本——结果可靠、可复用。这正是 docx 技能里 scripts/ 文件夹装的东西（unpack、comment、accept_changes 等脚本）。"
+               data-explanation-wrong="方向反了。'读 Word 文档提取文字'是确定性强的死步骤，应该交给代码（scripts）来保证每次结果一致。如果写成 references 让 AI 自己'看着办'，它会不稳定、还可能弄错格式。想想：哪类东西更需要'每次都一模一样'？">
+            <h3 class="quiz-question">你在做一个处理 Word 文档的技能。下面哪项内容，最应该放进 <code>scripts/</code> 而不是 <code>references/</code>？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"如何根据读者身份调整公文语气"的写作心得</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"把 .docx 解包成 XML、提取出所有纯文本"的固定操作步骤</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"不同行业合同模板的差异对比"说明</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>公司红头文件的 .docx 模板</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">渐进式披露</h1>
+      <p class="module-subtitle">Skill 系统最聪明的设计：像洋葱一样一层层剥开，用到哪层翻哪层。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 核心问题——脑容量 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先理解一个根本限制</h2>
+        <p>AI 有个绕不开的物理限制：<span class="term" data-definition="上下文窗口（Context Window）：AI 一次对话能'同时记住'的文字总量上限。就像一张桌子，能摊开的资料有限——摊太多就会挤掉旧的。这是 AI 的'工作记忆'。">上下文窗口</span>。</p>
+        <p>如果把所有技能的全部说明书一次性塞给它，桌子立刻爆满——它反而什么都做不好。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">所以 Skill 系统的核心设计问题</strong>
+            <p>怎么做到"<strong>既装得下海量专业知识，又不撑爆脑容量</strong>"？答案就是仓库里反复强调的设计哲学：<strong>渐进式披露</strong>（Progressive Disclosure）。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: 三层架构——原文 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">三层加载，各管一摊</h2>
+        <p>这是 <code>skill-creator</code> 里白纸黑字写的官方设计。看原文怎么描述这套机制（<span class="term" data-definition="context（上下文）：AI 当前能'看见'的全部信息——你的问题、之前的对话、加载进来的文档。可以理解为它此刻'眼前摊开的所有材料'。">context</span> 在这里就是"AI 此刻脑子里装的东西"）：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">#### Progressive Disclosure</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">Skills use a three-level</span></span>
+<span class="code-line"><span class="code-comment">loading system:</span></span>
+<span class="code-line">1. <span class="code-string">Metadata</span> (name + description)</span>
+<span class="code-line">   - Always in context (~100 words)</span>
+<span class="code-line">2. <span class="code-string">SKILL.md body</span></span>
+<span class="code-line">   - In context whenever skill triggers</span>
+<span class="code-line">   - (<span class="code-number">&lt;500</span> lines ideal)</span>
+<span class="code-line">3. <span class="code-string">Bundled resources</span></span>
+<span class="code-line">   - As needed (unlimited,</span>
+<span class="code-line">   scripts can execute w/o loading)</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">小标题：<strong>渐进式披露</strong>。</p>
+              <p class="tl">技能用一套<strong>三级加载</strong>系统。</p>
+              <p class="tl"><strong>第一级：元数据</strong>（名字 + 简介）。</p>
+              <p class="tl">这个<strong>永远</strong>在 Claude 脑子里，大概才 100 个词——所以再省不过了。</p>
+              <p class="tl"><strong>第二级：SKILL.md 正文</strong>。</p>
+              <p class="tl">只有当技能被<strong>触发</strong>时才整篇加载进来。</p>
+              <p class="tl">理想情况控制在 <strong>500 行以内</strong>。</p>
+              <p class="tl"><strong>第三级：捆绑资源</strong>（scripts/references/assets）。</p>
+              <p class="tl">按需才读，<strong>不限大小</strong>——而且脚本能直接跑，根本不用读进脑子！</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 三层可视化 + 比喻 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">用"图书馆"理解这三层</h2>
+        <p>想象 Claude 是个图书管理员，面前是一座巨大的图书馆。这套三级系统就像图书馆的<strong>检索效率设计</strong>：</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📇</div>
+            <h4 class="pattern-title">第一级 · 卡片目录</h4>
+            <p class="pattern-desc"><strong>永远摊在桌面。</strong>每本书只有一张索引卡（书名+一句话简介）。管理员扫一眼就知道哪本书可能相关——但书的细节一点没读。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📖</div>
+            <h4 class="pattern-title">第二级 · 翻开那本书</h4>
+            <p class="pattern-desc"><strong>确认相关了才取下来读。</strong>读的是书的正文（SKILL.md）。这一步才真正"占脑容量"，所以要克制——500 行内。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🗄️</div>
+            <h4 class="pattern-title">第三级 · 查阅书后附录</h4>
+            <p class="pattern-desc"><strong>遇到具体难题才去翻。</strong>书的附录、参考文献（references）无限多也不怕，用到哪本翻哪本。脚本更妙——直接让机器替你跑，自己都不用读。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">这套设计的精妙之处</strong>
+            <p>100 本书的卡片目录只占一张桌面的角落，但能让管理员瞬间定位到<strong>任何一本</strong>。Skill 系统也是：你装 50 个技能，第一级才占 5000 词——而真用起来，每次只深挖其中一两个。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 4: "500行"规则的实战意义 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">"SKILL.md 控制在 500 行"——为什么？</h2>
+        <p>这条规则不是拍脑袋定的。它背后有个朴素的道理，原文是这么解释的：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">**Key patterns:**</span></span>
+<span class="code-line">- Keep SKILL.md under 500 lines;</span>
+<span class="code-line">  <span class="code-keyword">if</span> you are approaching</span>
+<span class="code-line">  this limit, add an additional</span>
+<span class="code-line">  layer of hierarchy along</span>
+<span class="code-line">  with clear pointers about</span>
+<span class="code-line">  where the model should go</span>
+<span class="code-line">  next to follow up.</span>
+<span class="code-line"></span>
+<span class="code-line">- Reference files clearly from</span>
+<span class="code-line">  SKILL.md with guidance on</span>
+<span class="code-line">  <span class="code-keyword">when</span> to read them</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>关键模式：</strong></p>
+              <p class="tl">把 SKILL.md 控制在 500 行以内。</p>
+              <p class="tl">如果你快超了……</p>
+              <p class="tl">那就<strong>再加一层结构</strong>（拆出 references 文件）……</p>
+              <p class="tl">并且写清楚<strong>"接下来该去哪读"</strong>的指引。</p>
+              <p class="tl">在 SKILL.md 里要<strong>明确引用</strong>那些外部文件……</p>
+              <p class="tl">并告诉模型<strong>"什么时候"该去读它们</strong>。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>这就引出了一条实战铁律：<strong>SKILL.md 是"目录 + 总纲"，不是"全书"</strong>。细节往 references 里塞，主文件只留主干和"路标"。</p>
+      </section>
+
+      <!-- ── Screen 5: 分域组织——多云部署的例子 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一个高级技巧：按"域"分文件</h2>
+        <p>当技能要支持好几个不同的东西（比如部署到 AWS、GCP、Azure 三朵云），仓库推荐这样组织——<strong>主文件只做调度，细节分文件存</strong>：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md（分域组织）</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">**Domain organization**: When a</span></span>
+<span class="code-line"><span class="code-comment">skill supports multiple</span></span>
+<span class="code-line"><span class="code-comment">domains/frameworks, organize</span></span>
+<span class="code-line"><span class="code-comment">by variant:</span></span>
+<span class="code-line"></span>
+<span class="code-line">cloud-deploy/</span>
+<span class="code-line">├── SKILL.md (workflow + selection)</span>
+<span class="code-line">└── references/</span>
+<span class="code-line">    ├── aws.md</span>
+<span class="code-line">    ├── gcp.md</span>
+<span class="code-line">    └── azure.md</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-string">Claude reads only the relevant</span></span>
+<span class="code-line"><span class="code-string">reference file.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>分域组织</strong>：当一个技能……</p>
+              <p class="tl">要支持多个"领域/框架"时，按"变体"来组织。</p>
+              <p class="tl">假设有个"云部署"技能，目录长这样：</p>
+              <p class="tl"><code>SKILL.md</code> 只负责"整体流程 + 选哪个云"。</p>
+              <p class="tl">具体的部署细节拆进 references 文件夹……</p>
+              <p class="tl">AWS 的归 aws.md，GCP 的归 gcp.md，Azure 的归 azure.md。</p>
+              <p class="tl">结果是：<strong>Claude 只读它真正需要的那一个文件</strong>。你说要部署到 GCP，它绝不碰 aws.md——又省一大块脑容量。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这是给 AI 写说明书的通用智慧</strong>
+            <p>无论是不是 Skill，<strong>给 AI 提供信息时，"分层 + 带路标"永远比"一锅端"好</strong>。AI 跟人一样——面对一本 5000 页的手册会懵，面对一份"目录+按需展开"的指南就能高效干活。这个原则你在指挥 AI 时随时能用上。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 真实例子——mcp-builder 就是这么干的 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">看仓库里的真实案例：mcp-builder</h2>
+        <p><code>mcp-builder</code>（教 AI 造 MCP 服务的技能）正是这么做的。它的 SKILL.md 主文件做调度，把 Python 和 TypeScript 两种语言的具体玩法拆进了 reference 文件夹：</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">mcp-builder/</span>
+            <span class="ft-desc">支持两种语言的复杂技能</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">SKILL.md</span>
+                <span class="ft-desc">主流程 + "选哪种语言"的指引</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">reference/</span>
+                <span class="ft-desc">按需加载的深度文档</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">scripts/</span>
+                <span class="ft-desc">评测代码（不读，直接跑）</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>当你说"用 Python 写个 MCP 服务"，它只读 <code>python_mcp_server.md</code>；说 TypeScript，就读 <code>node_mcp_server.md</code>。两条线互不干扰，脑容量省一半。</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">小细节：reference 还是 references？</strong>
+            <p>注意 <code>mcp-builder</code> 用的是 <code>reference/</code>（单数），而 <code>skill-creator</code> 规范里写的是 <code>references/</code>（复数）。文件夹名其实没有强制要求——<strong>关键是 SKILL.md 里要写清楚"去哪里读、什么时候读"</strong>。AI 看的是你的指引，不是文件夹名。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">检测你的理解</h2>
+
+        <div class="quiz-container" id="quiz-module3">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你做了个"全平台部署"技能，内容超多：AWS 800 行、GCP 700 行、Azure 600 行。你把它们全塞进了一个 SKILL.md（共 2100 行）。结果 Claude 用起来又慢又容易串台。基于本模块的渐进式披露原则，下面哪个改法最对症？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正是此理。这正是仓库里 cloud-deploy 示例的做法：SKILL.md 只留总流程和"选哪个云"的判断（轻量、永远只读这一份），三朵云的细节分别拆进 references 下的独立文件，Claude 只加载它真正要用的那一份。既瘦身又防串台。"
+               data-explanation-wrong="没抓到要害。问题根源是'一次性把 2100 行全塞进脑子'违反了渐进式披露。光压缩文字或加工具限制，都没解决'按需只读相关部分'这个核心。想想：怎么才能让 Claude 在部署 GCP 时，完全不去读 AWS 的那 800 行？">
+            <h3 class="quiz-question">最对症的改法是？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把每朵云的内容都压缩到 200 行以内，还是全放 SKILL.md</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把 description 写得更详细，让 Claude 更小心地读</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>SKILL.md 只保留"总流程 + 如何选择云平台"，三朵云的具体步骤分别拆进 references/aws.md、gcp.md、azure.md</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>拆成三个独立的 Skill（aws-deploy、gcp-deploy、azure-deploy）</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-4" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">触发：description 的魔法</h1>
+      <p class="module-subtitle">整个系统里最关键、也最容易被忽视的一个字段。它写得好不好，直接决定技能"装了等于没装"还是"指哪打哪"。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 为什么 description 是命脉 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">回顾一下：Claude 怎么决定用不用你的技能？</h2>
+        <p>还记得 Module 1 的那张流程图吗？Claude 决策时，<strong>唯一能看到的</strong>就是每个技能的 <code>description</code>。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这是整个系统的咽喉要道</strong>
+            <p>name 只是身份证号，SKILL.md 正文它还看不到。Claude 判断"这个任务要不要调某个技能"，<strong>完全</strong>依赖 description 这几十上百个字。description 写砸了，再牛的技能也永远触发不了——等于白装。</p>
+          </div>
+        </div>
+
+        <p>仓库里直接点明了这件事的分量：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">**description**: When to trigger,</span></span>
+<span class="code-line"><span class="code-comment">what it does. This is the</span></span>
+<span class="code-line"><span class="code-comment">primary triggering mechanism</span></span>
+<span class="code-line"><span class="code-comment">- include both what the skill</span></span>
+<span class="code-line"><span class="code-comment">does AND specific contexts for</span></span>
+<span class="code-line"><span class="code-comment">when to use it. All "when to use"</span></span>
+<span class="code-line"><span class="code-comment">info goes here, not in the body.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>description</strong>：什么时候触发、做什么事。</p>
+              <p class="tl">这是<strong>首要的触发机制</strong>——</p>
+              <p class="tl">要同时写清楚"技能能干啥"<strong>和</strong>"什么场景下该用它"。</p>
+              <p class="tl">所有"何时使用"的信息……</p>
+              <p class="tl">都放这里，<strong>别放到正文里</strong>（正文触发时才看，太晚了）。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: "写得 pushy 一点" ——反直觉的关键建议 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">反直觉的建议：要"强势"一点</h2>
+        <p>这里有个特别实在的洞察。Claude 有个通病——<strong>该用技能时常常不敢用</strong>（官方叫"undertrigger"，触发不足）。怎么治？看原文：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">Note: currently Claude has a</span></span>
+<span class="code-line"><span class="code-comment">tendency to "undertrigger"</span></span>
+<span class="code-line"><span class="code-comment">skills -- to not use them when</span></span>
+<span class="code-line"><span class="code-comment">they would be useful. To combat</span></span>
+<span class="code-line"><span class="code-comment">this, please make the skill</span></span>
+<span class="code-line"><span class="code-comment">descriptions a little bit</span></span>
+<span class="code-line"><span class="code-comment">"pushy".</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">注意：现在的 Claude 有个倾向……</p>
+              <p class="tl">会"<strong>触发不足</strong>"——</p>
+              <p class="tl">明明该用某个技能，它却不用。</p>
+              <p class="tl">为了对付这个毛病……</p>
+              <p class="tl">请把技能的描述写得<strong>稍微"强势"一点</strong>。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>原文还直接给了个<strong>改写示范</strong>，非常值得揣摩：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">改写示范</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment"># 原版（太含蓄）：</span></span>
+<span class="code-line"><span class="code-string">"How to build a simple fast</span></span>
+<span class="code-line"><span class="code-string"> dashboard to display internal</span></span>
+<span class="code-line"><span class="code-string"> Anthropic data."</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 改写版（pushy）：</span></span>
+<span class="code-line"><span class="code-string">"How to build a simple fast</span></span>
+<span class="code-line"><span class="code-string"> dashboard... Make sure to use</span></span>
+<span class="code-line"><span class="code-string"> this skill whenever the user</span></span>
+<span class="code-line"><span class="code-string"> mentions dashboards, data</span></span>
+<span class="code-line"><span class="code-string"> visualization, internal metrics,</span></span>
+<span class="code-line"><span class="code-string"> or wants to display any kind of</span></span>
+<span class="code-line"><span class="code-string"> company data, even if they do not</span></span>
+<span class="code-line"><span class="code-string"> explicitly ask for a dashboard."</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">对比解读</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>原版</strong>只是客观描述能干啥。</p>
+              <p class="tl">问题在于：用户可能说"我想看看销售数据"，没提"dashboard"这个词——原版就不会触发。</p>
+              <p class="tl"><strong>改写版</strong>主动列举了用户可能说的各种说法。</p>
+              <p class="tl">还专门加了一句"哪怕没明说要 dashboard，只要有这些迹象就用我"。</p>
+              <p class="tl">这就是"<strong>pushy</strong>"——不是无礼，而是<strong>把触发条件铺得足够广</strong>，把犹豫的 Claude 推一把。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 拿仓库里的真实样本对比 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">看仓库里的"教科书级"写法</h2>
+        <p>这个仓库里的 description 本身就是范本。挑两个对比着看——先看一个<strong>普通但合格</strong>的：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skills/mcp-builder/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-property">description</span>: Guide <span class="code-keyword">for</span> creating</span>
+<span class="code-line">  high-quality MCP servers that</span>
+<span class="code-line">  enable LLMs to interact <span class="code-keyword">with</span></span>
+<span class="code-line">  external services through</span>
+<span class="code-line">  well-designed tools. Use when</span>
+<span class="code-line">  building MCP servers to</span>
+<span class="code-line">  integrate APIs <span class="code-keyword">or</span> services,</span>
+<span class="code-line">  whether <span class="code-keyword">in</span> Python (FastMCP)</span>
+<span class="code-line">  <span class="code-keyword">or</span> Node/TypeScript (MCP SDK).</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">拆解它的套路</span>
+            <div class="translation-lines">
+              <p class="tl">第一句：<strong>这是什么</strong>（造 MCP 服务的指南）。</p>
+              <p class="tl">中间：<strong>价值</strong>（让大模型能跟外部服务交互）。</p>
+              <p class="tl">最后：<strong>"Use when"</strong>——明确触发时机。</p>
+              <p class="tl">还贴心地列了技术栈（Python / TypeScript），覆盖不同说法。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>再看一个<strong>把 pushy 发挥到极致</strong>的——仓库里的 <code>claude-api</code> 技能，它的 description 简直像一份"使用说明书"：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skills/claude-api/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-property">description</span>: |-</span>
+<span class="code-line">  <span class="code-string">TRIGGER — read BEFORE opening</span></span>
+<span class="code-line">  <span class="code-string">the target file; do not skip</span></span>
+<span class="code-line">  <span class="code-string">because it "looks like a</span></span>
+<span class="code-line">  <span class="code-string">one-liner" — whenever: the</span></span>
+<span class="code-line">  <span class="code-string">prompt names Claude/Anthropic...</span></span>
+<span class="code-line">  <span class="code-string">OR the task is LLM-shaped with</span></span>
+<span class="code-line">  <span class="code-string">provider unstated (agent/MCP/</span></span>
+<span class="code-line">  <span class="code-string">tool-definition/multi-agent/RAG</span></span>
+<span class="code-line">  <span class="code-string">...).</span></span>
+<span class="code-line">  <span class="code-string">SKIP only when another provider</span></span>
+<span class="code-line">  <span class="code-string">is being worked on...</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">它强在哪</span>
+            <div class="translation-lines">
+              <p class="tl">开头就喊"TRIGGER"——<strong>当命令用</strong>。</p>
+              <p class="tl">预防性地说"别因为文件看着简单就跳过我"——堵住 AI 的偷懒借口。</p>
+              <p class="tl">疯狂列举触发词：Claude、Anthropic、agent、MCP、RAG……</p>
+              <p class="tl">还写了<strong>反向条件</strong>："SKIP only when"——什么时候不要触发。</p>
+              <p class="tl">正反两面都堵死了，AI 几乎没有误判空间。这是 description 写作的<strong>天花板</strong>。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 4: description 的硬约束（长度/字符）── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">description 的两条硬规矩</h2>
+        <p>写 description 不能放飞。校验脚本 <code>quick_validate.py</code> 卡了两条硬限制，违反就打包失败：</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📏</div>
+            <h4 class="pattern-title">最多 1024 个字符</h4>
+            <p class="pattern-desc">推起来要够广，但不能啰嗦到撑爆第一级（永远在脑中的元数据）。在"覆盖足够多触发词"和"保持精炼"之间找平衡。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🚫</div>
+            <h4 class="pattern-title">不能有尖括号 &lt; &gt;</h4>
+            <p class="pattern-desc">因为 description 会被当成纯文本处理，尖括号会被误读成 HTML/XML 标签而惹乱子。想强调就用引号或大写，别用 <code>&lt;这样&gt;</code>。</p>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-6)">对应的校验代码很直白：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">quick_validate.py</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment"># Check for angle brackets</span></span>
+<span class="code-line"><span class="code-keyword">if</span> <span class="code-string">'&lt;'</span> <span class="code-keyword">in</span> description</span>
+<span class="code-line">  <span class="code-keyword">or</span> <span class="code-string">'&gt;'</span> <span class="code-keyword">in</span> description:</span>
+<span class="code-line">  <span class="code-keyword">return</span> <span class="code-keyword">False</span>,</span>
+<span class="code-line">    <span class="code-string">"Description cannot contain"</span></span>
+<span class="code-line">    <span class="code-string">"angle brackets"</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># Check description length</span></span>
+<span class="code-line"><span class="code-keyword">if</span> len(description) &gt; <span class="code-number">1024</span>:</span>
+<span class="code-line">  <span class="code-keyword">return</span> <span class="code-keyword">False</span>,</span>
+<span class="code-line">    <span class="code-string">f"...Maximum is 1024..."</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">检查 description 里有没有尖括号。</p>
+              <p class="tl">只要有一个 <code>&lt;</code> 或 <code>&gt;</code>……</p>
+              <p class="tl">校验失败："不能包含尖括号"。</p>
+              <p class="tl">再检查长度。</p>
+              <p class="tl">超过 1024 个字符……</p>
+              <p class="tl">同样失败，上限就是 1024。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 5: AI 的决策逻辑——一个关键提醒 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">但别忘了：AI 是"按需"才查技能的</h2>
+        <p>有个特别重要的细节，原文专门强调过。它会影响你怎么设计测试用例：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">Claude only consults skills for</span></span>
+<span class="code-line"><span class="code-comment">tasks it cannot easily handle on</span></span>
+<span class="code-line"><span class="code-comment">its own -- simple, one-step</span></span>
+<span class="code-line"><span class="code-comment">queries like "read this PDF" may</span></span>
+<span class="code-line"><span class="code-comment">not trigger a skill even if the</span></span>
+<span class="code-line"><span class="code-comment">description matches perfectly.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">Claude <strong>只在</strong>遇到自己搞不定的任务时，才会去翻技能。</p>
+              <p class="tl">那种简单的一步任务……</p>
+              <p class="tl">比如"读一下这个 PDF"……</p>
+              <p class="tl"><strong>可能根本不会触发</strong>技能……</p>
+              <p class="tl">哪怕 description 写得完美匹配——因为它觉得自己直接就能干。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">实战影响：测试技能时别用太简单的任务</strong>
+            <p>你想验证"PDF 技能能不能触发"，如果只输入"读一下 a.pdf"，可能根本不触发——不是技能坏了，是任务太简单 Claude 觉得自己能搞定。<strong>要用复杂、多步、专业的真实任务来测</strong>，比如"提取这份合同的违约条款并按风险排序"。这也是后面 Module 5 会讲的"评测"的关键。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: description 优化循环（数据流动画）── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">仓库还自带了一个"优化 description"的工具</h2>
+        <p>description 这么重要，仓库干脆给了个自动化优化流程（在 <code>skill-creator/scripts/</code> 里）。它会反复测试、改写、再测试，直到触发率够高。点开看看这个循环：</p>
+
+        <div class="flow-animation animate-in" data-steps='[
+          {"highlight":"flow-m4-1","label":"准备 20 个测试问题：一半该触发、一半不该触发（故意写得接近，用来刁难）"},
+          {"highlight":"flow-m4-2","label":"把问题分成训练集（60%）和验证集（40%）","packet":true,"from":"m4-1","to":"m4-2"},
+          {"highlight":"flow-m4-2","label":"用当前的 description 跑训练集，每个问题测 3 次取平均，得到触发率"},
+          {"highlight":"flow-m4-3","label":"把没触发/误触发的案例交给 Claude，让它改写 description","packet":true,"from":"m4-2","to":"m4-3"},
+          {"highlight":"flow-m4-3","label":"改写后再测——这次用从没见过的验证集，防止死记硬背"},
+          {"highlight":"flow-m4-4","label":"循环最多 5 轮，最终挑验证集得分最高的版本","packet":true,"from":"m4-3","to":"m4-4"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-m4-1">
+              <div class="flow-actor-icon" style="background: var(--color-actor-1)">❓</div>
+              <span>测试问题集</span>
+            </div>
+            <div class="flow-actor" id="flow-m4-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">📊</div>
+              <span>跑测试</span>
+            </div>
+            <div class="flow-actor" id="flow-m4-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-3)">✏️</div>
+              <span>AI 改写</span>
+            </div>
+            <div class="flow-actor" id="flow-m4-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🏆</div>
+              <span>最佳版本</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点击"下一步"开始</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重新开始</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">注意"训练集 vs 验证集"的智慧</strong>
+            <p>为什么要分两份数据？因为如果只在一批问题上反复优化，AI 可能只是<strong>背会了那批问题</strong>（<span class="term" data-definition="overfitting（过拟合）：模型把训练数据'死记硬背'下来了，对新问题却不会举一反三。就像学生背答案而不是真懂知识，换个考法就露馅。">overfitting</span>，过拟合），换个说法就又不灵了。留一份"从没见过的"验证集，才能确认它是<strong>真学会了</strong>而不是死记硬背。这个思想在所有 AI 训练里都通用。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 测验——改写 description ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">实战题：哪个 description 最好？</h2>
+
+        <div class="quiz-container" id="quiz-module4">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你做了个"内部周报生成"技能。用户真实的说法五花八门："帮我总结这周干了啥"、"把我的 git 提交整理成给老板看的汇报"、"该写周报了头大"。下面四个 description，哪个最符合本模块讲的"pushy + 覆盖广 + 带反向条件"的原则？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-d"
+               data-explanation-right="漂亮。这条同时具备：① 说清能干啥（生成周报/进展汇报）；② 用 whenever 把触发场景铺得很广，覆盖了用户各种说法；③ 还暗示了边界（不是写公开新闻稿）。这正是 claude-api 范本的思路——把触发条件写厚，把犹豫的 Claude 推一把。"
+               data-explanation-wrong="这个选项偏弱。想想本模块强调的两点：一是要"pushy"、主动列举用户可能的各种说法（哪怕没提"周报"二字）；二是最好带点反向条件（什么时候别用）。哪个选项把触发面铺得最广、最主动？">
+            <h3 class="quiz-question">选最好的 description：</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"A skill for writing weekly reports."</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"帮助用户写周报的技能。"</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"生成内部周报。当用户明确说'帮我写周报'时使用。"</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"生成周报和进展汇报。Whenever 用户提到总结本周工作、整理提交记录给老板看、写周报、汇报进度——哪怕没明说'周报'两字——都该用这个技能。"</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">创建与迭代循环</h1>
+      <p class="module-subtitle">理论都懂了——那真要从零造一个技能，到底该走什么流程？仓库里的 skill-creator 给了一套成熟方法论。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 核心心法——不是一次成型，是迭代出来 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先记住最重要的一句话</h2>
+        <p>很多人以为"造技能"就是坐下来写一份完美的 SKILL.md。仓库里的 <code>skill-creator</code> 开篇就打破了这个幻想：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">At a high level, the process of</span></span>
+<span class="code-line"><span class="code-comment">creating a skill goes like this:</span></span>
+<span class="code-line"></span>
+<span class="code-line">- Decide what you want it to do</span>
+<span class="code-line">- Write a draft of the skill</span>
+<span class="code-line">- Create a few test prompts and</span>
+<span class="code-line">  run claude-with-the-skill on them</span>
+<span class="code-line">- Evaluate the results (qual + quant)</span>
+<span class="code-line">- Rewrite based on feedback</span>
+<span class="code-line">- Repeat until satisfied</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">造一个技能，宏观上是这么个流程：</p>
+              <p class="tl">先想清楚要它干啥。</p>
+              <p class="tl"><strong>写一版草稿</strong>（注意：是草稿，不是终稿）。</p>
+              <p class="tl">准备几个测试问题，然后<strong>带着技能跑一遍</strong>。</p>
+              <p class="tl">评估结果（定性看质量 + 定量看指标）。</p>
+              <p class="tl">根据反馈<strong>重写</strong>。</p>
+              <p class="tl"><strong>循环，直到满意。</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这跟写代码、写文章是同一个道理</strong>
+            <p>没有人第一稿就写对。技能也是"<strong>草稿 → 测 → 改 → 再测</strong>"打磨出来的。接受这一点，你就不会因为第一版不完美而沮丧——因为本来就不该完美。关键是把循环转起来。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 2: 写作心法——讲"为什么"而非堆"MUST" ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">写作心法：讲道理，别下命令</h2>
+        <p>新手写技能容易犯一个错：通篇"<strong>MUST</strong>"、"<strong>NEVER</strong>"、"<strong>ALWAYS</strong>"，像在训狗。仓库明确反对这种写法。看原文：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">Explain the why. Try hard to</span></span>
+<span class="code-line"><span class="code-comment">explain the why behind everything.</span></span>
+<span class="code-line"><span class="code-comment">Today's LLMs are smart. They have</span></span>
+<span class="code-line"><span class="code-comment">good theory of mind... Even if</span></span>
+<span class="code-line"><span class="code-comment">feedback is terse, try to actually</span></span>
+<span class="code-line"><span class="code-comment">understand the task and transmit</span></span>
+<span class="code-line"><span class="code-comment">this understanding into instructions.</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">If you find yourself writing ALWAYS</span></span>
+<span class="code-line"><span class="code-comment">or NEVER in all caps... that is a</span></span>
+<span class="code-line"><span class="code-comment">yellow flag -- reframe and explain</span></span>
+<span class="code-line"><span class="code-comment">the reasoning.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>解释"为什么"</strong>。尽力把每条指令背后的原因讲清楚。</p>
+              <p class="tl">今天的大模型很聪明，有不错的"心智理论"（能揣摩意图）。</p>
+              <p class="tl">哪怕用户的反馈很简短，也要真正去理解任务……</p>
+              <p class="tl">然后<strong>把这份理解传递</strong>进指令里。</p>
+              <p class="tl">如果你发现自己又在写大写的 ALWAYS / NEVER……</p>
+              <p class="tl">那是<strong>黄牌警告</strong>——</p>
+              <p class="tl">换个说法，把<strong>道理</strong>讲出来。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">对比一下两种写法</strong>
+            <p><strong>差的</strong>："NEVER 用紫色背景。"<br><strong>好的</strong>："避免紫色背景——因为它和我们的品牌色冲突，会让用户混淆两家公司。" 讲清为什么，AI 遇到没见过的情况也能举一反三；只下命令，换个场景它就抓瞎。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 怎么测——with-skill vs baseline ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">怎么测？关键招式：对照实验</h2>
+        <p>评估一个技能好不好，光看它"能不能用"是不够的。要回答一个更狠的问题：<strong>"比我直接让 AI 干，强在哪？"</strong> 仓库的做法是跑<strong>对照实验</strong>（同时起两个 <span class="term" data-definition="subagent（子代理）：由主 AI 派生出去的'分身'，独立完成一个子任务后回报结果。就像主管同时派两个员工各做一版方案，互不干扰，方便对比。">子代理</span>，一个带技能一个不带）：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">For each test case, spawn two</span></span>
+<span class="code-line"><span class="code-comment">subagents in the same turn -- one</span></span>
+<span class="code-line"><span class="code-comment">with the skill, one without.</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">**With-skill run:**</span></span>
+<span class="code-line">- Skill path: &lt;path-to-skill&gt;</span>
+<span class="code-line">- Task: &lt;eval prompt&gt;</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">**Baseline run** (same prompt):</span></span>
+<span class="code-line">- no skill at all</span>
+<span class="code-line">- save to without_skill/outputs/</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">每个测试问题，<strong>同时</strong>起两个子代理……</p>
+              <p class="tl">一个<strong>带着技能</strong>，一个<strong>不带</strong>。</p>
+              <p class="tl"><strong>带技能的</strong>那组：</p>
+              <p class="tl">给它技能路径 + 同一个任务。</p>
+              <p class="tl"><strong>基线组</strong>（同样的问题）：</p>
+              <p class="tl">完全不给技能。</p>
+              <p class="tl">两份结果存到不同文件夹，拿来<strong>对比</strong>。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这是科学实验的思维</strong>
+            <p>只有一个变量（有没有技能），其他全相同（同一个问题、同一时间跑）。如果带技能的明显更好，才能证明"这技能真有用"。否则可能只是这个问题恰好简单、谁都能答好——你误以为是技能的功劳。这种"<strong>对照</strong>"思想，是你日后评估任何 AI 工具的通用武器。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 4: 迭代循环——逐步演示 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一轮完整的迭代，是这样转的</h2>
+        <p>把上面这些串起来，一次迭代是个闭环。用聊天记录看一个真实的迭代对话：</p>
+
+        <div class="chat-window" id="chat-module5">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>我的"海报技能"第一版写好了，SKILL.md 里写了"做海报时用公司字体和主色"。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="sc" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🛠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">skill-creator</span>
+                <p>好，我准备了 3 个测试任务，每个都跑两遍（带技能 vs 不带）。一边跑，我一边起草评分标准。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>结果出来了，打开那个评审页面看看。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="sc" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🛠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">skill-creator</span>
+                <p>评审页有两个 tab：一个能逐个点开看输出、写评语；另一个是定量对比。你先看，看完告诉我感受。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="you" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">你</span>
+                <p>看了。问题在于：技能虽然用了对的颜色，但 logo 位置飘忽——三个任务里三个不同的位置。</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="5" data-sender="sc" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🛠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">skill-creator</span>
+                <p>收到。这不是加一条"ALWAYS 放右下角"能解决的——我会在 SKILL.md 里解释<strong>为什么</strong> logo 要固定位置（为了跨海报的视觉一致性），再跑第二轮。这个"反馈→重写→再测"就是迭代的核心。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module5-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一条</button>
+            <button class="btn chat-all-btn">全部播放</button>
+            <button class="btn chat-reset-btn">重播</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 5: 一个超实用的洞察——发现"重复劳动" ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">迭代中藏着一个金矿：发现"重复劳动"</h2>
+        <p>这是仓库里最实用的洞察之一。当你跑测试、读子代理的对话记录时，要留意一种信号：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/SKILL.md</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment">Look for repeated work across</span></span>
+<span class="code-line"><span class="code-comment">test cases. Read the transcripts</span></span>
+<span class="code-line"><span class="code-comment">from the test runs and notice if</span></span>
+<span class="code-line"><span class="code-comment">the subagents all independently</span></span>
+<span class="code-line"><span class="code-comment">wrote similar helper scripts... If</span></span>
+<span class="code-line"><span class="code-comment">all 3 test cases resulted in the</span></span>
+<span class="code-line"><span class="code-comment">subagent writing a create_docx.py,</span></span>
+<span class="code-line"><span class="code-comment">that is a strong signal the skill</span></span>
+<span class="code-line"><span class="code-comment">should bundle that script.</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">留意<strong>跨测试用例的重复劳动</strong>。</p>
+              <p class="tl">去读测试运行的完整对话记录……</p>
+              <p class="tl">看子代理们是不是<strong>各自独立地</strong>写了相似的辅助脚本。</p>
+              <p class="tl">举个例子：如果 3 个测试里……</p>
+              <p class="tl">子代理都各自写了一个 <code>create_docx.py</code>……</p>
+              <p class="tl">这就是个<strong>强信号</strong>——</p>
+              <p class="tl">说明这个脚本应该<strong>直接打包进技能</strong>的 scripts 文件夹，让以后每次调用都现成的。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这条原则的威力在于"举一反三"</strong>
+            <p>它的本质是：<strong>如果 AI 每次都要现造同一个轮子，那就把这个轮子预先造好</strong>。这个思想不只适用于技能——你日常用 AI 时，如果发现它反复写同一段代码、同一个函数，就该把那段沉淀成可复用的片段。识别"重复"是工程效率的核心直觉。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 最终——打包成 .skill 文件 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">打磨好了，怎么交付？打包成 .skill</h2>
+        <p>迭代满意后，最后一步是打包。<code>package_skill.py</code> 把整个文件夹压成一个 <code>.skill</code> 文件（本质是个 <span class="term" data-definition="zip：一种常见的压缩格式，把多个文件打包成一个、体积更小，便于传输。.skill 文件其实就是换了后缀名的 zip。">zip</span>），方便分发安装。看它的核心逻辑：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">skill-creator/scripts/package_skill.py</span>
+            <pre><code>
+<span class="code-line"><span class="code-comment"># Patterns to exclude</span></span>
+<span class="code-line">EXCLUDE_DIRS = {<span class="code-string">"__pycache__"</span>,</span>
+<span class="code-line">  <span class="code-string">"node_modules"</span>}</span>
+<span class="code-line">EXCLUDE_GLOBS = {<span class="code-string">"*.pyc"</span>}</span>
+<span class="code-line"><span class="code-comment"># Excluded only at skill root</span></span>
+<span class="code-line">ROOT_EXCLUDE_DIRS = {<span class="code-string">"evals"</span>}</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># Run validation first</span></span>
+<span class="code-line">valid, msg = validate_skill(skill_path)</span>
+<span class="code-line"><span class="code-keyword">if</span> <span class="code-keyword">not</span> valid:</span>
+<span class="code-line">  <span class="code-keyword">return</span> <span class="code-keyword">None</span>  <span class="code-comment"># 拒绝打包</span></span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">打包时会<strong>排除</strong>一堆不该带走的东西。</p>
+              <p class="tl"><code>__pycache__</code>、<code>node_modules</code>——这些是运行时的缓存垃圾。</p>
+              <p class="tl"><code>*.pyc</code>——编译过的临时文件。</p>
+              <p class="tl">还有根目录下的 <code>evals</code>——测试用例不打包进去（体积大，且用户不需要）。</p>
+              <p class="tl"><strong>打包前先跑一遍校验</strong>。</p>
+              <p class="tl">校验不过（字段名错、超长等）……</p>
+              <p class="tl">直接<strong>拒绝打包</strong>——把次品拦在出厂前。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">小结：整个流程的节奏感</strong>
+            <p>想清楚 → 写草稿 → 带技能测 + 对照测 → 人看 + 机器打分 → 据反馈重写（讲 why、打包重复脚本）→ 再测 → 满意了打包出厂。这套节奏，比"闷头写一份完美文档"靠谱得多。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">你会怎么做？</h2>
+
+        <div class="quiz-container" id="quiz-module5">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你做了个"代码审查"技能。测了三个真实任务，发现一个共同现象：每次子代理都会自己写一段"读取 git diff 然后按类别整理"的脚本，而且写得都不太一样、偶尔还出错。基于本模块，下一步最该做什么？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="正解。这正是仓库强调的"发现重复劳动"信号：三个测试都独立造了同一个轮子（且质量不稳定），说明这段逻辑该被固化下来。把它写好、放进 scripts/，既保证每次一致可靠，又省去 AI 重复发明的消耗——一举两得。"
+               data-explanation-wrong="没抓住重点。问题不是指令不够严，而是同样的活被重复现造。本模块讲过：当多个测试用例都在独立做同一件事时，正确反应是把那件事打包成技能自带的脚本。想想怎么"一劳永逸"地消灭这个重复。">
+            <h3 class="quiz-question">最该做的下一步是？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>在 SKILL.md 里加一条"MUST 用标准的 git diff 读取方式"</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把这三个测试用例删掉，换成更简单的任务</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把"读取 diff 并按类别整理"写成一个稳定脚本，放进技能的 scripts/ 文件夹，让 SKILL.md 调用它</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>直接打包发布，相信用户用多了就稳定了</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-6" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">生态与全景图</h1>
+      <p class="module-subtitle">最后把镜头拉远——看看这 17 个技能怎么组织、怎么分发，以及这套设计背后的开放标准。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 仓库的全貌 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先看这座"技能动物园"的全貌</h2>
+        <p>这个仓库（<code>anthropics/skills</code>）不是一个技能，而是<strong>17 个技能的集合</strong>，外加规范、模板。它的整体结构是这样的：</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">anthropics/skills/</span>
+            <span class="ft-desc">整个仓库</span>
+            <div class="ft-children">
+              <div class="ft-folder">
+                <span class="ft-name">skills/</span>
+                <span class="ft-desc">★ 17 个现成技能（重头戏）</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">spec/</span>
+                <span class="ft-desc">Agent Skills 官方规范（指向 agentskills.io）</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">template/</span>
+                <span class="ft-desc">一个最小可用的技能模板</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">.claude-plugin/marketplace.json</span>
+                <span class="ft-desc">插件市场的"目录页"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>有意思的是，<code>spec/</code> 文件夹里只有一句话——真正的规范已经搬到了独立网站 <code>agentskills.io/specification</code>。这是个信号：<strong>Skill 不再只是 Claude 的私房菜，而是一个跨厂商的开放标准</strong>。</p>
+      </section>
+
+      <!-- ── Screen 2: 17个技能的分类 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">17 个技能，分成三个"家族"</h2>
+        <p>仓库的 <code>marketplace.json</code> 把这些技能打包成了三个插件集。每个集合服务一类用户：</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📄</div>
+            <h4 class="pattern-title">document-skills（文档四件套）</h4>
+            <p class="pattern-desc"><strong>xlsx · docx · pptx · pdf</strong>。处理办公文档的"生产级"技能，就是 Claude.ai 里"创建文件"功能的内核。源码可见但不开源。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🎨</div>
+            <h4 class="pattern-title">example-skills（示例集）</h4>
+            <p class="pattern-desc"><strong>12 个</strong>演示用技能：算法艺术、前端设计、MCP 构建、网页测试、技能创建器……开源（Apache 2.0），拿来改最适合。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🔌</div>
+            <h4 class="pattern-title">claude-api（开发指南）</h4>
+            <p class="pattern-desc">单个技能，专门教 AI 怎么用 Claude API 和各语言 <span class="term" data-definition="SDK（Software Development Kit，软件开发工具包）：把某个服务的常用功能封装成现成代码库，开发者不用从零写。比如官方的 Python SDK 让你几行代码就能调用 Claude。">SDK</span> 写应用。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">留意"开源 vs 源码可见"的区别</strong>
+            <p>README 明确说：示例技能是 <strong><span class="term" data-definition="Apache 2.0：一种宽松的开源许可证——你可以免费用、改、商用，甚至改成闭源，只要附带一份版权声明。是商业友好的开源协议代表。">Apache 2.0</span> 开源</strong>（随便用、改、商用）；但文档四件套是<strong>"源码可见"（source-available）</strong>——能看、能学，但有专门的许可证限制。用之前务必看各自的 LICENSE.txt。这个区别在软件世界很重要。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 分发机制——marketplace.json ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">技能怎么"上架"和"安装"？</h2>
+        <p>关键就是这个 <code>marketplace.json</code>。它像一份"技能商店的目录"，看它的真实结构：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">.claude-plugin/marketplace.json</span>
+            <pre><code>
+<span class="code-line">{</span>
+<span class="code-line">  <span class="code-property">"name"</span>: <span class="code-string">"anthropic-agent-skills"</span>,</span>
+<span class="code-line">  <span class="code-property">"plugins"</span>: [</span>
+<span class="code-line">    {</span>
+<span class="code-line">      <span class="code-property">"name"</span>: <span class="code-string">"document-skills"</span>,</span>
+<span class="code-line">      <span class="code-property">"source"</span>: <span class="code-string">"./"</span>,</span>
+<span class="code-line">      <span class="code-property">"skills"</span>: [</span>
+<span class="code-line">        <span class="code-string">"./skills/xlsx"</span>,</span>
+<span class="code-line">        <span class="code-string">"./skills/docx"</span>,</span>
+<span class="code-line">        <span class="code-string">"./skills/pptx"</span>,</span>
+<span class="code-line">        <span class="code-string">"./skills/pdf"</span></span>
+<span class="code-line">      ]</span>
+<span class="code-line">    }</span>
+<span class="code-line">  ]</span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">整个市场的名字叫 <code>anthropic-agent-skills</code>。</p>
+              <p class="tl">下面列出若干个"插件包"（plugins）。</p>
+              <p class="tl">比如这个叫 <code>document-skills</code> 的包。</p>
+              <p class="tl"><code>source</code> 指明代码在仓库哪个位置。</p>
+              <p class="tl"><code>skills</code> 列出这个包<strong>包含哪些技能</strong>。</p>
+              <p class="tl">用户安装时是按"<strong>包</strong>"来装的——一次装进四个文档技能。</p>
+              <p class="tl">这种"打包分发"的模式，和手机 App 商店一个思路。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>用户在 Claude Code 里只要一句命令就能装：<code>/plugin install document-skills@anthropic-agent-skills</code>。</p>
+      </section>
+
+      <!-- ── Screen 4: 三种使用入口 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">三扇门，都能用上技能</h2>
+        <p>这套技能系统不绑死某一个产品。同一批技能，三个入口都能用：</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">💻</div>
+            <h4 class="pattern-title">Claude Code（终端）</h4>
+            <p class="pattern-desc">程序员的主场。用 <code>/plugin</code> 命令装技能，还能跑技能自带的脚本、起子代理做对照测试。功能最全。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🌐</div>
+            <h4 class="pattern-title">Claude.ai（网页）</h4>
+            <p class="pattern-desc">付费用户已内置文档四件套。也能上传自己的技能。限制是没法跑子代理，所以"对照评测"这类功能用不了。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">⚡</div>
+            <h4 class="pattern-title">Claude API（代码集成）</h4>
+            <p class="pattern-desc">把技能能力嵌进你自己的应用。适合开发者做产品——比如让你的 App 自动具备"处理 PDF"的能力。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">"一次编写，多处运行"的威力</strong>
+            <p>你写一个技能，三个平台都能用。这是因为技能的格式是<strong>标准化的</strong>（就是前面学的那个 SKILL.md 结构）。标准化带来的复用性，是任何生态系统能壮大的根基——USB 接口、网页的 HTML，都是同一个道理。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 5: 17个技能速览（按用途） ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">17 个技能，一眼速览</h2>
+        <p>把这些技能按"干啥用的"归个类，帮你建立索引（以后想找参考就知道去哪翻）：</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📄</div>
+            <div>
+              <strong>办公文档类</strong>
+              <p>xlsx · docx · pptx · pdf —— 处理表格、文档、幻灯片、PDF</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🎨</div>
+            <div>
+              <strong>创意设计类</strong>
+              <p>algorithmic-art · canvas-design · frontend-design · theme-factory · brand-guidelines —— 生成艺术、海报、网页、主题、品牌物料</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🛠</div>
+            <div>
+              <strong>开发工程类</strong>
+              <p><span class="term" data-definition="MCP（Model Context Protocol，模型上下文协议）：一个开放标准，让 AI 能通过统一的接口调用外部工具和服务。MCP 服务就像给 AI 装的'外挂插件'，让它能查数据库、调 API。">mcp-builder</span> · webapp-testing · web-artifacts-builder · claude-api —— 造 MCP 服务、测网页、建复杂前端、用 Claude API</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">✍️</div>
+            <div>
+              <strong>沟通写作类</strong>
+              <p>internal-comms · doc-coauthoring —— 写内部沟通稿、协作写文档</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">🎁</div>
+            <div>
+              <strong>小工具 + 元技能</strong>
+              <p>slack-gif-creator（做 Slack 动图）· skill-creator（<strong>造技能的技能</strong>，本课程的主角之一）</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 全景回顾——把5个模块串起来 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一张图回顾你学到的全部</h2>
+        <p>把前五个模块的知识点串成一条线——这就是"理解 Skill 系统"的完整心智模型：</p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>是什么</strong>：装满说明书的文件夹，按需加载</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>结构</strong>：SKILL.md + scripts/references/assets</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>加载</strong>：三级渐进披露，省脑容量</p>
+          </div>
+        </div>
+        <div class="flow-steps" style="margin-top: var(--space-4)">
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p><strong>触发</strong>：description 是命脉，要 pushy</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">5</div>
+            <p><strong>打磨</strong>：草稿→对照测→改→循环</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">6</div>
+            <p><strong>生态</strong>：标准格式，三平台通用</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🏆</div>
+          <div class="callout-content">
+            <strong class="callout-title">你现在拥有的超能力</strong>
+            <p>学完这套，你不只是"懂了 Skill 是啥"。你掌握了<strong>如何把专业知识固化成 AI 能自动调用的资产</strong>——这是 AI 时代一项非常实在的能力。无论你是想让 AI 更好地服从你的工作规矩，还是想给团队沉淀一套可复用的智能流程，这条路都通。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 给你的下一步 + 收尾测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">你的下一步：动手造一个</h2>
+        <p>读懂不如做透。给你一个最实在的建议：</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>挑一个你反复对 AI 啰嗦的规矩</strong>
+              <p>比如"我们公司的表格怎么排版"、"我的代码评审 checklist"。越具体越好。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>照着 template/SKILL.md 写一版草稿</strong>
+              <p>name 用 kebab-case，description 写得 pushy 一点。正文先写主干，别贪多。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>用 skill-creator 的思路测一轮</strong>
+              <p>准备 2-3 个真实任务，带技能跑、看结果、改、再跑。第一版不完美是正常的。</p>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)">最后，一道综合题收尾：</p>
+
+        <div class="quiz-container" id="quiz-module6">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你团队想沉淀一套"事故复盘报告"的写作规范（固定章节、固定语气、要引用监控截图），让 Claude 每次都能照办。综合本课程全部六个模块，下面哪套做法最合理？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="满分答案。它综合运用了：渐进式披露（主文件+references 分层）、结构齐全（assets 放模板）、触发命脉（pushy 的 description 覆盖多种说法）、以及迭代打磨（测了再改）。这正是把六模块融会贯通的做法。"
+               data-explanation-wrong="这个方案有遗漏。回顾一下六个模块：结构（scripts/references/assets）、渐进式披露（别全塞主文件）、触发（description 要 pushy）、迭代（测了再改）。哪个选项把这些都考虑全了？">
+            <h3 class="quiz-question">最合理的做法是？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把所有规范、模板、示例全写进一个 SKILL.md，description 写"写事故报告时用"</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>只写一个 description，正文留空，靠 Claude 自己发挥</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>SKILL.md 写主流程和章节骨架，把详细语气规范放进 references/，模板放进 assets/，description 写得 pushy 覆盖"复盘、事故、postmortem"等说法，再用 2-3 个真实事故测一轮迭代</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>等官方出一个事故报告技能，直接用现成的</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module6')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module6')">重做</button>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: var(--space-12)">
+          <div class="callout-icon">🎓</div>
+          <div class="callout-content">
+            <strong class="callout-title">课程到这里就结束啦</strong>
+            <p>你从一个"用过 AI 但不知其所以然"的人，变成了能<strong>看懂 Skill 结构、会设计触发、能迭代打磨、理解整个生态</strong>的人。下一个最好的复习，就是去翻翻仓库里那 17 个真实的 SKILL.md——你会发现，每一个都是这套原则的鲜活样本。祝玩得开心。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<section class="module" id="module-1" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">这是什么：让 AI 助手替你「刷」AI 资讯</h1>
+      <p class="module-subtitle">一句话问出去，一份中文 AI 简报回来——中间发生了什么？</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 这玩意儿是干什么的 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先说结论：两个东西，一个名字</h2>
+        <p>这个项目叫 <code>aihot</code>，但它其实是<strong>两层东西</strong>叠在一起——很多人会搞混，先拆清楚：</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🌐</div>
+            <div>
+              <strong>AI HOT 网站（aihot.virxact.com）</strong>
+              <p>一个公开网站，每天自动收录、翻译、摘要全网 AI 资讯。它是<strong>数据源</strong>——资讯住在那里。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-accent)">📜</div>
+            <div>
+              <strong>aihot 这个 Skill（就是 SKILL.md 这份文档）</strong>
+              <p>一份教 AI 助手「怎么去那个网站拿数据、怎么翻译成人话」的说明书。它是<strong>中间人</strong>——本身不含任何资讯。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">关键区分</strong>
+            <p>整个项目其实只有一个文件：<code>SKILL.md</code>。它不是 App、不是后端、没有数据库——它是一份<strong>写给 AI 看的说明书</strong>。网站是别人的，这个 Skill 只是教你的 AI 助手「怎么开口问那个网站要数据」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 那「Skill」到底是个啥 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">「Skill」是个啥？为什么能教 AI 新本事</h2>
+        <p>你可能在 Claude Code、Cursor、Codex 这些工具里见过「Skill」这个词。说人话：它就是<strong>一张塞进 AI 口袋的便签</strong>。</p>
+        <p>AI 助手本身是个聪明但什么都「大致知道一点」的通才。它<strong>不会</strong>知道：aihot 这个网站存在、它的 API 长什么样、为什么 curl 会被挡、日报和精选有什么区别。这些「这里特有的规矩」就写在这张便签上。AI 一旦读到了，就<strong>临时拥有</strong>了这个能力。</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🧠</div>
+          <div class="callout-content">
+            <strong class="callout-title">「Skill」这个词的两种读法</strong>
+            <p>读作「技能」：它是 AI 助手的一种<strong>扩展机制</strong>——一份按约定格式写的 markdown 文件，平台发现它、在合适时机把它喂给 AI。读作「这个项目本身」：<code>aihot</code> 这个 Skill 特指 <code>/aihot/SKILL.md</code> 这一份文档。这节课讲的是后者。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 全程追踪 — 一次查询的旅程 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">全程追踪：一句「今天 AI 圈有啥」的旅程</h2>
+        <p>想象你在 Claude Code 里敲下这句中文。点「下一步」看你的问题怎么一路变成屏幕上那份排版漂亮的 AI 简报——<strong>四个人</strong>在幕后接龙。</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"你随口问一句：今天 AI 圈有什么？"},
+          {"highlight":"flow-actor-2","label":"AI 助手先判断：这是在问 AI 资讯，我得去查实时数据，不能靠记忆瞎编","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"AI 助手发现自己装了 aihot 这个技能，翻开它的便签 SKILL.md 读规矩"},
+          {"highlight":"flow-actor-3","label":"SKILL.md 说：默认走精选接口，记得给 curl 戴上浏览器 UA，否则会被 403 挡掉"},
+          {"highlight":"flow-actor-2","label":"AI 助手照办，拼出一条 curl 命令，带上 UA 头去请求","packet":true,"from":"actor-2","to":"actor-4"},
+          {"highlight":"flow-actor-4","label":"aihot.virxact.com 收到请求，从数据库捞出最近 24 小时的精选条目，打包成 JSON"},
+          {"highlight":"flow-actor-2","label":"JSON 原始数据传回 AI 助手","packet":true,"from":"actor-4","to":"actor-2"},
+          {"highlight":"flow-actor-2","label":"AI 助手按 SKILL.md 的输出规矩：按版块分组、时间转人话、绝不暴露参数名，整理成中文简报","packet":true,"from":"actor-2","to":"actor-1"},
+          {"highlight":"flow-actor-1","label":"你看到一份清爽的 AI 日报，全程没碰浏览器、没配 API Key"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon" style="background: var(--color-accent)">你</div>
+              <span>用户</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon" style="background: var(--color-actor-2)">AI</div>
+              <span>AI 助手</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon" style="background: var(--color-actor-4)">📜</div>
+              <span>SKILL.md</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon" style="background: var(--color-actor-5)">🌐</div>
+              <span>aihot API</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+
+          <div class="flow-step-label" id="flow-label">点「下一步」开始这场接力</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">下一步</button>
+            <button class="btn flow-reset-btn">重头再来</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这一趟旅程的本质</strong>
+            <p>AI 助手<strong>自己没有</strong>今天的新闻——它的训练数据是过去的、静态的。它真正干的活是「会读说明书 + 会发网络请求 + 会排版」。把过时记忆当今日新闻讲，是这个课程要帮你<strong>识别并拒绝</strong>的头号 AI 翻车模式。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 这张便签长什么样 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">这张「便签」长什么样</h2>
+        <p>SKILL.md 的开头是这么几行——左边是它的真身，右边是说人话版本。注意那个 <span class="term" data-definition="YAML 是一种用缩进表示层级的配置格式，常用在配置文件开头。用三个减号 --- 包起来的区块叫 frontmatter，专门放机器读取的元信息。">YAML frontmatter</span>，它是整份文档的「身份证」。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">SKILL.md 真身</span>
+            <pre><code><span class="code-line"><span class="code-keyword">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: aihot</span>
+<span class="code-line"><span class="code-property">description</span>: AI HOT 中文 AI 资讯查询 Skill。</span>
+<span class="code-line">  当用户想知道今天 AI 圈有什么、AI 日报、</span>
+<span class="code-line">  AI 热点、最近 OpenAI/Anthropic/Google 发布了</span>
+<span class="code-line">  什么...时使用。Skill 会直接 curl 公开 REST API</span>
+<span class="code-line">  拉数据并整理成中文 markdown 简报...</span>
+<span class="code-line"><span class="code-keyword">---</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>三减号</strong>是开关：从这里到下一个三减号之间，是给<strong>平台</strong>看的元信息，不是给人读的正文。</p>
+              <p class="tl"><strong>name</strong>：这个技能叫 aihot——平台靠它建索引、做去重。</p>
+              <p class="tl"><strong>description</strong>：这段才是<strong>灵魂</strong>。它告诉 AI「什么时候该把我掏出来用」——列了一大堆触发词（AI 日报、AI 热点、最近 OpenAI…）。</p>
+              <p class="tl">末尾那句「会直接 curl 公开 REST API」是给 AI 的<strong>能力预告</strong>：别瞎编，去查实时数据。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">description 写得好不好，决定这个 Skill 会不会「睡大觉」</strong>
+            <p>AI 是靠<strong>语义匹配</strong> description 来决定要不要用这个 Skill 的。SKILL.md 里特意写了一句「<strong>不要 undertrigger</strong>」——意思是触发词列得不够全，AI 就会在该用时不用，转而拿过时记忆糊弄你。这正是「便签写得清楚」比「便签写得简短」更重要的原因。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下</h2>
+        <p>这节课的核心是分清「数据源」「Skill」「AI 助手」三者的关系。来一道情景题：</p>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="完全正确。资讯住在 aihot.virxact.com 的数据库里，SKILL.md 只是一份说明书。AI 助手读了说明书才知道去哪里 curl、怎么 curl，但它和 SKILL.md 本身都不存任何新闻。把三者分清，你就理解了为什么这个项目只有一个文件。"
+               data-explanation-wrong="再想想「资讯」这个东西到底物理上存在哪。SKILL.md 是一份 markdown 文档，里面只有命令和规矩，没有新闻正文；AI 助手的记忆是过时的。今天的资讯只可能来自一个会实时更新的地方。">
+            <h3 class="quiz-question">你的朋友说：「装了 aihot 这个 Skill，我的 AI 助手就自带今天的 AI 新闻了。」这句话哪里错了？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>没错啊，Skill 装上就等于资讯装上了</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>错在 AI 助手不该查实时数据，应该用记忆</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>错在「自带」——资讯始终住在网站上，Skill 只是教 AI 怎么去拿</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

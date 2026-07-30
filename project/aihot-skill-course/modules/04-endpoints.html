@@ -1,0 +1,198 @@
+<section class="module" id="module-4" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">04</span>
+      <h1 class="module-title">四扇窗口：API 端点详解</h1>
+      <p class="module-subtitle">aihot 一共就开四扇窗，看懂它们就掌握了全部入口</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 先理解「端点」 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">「端点」是啥？把 API 想成一栋大楼</h2>
+        <p>把 aihot.virxact.com 想成一栋大楼。大楼有<strong>一个总门</strong>（域名），进去之后有<strong>好几个窗口</strong>，每个窗口办不同的事。这个「窗口」就是 <span class="term" data-definition="端点（endpoint）是 API 上一个具体的网址路径，像 /api/public/daily。每个端点对应一种数据或一个动作——你可以理解成「大楼里某个办事窗口的编号」。">端点</span>（endpoint）。</p>
+
+        <p>aihot 这栋楼对外开放<strong>四个窗口</strong>，全在 <code>/api/public/</code> 这个楼层下。AI 助手就是个跑腿的，根据你要办的事，去不同的窗口排队。</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">「公开、匿名」是这栋楼的规矩</strong>
+            <p>这四个窗口全在 <code>/api/public/</code> 路径下——「public」就是「公开」。<strong>不需要登录、不需要 API Key、不需要 token</strong>。任何人（任何 AI）带着浏览器 UA 来都能办。这是设计前提：降低使用门槛，让这个 Skill 能跨平台一行装上就用。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 四扇窗口对照 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">四扇窗口，各办各的事</h2>
+
+        <div class="badge-list">
+          <div class="badge-item">
+            <code class="badge-code">/api/public/daily</code>
+            <span class="badge-desc">最新一份日报（成品报，分 5 版块）</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">/api/public/daily/{日期}</code>
+            <span class="badge-desc">指定那一天（如 2026-05-07）的日报</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">/api/public/dailies</code>
+            <span class="badge-desc">日报存档索引（只有日期+头条，不含正文）</span>
+          </div>
+          <div class="badge-item">
+            <code class="badge-code">/api/public/items</code>
+            <span class="badge-desc">全部 AI 动态（靠参数 mode/since/category 筛）</span>
+          </div>
+        </div>
+
+        <p>前三个窗口都围绕「日报」——是<strong>已打包好的成品</strong>。第四个 <code>items</code> 是<strong>原矿池</strong>，靠一堆参数自己筛，最灵活也最常用。下面分别拆开看。</p>
+      </section>
+
+      <!-- SCREEN 3: items 端点的参数 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">items 这扇窗：靠参数「点单」</h2>
+        <p>items 端点是<strong>主力窗口</strong>，但它不会一股脑全倒给你——你得用参数告诉它「我要什么样的」。这些参数就像点单时的附加要求。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">items 的参数表</span>
+            <pre><code><span class="code-line"><span class="code-comment"># 一条典型请求长这样：</span></span>
+<span class="code-line">/api/public/items?</span>
+<span class="code-line">  mode=selected       <span class="code-comment"># 精选池（默认）还是 all 全池</span></span>
+<span class="code-line">  &amp;category=paper     <span class="code-comment"># 只要"论文"那一类（可省）</span></span>
+<span class="code-line">  &amp;since=<span class="code-keyword">&lt;ISO时间&gt;</span>   <span class="code-comment"># 只要这个时刻之后的（默认7天）</span></span>
+<span class="code-line">  &amp;take=50            <span class="code-comment"># 这次给我 50 条（上限100）</span></span>
+<span class="code-line">  &amp;cursor=<span class="code-keyword">&lt;token&gt;</span>     <span class="code-comment"># 翻页用的"继续上一次"凭证</span></span>
+<span class="code-line">  &amp;q=RAG              <span class="code-comment"># 关键词搜索（2-200字）</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>mode</strong>：选「精选」还是「全量」——上一模块讲过的路由。</p>
+              <p class="tl"><strong>category</strong>：五个分类挑一个：模型/产品/行业/论文/技巧。不填就全都要。</p>
+              <p class="tl"><strong>since / take</strong>：时间窗 + 这次拿几条。两个一起控制「量」。</p>
+              <p class="tl"><strong>cursor</strong>：翻页用的「书签」——第一次没有，拿完 API 给你一个，下次带上接着拿。</p>
+              <p class="tl"><strong>q</strong>：关键词搜索，在标题+摘要里全文匹配。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🧩</div>
+          <div class="callout-content">
+            <strong class="callout-title">参数是「正交」的，能自由组合</strong>
+            <p>这六个参数<strong>互不冲突</strong>，像乐高积木随便拼。你可以「精选 + 论文 + 最近7天 + 关键词 RAG + 拿50条」五个条件一起叠。这种「每个参数管一件事、彼此独立」的设计叫<strong>正交参数</strong>——是 API 设计里最舒服的形态，也是你以后给 AI 描述需求时可以用的词：「把这几个筛选条件正交叠加」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 翻页与关键词两个暗号 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">两个容易踩坑的暗号：cursor 和 q</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🔖</div>
+            <h4 class="pattern-title">cursor（翻页书签）</h4>
+            <p class="pattern-desc">拿第一页时没有，API 回一个不透明的 token；下次请求原样塞回去就拿第二页。SKILL.md 反复警告：<strong>别解析、别递增、别跨端点复用</strong>——当黑盒。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🔍</div>
+            <h4 class="pattern-title">q（关键词搜索）</h4>
+            <p class="pattern-desc">服务端在「标题+中文标题+中文摘要」三列全文匹配，走数据库索引，毫秒级。<strong>别再拉一批数据自己 grep</strong>——那只能在前 100 条里找，关键词在 100 条外就彻底漏掉。</p>
+          </div>
+        </div>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">真身：翻页接龙</span>
+            <pre><code><span class="code-line"><span class="code-comment"># 第 1 页</span></span>
+<span class="code-line">resp1=<span class="code-function">$</span>(curl -sH <span class="code-string">"User-Agent: $UA"</span> \</span>
+<span class="code-line">  <span class="code-string">".../items?mode=all&amp;take=100"</span>)</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 从响应里抠出翻页书签</span></span>
+<span class="code-line">cursor=<span class="code-function">$</span>(echo <span class="code-string">"$resp1"</span> | jq -r .nextCursor)</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 第 2 页：原样塞回 cursor 参数</span></span>
+<span class="code-line">curl -sH <span class="code-string">"User-Agent: $UA"</span> \</span>
+<span class="code-line">  <span class="code-string">".../items?mode=all&amp;take=100&amp;cursor=$cursor"</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">第一页请求不带 cursor——从头开始拿 100 条。</p>
+              <p class="tl">用 jq 把响应里的 <code>nextCursor</code> 字段抠出来——这就是「下次从哪继续」的凭证。</p>
+              <p class="tl">第二页请求把 cursor 原样塞进参数，API 就知道接着上次的拿。</p>
+              <p class="tl"><strong>hasNext=false 或 cursor=null 时停</strong>——没后续了。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">「不透明 token」是什么意思</strong>
+            <p>cursor 长得像乱码（<code>eyJhIjoxNzgy...</code>），其实是 base64 编码的 JSON，里面藏了「上次拿到哪」。但 SKILL.md 明确说<strong>别去解码、别去改它</strong>——因为它的内部格式服务端随时可能改，你今天能解析不代表明天还行。<strong>把它当一个不透明的黑盒凭证</strong>：拿到啥原样回传。这是调用任何带分页 API 的通用生存智慧。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下</h2>
+
+        <div class="quiz-container" id="quiz-module4">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确。用户说「Sora 相关的全部条目」——「全部」是 mode=all 的触发词，「Sora 相关」要用 q 参数做服务端搜索。绝不能拉一批自己 grep，那样只能在前 100 条里找，Sora 在更后面就漏了。server-side 的 q 搜索覆盖全池。"
+               data-explanation-wrong="关键词搜索有两种做法：客户端 grep（拉一批自己筛）和服务端 q 参数（让数据库找）。SKILL.md 明确反对前者——为什么？想想如果 Sora 相关的条目排在第 300 条，客户端 grep 还找得到吗？">
+            <h3 class="quiz-question">用户想找「Sora 相关的全部条目」。AI 的正确做法是？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>拉 100 条 mode=all，然后用 jq 在客户端 grep "Sora"</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>直接用 /items?mode=all&amp;q=Sora 让服务端搜全池</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>翻日报找，因为日报覆盖最全</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="没错。cursor 是服务端发的「不透明黑盒」，内部编码格式不稳定，跨端点复用、自己解析递增都可能拿到错误数据甚至报错。正确做法永远是：拿到啥原样回传，它就是一张一次性书签。"
+               data-explanation-wrong="想想 SKILL.md 对 cursor 的态度。它建议把这个 token 当什么对待？如果你今天解码出来了、明天服务端改了格式会怎样？正确做法其实最省心——根本不动它。">
+            <h3 class="quiz-question">关于 cursor（翻页书签），下面哪种做法符合 SKILL.md 的建议？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>解码出里面的数字，自己加 1 拿下一页</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把 items 接口的 cursor 拿去给 daily 接口用</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>当黑盒：拿到啥原样塞回 cursor 参数</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

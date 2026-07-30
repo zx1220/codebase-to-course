@@ -1,0 +1,202 @@
+<section class="module" id="module-2" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">四方会谈：谁在幕后跑这场戏</h1>
+      <p class="module-subtitle">把「用户 / AI 助手 / SKILL.md / aihot API」当四个有性格的角色，戏就好看懂了</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 演员表 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">演员表：四个角色，各司其职</h2>
+        <p>一场 AI 资讯查询不是「一个人在干活」——是<strong>四个角色</strong>在接力。记住这四张脸，后面所有事都是他们之间的对手戏。</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+            <div class="pattern-icon" style="background: var(--color-accent)">🙋</div>
+            <h4 class="pattern-title">用户</h4>
+            <p class="pattern-desc">说人话的那个人。只会用中文提需求，看不懂参数名，要的是「一份能直接读的简报」。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🤖</div>
+            <h4 class="pattern-title">AI 助手</h4>
+            <p class="pattern-desc">聪明的执行者。会读说明书、会拼命令、会排版——但本身<strong>没有任何今日资讯</strong>，必须现场去查。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+            <div class="pattern-icon" style="background: var(--color-actor-4)">📜</div>
+            <h4 class="pattern-title">SKILL.md</h4>
+            <p class="pattern-desc">一张静默的便签。不会主动说话，只在被 AI 翻开时，把「该走哪个接口、怎么排版」的规矩亮出来。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+            <div class="pattern-icon" style="background: var(--color-actor-5)">🌐</div>
+            <h4 class="pattern-title">aihot API</h4>
+            <p class="pattern-desc">真正的数据仓库。住在网站上，收请求、吐 <span class="term" data-definition="JSON 是一种用大括号和键值对组织数据的文本格式，人和机器都能读。可以理解成「填好格式的清单」——键是栏目名，值是内容。">JSON</span>。所有今天的新闻都从它这里出。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 群聊动画 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">偷听他们的群聊</h2>
+        <p>把这四个角色拉进一个微信群，看一次真实查询里他们各自说了什么。点「下一条」一条条放，或者「全部播放」一气呵成。</p>
+
+        <div class="chat-window" id="chat-module2">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-accent)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-accent)">用户</span>
+                <p>今天 AI 圈有啥大新闻？</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="1" data-sender="ai" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">AI</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">AI 助手</span>
+                <p>这是要实时 AI 资讯，我记忆里的都过时了。让我看看口袋里有没有合适的技能……找到了，aihot。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="2" data-sender="skill" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">📜</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">SKILL.md</span>
+                <p>宽问题默认走「精选」接口。两件事别忘：① curl 必须戴浏览器 UA，否则 403；② 输出别暴露参数名。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="3" data-sender="ai" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">AI</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">AI 助手</span>
+                <p>收到。算一下「过去 24 小时」的时间戳，拼好 curl，发车。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="4" data-sender="api" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">🌐</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">aihot API</span>
+                <p>给你 50 条精选 JSON，category 已分类，publishedAt 是 UTC 时间，自己转人话哦。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="5" data-sender="ai" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">AI</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">AI 助手</span>
+                <p>按版块分组、时间换算成「2 小时前」、URL 保留、绝不写「mode=selected」这种参数名。</p>
+              </div>
+            </div>
+
+            <div class="chat-message" data-msg="6" data-sender="user" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-accent)">你</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-accent)">用户</span>
+                <p>这排版舒服，还能点链接看原文。👍</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-module2-typing" style="display:none">
+            <div class="chat-avatar" id="chat-module2-typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">下一条</button>
+            <button class="btn chat-all-btn">全部播放</button>
+            <button class="btn chat-reset-btn">重播</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">SKILL.md 是「沉默的配角」</strong>
+            <p>注意 SKILL.md 从头到尾没有<strong>主动</strong>发过一条消息——它只在 AI 翻开它时亮出规矩，AI 读完就合上。这是 Skill 这种扩展形态的本质：它是<strong>被查阅的说明书</strong>，不是常驻的后台服务。理解这一点，你就明白为什么 SKILL.md 里写得越清楚，AI 表现越好——因为它只有这一次「被读到」的机会。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 角色间的「接口」 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">他们之间用什么「语言」对话</h2>
+        <p>四个角色用<strong>三种不同的语言</strong>交流。搞清楚谁说什么话，你就掌握了整个系统的协议。</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num" style="background: var(--color-accent)">1</div>
+            <div class="step-body">
+              <strong>用户 ⇄ AI 助手：自然语言</strong>
+              <p>中文大白话，进和出都是。「今天 AI 圈有啥」进去，「AI HOT — 最近 30 条精选」出来。中间一切技术细节都对用户<strong>隐形</strong>。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num" style="background: var(--color-actor-4)">2</div>
+            <div class="step-body">
+              <strong>AI 助手 ⇄ SKILL.md：markdown 规矩</strong>
+              <p>AI 读的是这份文档的正文——表格、curl 示例、「不要做」清单。这是一场<strong>单向阅读</strong>：AI 读，SKILL.md 不回话。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num" style="background: var(--color-actor-5)">3</div>
+            <div class="step-body">
+              <strong>AI 助手 ⇄ aihot API：HTTP + JSON</strong>
+              <p>AI 拼 <span class="term" data-definition="curl 是命令行里发网络请求的工具，发音像「curl」。你可以理解成「在终端里点一个会打开网页、把内容抓回来的按钮」。">curl</span> 命令发出去，API 回 <span class="term" data-definition="HTTP 是浏览器和服务器之间通信的协议。一个 HTTP 请求 = 「我要这个网址的东西」；HTTP 响应 = 「给你，状态码告诉你成没成」。状态码 200 是成功，403 是被拒绝，429 是太频繁被限流。">HTTP</span> 状态码 + JSON 正文。请求里塞参数（mode、since、category），响应里塞数据条目。这是唯一一段<strong>机器对机器</strong>的对话。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">为什么这个分层很值钱</strong>
+            <p>用户永远不必学 curl 和 JSON；AI 助手永远不必自己开发爬虫；aihot 网站永远不必关心用户长什么样。<strong>每层只做自己擅长的事</strong>，靠明确的接口对接。这种「分层 + 协议」的思路，是几乎所有软件系统的底层骨架——你以后看任何项目，都可以先问一句：「它分了几层？层与层之间用什么语言说话？」</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下</h2>
+
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正确。SKILL.md 在整个流程里从不主动开口，它只在 AI 翻开它、需要规矩的那一刻被读到。AI 读完就合上，带着规矩去执行。这正解释了为什么 SKILL.md 要写得详尽——它只有这一次被读的机会，写得含糊 AI 就只能靠猜。"
+               data-explanation-wrong="再想想 SKILL.md 在前面那个群聊里是什么状态。它有没有自己发起对话、自己发请求、自己存数据？都不是。它是一份静态文档——它的价值全在「被读到」的那一刻。">
+            <h3 class="quiz-question">如果要用一句话概括 SKILL.md 这个角色的本质，哪个最准？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>一个常驻后台、时刻监听用户提问的服务</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>一份被动查阅的说明书，只在被翻开时才发挥作用</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>一个会自己发网络请求、自己存数据的程序</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">重做</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

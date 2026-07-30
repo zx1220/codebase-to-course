@@ -1,0 +1,306 @@
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">Skills：把「正确做法」写成手册，AI 每次都照着干</h1>
+      <p class="module-subtitle">同一段需求,这次 AI 写得好,下次它又忘了?问题不在 AI 记性差,在于没人给它留过一本 SOP 手册。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: 开场钩子 + SOP 比喻 + 一个 skill 长什么样 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">连锁咖啡店为什么每杯拿铁都一个味?</h2>
+        <p>你让一个 <span class="term" data-definition="裸 AI 指的是没有任何项目规范、手册约束的 AI 编程助手——你只告诉它要做什么,具体怎么做全凭它「临场发挥」,所以同一个需求它每次做法都可能不一样。">裸 AI</span> 写一个登录功能。第一次它写得很漂亮,第二次它又换了一套写法——因为没人告诉它「在我们这个项目里,登录就该这么写」。</p>
+        <p>连锁咖啡店不靠每个店员的发挥。它靠一本 <span class="term" data-definition="SOP 是 Standard Operating Procedure 的缩写,「标准操作流程」——把一件事的正确做法写成固定步骤,谁来做都按这套流程走,出来的结果就稳定一致。">SOP</span> 手册:拿铁这一页写着几克豆、几度奶、打几秒。不管哪个店员翻开,出来的拿铁都一个样。</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">☕</div>
+            <div>
+              <strong>没有手册的店员 = 裸 AI</strong>
+              <p>凭感觉、凭记忆。今天高兴了多放一勺糖,明天走神了忘打奶泡。质量忽好忽坏——这就是你跟 AI 裸聊时的常态。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📖</div>
+            <div>
+              <strong>有手册的店员 = 有 skill 的 AI</strong>
+              <p>翻开「拿铁」这一页,按步骤做。换一个新店员(开一个新 <span class="term" data-definition="AI 会话指的是你和 AI 助手之间的一次连续对话。每次开新对话,AI 默认是不记得之前聊过什么的——这正是「手册」存在的意义:把规矩写下来,新会话也能遵守。">AI 会话</span>),出来的拿铁还是一个味。</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">📚</div>
+            <div>
+              <strong>ECC 的 278 本手册</strong>
+              <p>ECC 这个项目里塞了 <strong>278 个</strong> <span class="term" data-definition="skill 在 ECC 里是一本「给 AI 看的工作手册」——一个文件夹加一个 SKILL.md 文件,告诉 AI 在某种情况下该按什么步骤干活、写成什么样的代码算对。">skill</span>。每本手册对应一类活:写新功能怎么写、改 bug 怎么改、提交代码前检查什么。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">一本手册 = 一本「可复用」的手册</strong>
+            <p>skill 的灵魂就在「可复用」三个字。写一次,以后每次开新会话,AI 都自动翻开这本手册照着干。你不再是「每次都重新解释一遍该怎么写」,而是「一次写好规矩,终身受用」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 一个 skill 的解剖 — YAML 头翻译 + 文件树 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">拆一本手册:一个 skill 到底长什么样</h2>
+        <p>一个 skill 其实就两样东西:<strong>一个文件夹</strong> + <strong>一个 <code>SKILL.md</code></strong>。手册的封皮是一段 <span class="term" data-definition="YAML 是一种用「键: 值」和缩进来表示配置的文本格式,常用来给文件写「元信息」(比如这个文件叫什么、什么时候该用它)。比 JSON 更适合人类阅读。">YAML</span> 头——它就是这本手册的「身份证」。我们来逐行翻译 ECC 里最厉害的那本手册 <code>tdd-workflow</code>。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">手册封皮</span>
+            <pre><code><span class="code-line"><span class="code-keyword">---</span></span>
+<span class="code-line"><span class="code-property">name</span>: tdd-workflow</span>
+<span class="code-line"><span class="code-property">description</span>: Use this skill when writing</span>
+<span class="code-line">  new features, fixing bugs, or</span>
+<span class="code-line">  refactoring code. Enforces test-driven</span>
+<span class="code-line">  development with 80%+ coverage</span>
+<span class="code-line">  including unit, integration, and E2E tests.</span>
+<span class="code-line"><span class="code-property">argument-hint</span>: &lt;path/to/*.plan.md&gt;</span>
+<span class="code-line"><span class="code-property">metadata</span>:</span>
+<span class="code-line">  <span class="code-property">origin</span>: ECC</span>
+<span class="code-line"><span class="code-keyword">---</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>name: tdd-workflow</strong> —— 这本手册叫什么名字。AI 用名字来找它:「我要用 tdd-workflow 这本」。</p>
+              <p class="tl"><strong>description: ...</strong> —— <span class="term" data-definition="description 是 skill 身份证里最重要的一句——它告诉 AI「什么情况下该翻这本手册」。AI 会拿这句话去和你的需求做匹配,匹配上了才会用这本手册。">description</span>:什么时候该翻开它。「写新功能、修 bug、<span class="term" data-definition="refactor「重构」是在不改功能的前提下整理代码——就像把乱糟糟的衣柜重新叠一遍,衣服还是那些衣服,但更好找了。">重构</span>代码时翻开我」。</p>
+              <p class="tl"><strong>Enforces test-driven development...</strong> —— 这本手册的核心规矩:强制 <span class="term" data-definition="TDD 是 Test-Driven Development「测试驱动开发」的缩写——先写测试(描述要什么),再写代码(实现它),全程拿测试当「验收标准」。ECC 用这个 skill 把 AI 的「凭感觉」变成「有证据」。">TDD</span>,<span class="term" data-definition="测试覆盖率衡量「你的代码有多少比例被测试照顾到了」。80% 覆盖率意味着十行代码里有八行都被测试跑过一遍,留两行没测到。越高越有底气。">覆盖率</span> 80% 起,覆盖 <span class="term" data-definition="unit test「单元测试」是最小粒度的测试——单独测一个函数、一段逻辑对不对,就像单独试一个零件合不合格。">单元</span>、<span class="term" data-definition="集成测试是把几个模块拼起来一起测,看它们之间的配合有没有问题——就像试装好的零件组合,而不只是单个零件。">集成</span>、<span class="term" data-definition="E2E 是 End-to-End「端到端」测试的缩写——模拟一个真实用户从头到尾走完整套流程(比如打开网页→点按钮→看到结果),最接近用户体验。">E2E</span> 三种测试。</p>
+              <p class="tl"><strong>argument-hint: &lt;path/to/*.plan.md&gt;</strong> —— 提示用户:用这本手册时最好顺便给一份 <code>.plan.md</code> <span class="term" data-definition="plan.md 是一份计划文档——在动手写代码之前,先把要做什么、分几步写成一份 markdown 文件,AI 拿着它按图索骥,不容易跑偏。">计划文档</span> 当输入。</p>
+              <p class="tl"><strong>origin: ECC</strong> —— 这本手册是从哪来的:它来自 ECC 这个项目(不是外部仓库)。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>注意 description 这一句——它是整本手册里 AI 最在意的一句话。AI 会拿这句话和你的需求去<strong>对暗号</strong>:你说「帮我加个登录功能」,它一看 description 里写着「writing new features」,暗号对上了,就主动翻开这本手册。</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">skill 的三个关键问题</strong>
+            <p>翻开任何一本手册,正文都会回答三件事:<strong>什么时候用</strong>(When)、<strong>按什么步骤用</strong>(Steps)、<strong>长什么样的代码算对</strong>(Patterns)。学会这三问,你以后自己写一本手册丢给 AI,它就每次都按你的标准干活。</p>
+          </div>
+        </div>
+
+        <h3 class="screen-heading" style="margin-top: var(--space-10)">278 本手册怎么摆?打开 skills/ 文件夹看看</h3>
+        <p>所有手册都乖乖待在一个叫 <code>skills/</code> 的文件夹里。一个子文件夹 = 一本手册。</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">skills/</span>
+            <span class="ft-desc">所有 skill 手册的图书馆</span>
+            <div class="ft-children">
+              <div class="ft-folder">
+                <span class="ft-name">tdd-workflow/</span>
+                <span class="ft-desc">最厉害的那本:强制「先写测试、再写代码」</span>
+                <div class="ft-children">
+                  <div class="ft-file">
+                    <span class="ft-name">SKILL.md</span>
+                    <span class="ft-desc">手册正文:什么时候用 + 步骤 + 代码模板</span>
+                  </div>
+                </div>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">django-tdd/</span>
+                <span class="ft-desc">Django 专用的 TDD 手册</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">laravel-tdd/</span>
+                <span class="ft-desc">Laravel 专用的 TDD 手册</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">... (共 278 个)</span>
+                <span class="ft-desc">每种框架、每类活,基本都有一本对应的</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🔑</div>
+          <div class="callout-content">
+            <strong class="callout-title">一个文件夹 + 一个 SKILL.md = 一本手册</strong>
+            <p>规则就这么简单。你想给 AI 加一条规矩?新建一个文件夹,塞一个 <code>SKILL.md</code> 进去,写好 description。下次它匹配上场景就会自动翻开。这就是你「指挥 AI」最朴素也最强力的招。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: RED/GREEN/REFACTOR —— HERO VISUAL -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">TDD 的灵魂:RED 🔴 → GREEN 🟢 → REFACTOR ♻️</h2>
+        <p>ECC 里最值得琢磨的就是 <code>tdd-workflow</code> 这本手册。它给 AI 立了一条铁律——<strong>先写测试、看到测试失败、再写代码</strong>。这条铁律拆成三道关卡,就是 TDD 的全部精髓。</p>
+
+        <div class="step-cards" style="margin: var(--space-8) 0;">
+          <div class="step-card" style="border-left: 4px solid #d94f30; background: linear-gradient(90deg, rgba(217,79,48,0.08), var(--color-surface) 40%);">
+            <div class="step-num" style="background: #d94f30;">🔴</div>
+            <div class="step-body">
+              <strong style="color: #d94f30;">RED 关卡 —— 先写测试,运行,它必须失败</strong>
+              <p>功能还没写,测试当然过不去——但这一步非跑不可。跑红了,才能证明「这个测试真的在测那个功能」,而不是一个永远都会过的假测试。这就是 <span class="term" data-definition="RED「红」是 TDD 的第一道关卡——你先写一个测试,运行它,它必须失败(显示红色)。失败证明了两件事:测试本身没问题,而且功能确实还没实现。">RED 关卡</span>。</p>
+            </div>
+          </div>
+          <div class="step-card" style="border-left: 4px solid #2e7d4f; background: linear-gradient(90deg, rgba(46,125,79,0.08), var(--color-surface) 40%);">
+            <div class="step-num" style="background: #2e7d4f;">🟢</div>
+            <div class="step-body">
+              <strong style="color: #2e7d4f;">GREEN 关卡 —— 写最少的代码,让测试变绿</strong>
+              <p>现在才动笔写真正的功能代码。写完再跑同一个测试,它必须从红变绿(通过)。变绿了才算过关——这就是 <span class="term" data-definition="GREEN「绿」是 TDD 的第二道关卡——你写最少的代码让刚才红掉的测试通过(显示绿色)。绿了就证明功能真的写对了,不是 AI 嘴上说「搞定了」。">GREEN 关卡</span>:不是 AI 说「搞定了」,而是测试替你点头。</p>
+            </div>
+          </div>
+          <div class="step-card" style="border-left: 4px solid var(--color-accent); background: linear-gradient(90deg, rgba(217,79,48,0.05), var(--color-surface) 40%);">
+            <div class="step-num" style="background: var(--color-accent);">♻️</div>
+            <div class="step-body">
+              <strong>REFACTOR 关卡 —— 测试保持绿色的前提下,优化代码</strong>
+              <p>功能跑通了,但代码可能写得丑。这一步你大胆整理——重命名、拆函数、删冗余。每改一点就跑一次测试,只要它还绿着,你就没改坏。这就是 <span class="term" data-definition="REFACTOR「重构」关卡:在测试始终绿色的前提下整理代码。因为有测试兜底,你敢放手改;一旦测试红了,立刻知道改坏了,退回去就行。">REFACTOR</span>:测试是安全带,放手整理不怕摔。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">🛑</div>
+          <div class="callout-content">
+            <strong class="callout-title">RED 不是「失败了再说」,而是「必须先失败」</strong>
+            <p>新手最容易跳过 RED:先写好功能,再补个测试,一次性绿——图省事。但这样你永远不知道那个测试是不是真的在测东西。<strong>测试先红一次</strong>,是 TDD 给你的一张「测试质量保单」。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">最关键的洞察:RED/GREEN 是给 AI 上「证据」</strong>
+            <p>裸 AI 干完活会说「我搞定了,放心吧」——它凭什么?凭感觉。有了 TDD skill,AI 不能再说空话,它必须<strong>拿出测试结果当证据</strong>:RED 证明测试有效,GREEN 证明功能写对。这就是 skill 把 AI 的「凭感觉」变成「有证据」的那一刻。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 小测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">小试一下:你能不能指挥对 AI</h2>
+        <p>四道情景题,看看「skill = 给 AI 的工作手册」这个心智模型你建起来没有。最后一题是预告下一模块的关键区分——仔细想。</p>
+
+        <div class="quiz-container" id="quiz-module3">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="完全正确。RED 这一步是「测试质量保单」——功能还没写,测试当然过不去;但如果它居然过了,说明这个测试根本没在测那个功能(可能是永远为真的假测试)。先红一次,你才知道测试是真的。"
+               data-explanation-wrong="再想想 RED 的真正作用。它不是在「确认功能没写」——这事儿你自己清楚。RED 跑红了,是为了证明「这个测试本身是有效的、真的在测那个功能」。如果跳过 RED,你永远不知道这个测试是不是一个永远都会过的废测试。">
+            <h3 class="quiz-question">Q1:在 TDD 里,RED 关卡为什么要求测试「必须先失败」?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>因为失败了才能激励 AI 努力写代码</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>失败证明这个测试「真的在测那个功能」,不是永远为真的假测试</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>失败能让测试覆盖率冲到 100%</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>失败是为了消耗时间,让 AI 思考更久</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="正是如此。skill 帮你的是「在这次干活的过程中,AI 主动遵循某个标准」。你让 AI 用 TDD skill,它整个干活过程都会按 RED/GREEN/REFACTOR 走——但这是 AI 主动遵循的,不是被外部强行拦住的。"
+               data-explanation-wrong="注意 skill 的特征:它是一本「手册」,AI 主动翻开它、按里面的步骤干活。它不是「事件一发生就自动触发」的开关。换 AI 会话、换任务,这本手册需要 AI 自己匹配上才会用。题目里你是在「让 AI 干这次活时遵循测试标准」,正属于 skill 的领地。">
+            <h3 class="quiz-question">Q2:你想让 AI 这次写新功能时,全程按「先写测试、再写代码」的规矩来。这该靠什么?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>每次都在聊天框里手动喊一遍「记得先写测试」</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>用一个 skill(比如 tdd-workflow),让 AI 主动按手册干活</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>等 AI 写完代码,你再自己去补测试</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>什么都不用做,AI 默认就会先写测试</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="一语中的——这是 skill 和 hook 最本质的区别。skill 是「AI 主动翻开手册、按步骤干活」,需要 AI 自己匹配上场景才会用;而 hook(下一模块的主题)是「不管 AI 想不想,事件一发生就被自动触发」的强制开关。你要的是「被动强制」,所以是 hook 的活。"
+               data-explanation-wrong="这里有个关键区分。skill 是「AI 主动遵循的手册」——它得 AI 自己愿意翻开、自己照着做,所以没法保证「每次都拦住」。题目要的是「不管 AI 想不想、事件一发生就强制触发」,这在 ECC 里是另一种东西:hook。下一模块就讲它。正确答案是指向 hook 的那个。">
+            <h3 class="quiz-question">Q3:关键区分——你想做到「AI 每次一提交代码,系统就<strong>自动</strong>跑一遍测试,不经过它同意」。这该用 skill 还是另一种东西?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>用 skill,让 AI 主动遵循「提交前跑测试」的规矩</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>用 skill,只不过写得更狠一点,逼 AI 必须跑</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>这不是 skill 的活——该用 hook,事件一发生就自动强制触发</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>skill 和 hook 是一回事,随便哪个都行</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="漂亮——你已经会用 description 去给 skill「对暗号」了。description 决定了 AI 在什么场景下会翻开这本手册:「新功能 + 修 bug + 重构时,强制 TDD」。你这次是写新功能,暗号一对上,这本手册就会被自动翻开,无需你多嘴。"
+               data-explanation-wrong="回到 description 那句话——它写着「writing new features, fixing bugs, or refactoring code」。也就是「写新功能、修 bug、重构代码」这三类场景会翻开它。你这次正好是「写新功能」,所以这本手册会用上。学会读 description,你就能预判 AI 什么时候会翻开哪本手册。">
+            <h3 class="quiz-question">Q4:你正在写一个全新的「导出 PDF」功能。下面哪本 skill 的 description 最可能让 AI 自动翻开它?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>description: 「专门给已经写完的项目做性能优化」</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>description: 「部署到服务器时用,管 CI/CD 流水线」</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>description: 「writing new features, fixing bugs, or refactoring code. Enforces TDD」</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>description: 「写文档时用,生成 API 说明」</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">重做</button>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🪝</div>
+          <div class="callout-content">
+            <strong class="callout-title">下一模块的钩子:hook = 给 AI 装上「自动刹车」</strong>
+            <p>这一模块的 skill 是<strong>AI 主动翻开的手册</strong>——它得 AI 自己愿意照着干,所以管得住「过程」,但拦不住「AI 偷懒跳过」。下一模块讲 <span class="term" data-definition="hook 是「事件触发的自动开关」——不需要 AI 主动遵循,只要指定的事件(比如提交代码、写文件)一发生,系统就自动执行检查或动作。是 ECC 里「被动强制」的那一半。">hook</span>:不管 AI 想不想,事件一发生就<strong>被动强制</strong>执行。skill = 主动遵循,hook = 被动强制。记住这对对比,你就抓住了 ECC 治理 AI 的两把钥匙。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

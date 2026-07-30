@@ -1,92 +1,92 @@
-# Codebase to Course
+# Codebase to Course（代码库转课程）
 
-A Claude Code skill that turns any codebase into a beautiful, interactive single-page HTML course.
+一个 Claude Code 技能，能把任何代码库变成一个精美、交互式的单页 HTML 课程。
 
-Point it at a repo. Get back a stunning, self-contained course that teaches how the code works — with scroll-based navigation, animated visualizations, embedded quizzes, and code-with-plain-English side-by-side translations.
+指向一个代码仓库，就能得到一份惊艳、自包含的课程，讲解代码的工作原理——包含滚动式导航、动画可视化、嵌入式测验，以及代码与"大白话"的并排对照翻译。
 
-## Who is this for?
+## 这是什么人准备的？
 
-**"Vibe coders"** — people who build software by instructing AI coding tools in natural language, without a traditional CS education.
+**"氛围编程者（Vibe coders）"**——通过用自然语言指挥 AI 编程工具来构建软件的人，他们通常没有传统计算机科学背景。
 
-You've built something (or found something cool on GitHub). It works. But you don't really understand *how* it works under the hood. This skill generates a course that teaches you — not by lecturing, but by tracing what happens when you actually use the app.
+你已经构建了某个东西（或者在 GitHub 上发现了某个很酷的项目）。它能运行。但你并不真正理解它底层是*如何*运作的。这个技能会生成一份课程来教你——不是靠说教，而是通过追踪你实际使用这个应用时发生了什么。
 
-**Your goals are practical, not academic:**
-- Steer AI coding tools better (make smarter architectural decisions)
-- Detect when AI is wrong (spot hallucinations, catch bad patterns)
-- Debug when AI gets stuck (break out of bug loops)
-- Talk to engineers without feeling lost
+**你的目标是实用的，而不是学术性的：**
+- 更好地驾驭 AI 编程工具（做出更明智的架构决策）
+- 识别 AI 的错误（发现幻觉，揪出糟糕的模式）
+- 在 AI 卡壳时进行调试（跳出 bug 死循环）
+- 与工程师沟通时不至于一头雾水
 
-You're not trying to become a software engineer. You want coding as a superpower.
+你并不想成为软件工程师。你只是想让编程成为你的超能力。
 
-## What the course looks like
+## 课程长什么样
 
-The output is a **single HTML file** — no dependencies, no setup, works offline. It includes:
+输出是**单个 HTML 文件**——零依赖、零配置，离线可用。它包含：
 
-- **Scroll-based modules** with progress tracking and keyboard navigation
-- **Code ↔ Plain English translations** — real code on the left, what it means on the right
-<img width="720" alt="Code translation block" src="https://github.com/user-attachments/assets/fb9e7fac-05c1-4f98-b80c-46543ef81afc" />
+- **滚动式模块**，带有进度追踪和键盘导航
+- **代码 ↔ 大白话对照翻译**——左侧是真实代码，右侧是它的含义
+<img width="720" alt="代码翻译块" src="https://github.com/user-attachments/assets/fb9e7fac-05c1-4f98-b80c-46543ef81afc" />
 
-- **Animated visualizations** — data flow animations, group chat between components, architecture diagrams
-<img width="720" alt="Animated data flow" src="https://github.com/user-attachments/assets/20fb403e-7dfd-4a47-989b-bbae86ca8041" />
+- **动画可视化**——数据流动画、组件之间的"群聊"、架构图
+<img width="720" alt="动画数据流" src="https://github.com/user-attachments/assets/20fb403e-7dfd-4a47-989b-bbae86ca8041" />
 
-- **Interactive quizzes** that test *application* not memorization ("You want to add favorites — which files change?")
-<img width="720" alt="Interactive quiz" src="https://github.com/user-attachments/assets/57706496-9fa8-457a-8450-3da22789951c" />
+- **交互式测验**，考查的是*应用能力*而非死记硬背（"你想添加收藏功能——哪些文件需要改动？"）
+<img width="720" alt="交互式测验" src="https://github.com/user-attachments/assets/57706496-9fa8-457a-8450-3da22789951c" />
 
-- **Glossary tooltips** — hover any technical term for a plain-English definition
-<img width="720" alt="Glossary tooltip" src="https://github.com/user-attachments/assets/ac2f160a-d73f-4779-97b2-a06fdb5f3227" />
+- **术语表悬浮提示**——悬停在任意技术术语上，即可看到大白话解释
+<img width="720" alt="术语表悬浮提示" src="https://github.com/user-attachments/assets/ac2f160a-d73f-4779-97b2-a06fdb5f3227" />
 
-  
-- **Warm, distinctive design** — not the typical purple-gradient AI look
 
-## How to use
+- **温暖、有辨识度的设计**——不是那种千篇一律的紫色渐变 AI 风格
 
-### As a Claude Code skill
+## 如何使用
 
-1. Copy the `codebase-to-course` folder into `~/.claude/skills/`
-2. Open any project in Claude Code
-3. Say: *"Turn this codebase into an interactive course"*
+### 作为 Claude Code 技能
 
-### Trigger phrases
+1. 把 `codebase-to-course` 文件夹复制到 `~/.claude/skills/`
+2. 在 Claude Code 中打开任意项目
+3. 说：*"把这个代码库变成一个交互式课程"*
 
-- "Turn this into a course"
-- "Explain this codebase interactively"
-- "Make a course from this project"
-- "Teach me how this code works"
-- "Interactive tutorial from this code"
+### 触发短语
 
-## Design philosophy
+- "把这个变成一个课程"
+- "用交互方式讲解这个代码库"
+- "用这个项目做一个课程"
+- "教我这段代码是怎么工作的"
+- "用这个代码做一个交互式教程"
 
-### Build first, understand later
+## 设计哲学
 
-This inverts traditional CS education. The old way: memorize concepts for years → eventually build something → finally see the point (most people quit before step 3). This way: **build something → experience it working → now understand how it works.**
+### 先构建，后理解
 
-### Show, don't tell
+这颠覆了传统的计算机科学教育。老办法是：花好几年背诵概念 → 最终构建点东西 → 最后才明白意义（大多数人在第 3 步之前就放弃了）。而我们的方式是：**先构建点东西 → 亲历它运行起来 → 现在再去理解它如何运作。**
 
-Every screen is at least 50% visual. Max 2-3 sentences per text block. If something can be a diagram, animation, or interactive element — it shouldn't be a paragraph.
+### 展示，而非讲述
 
-### Quizzes test doing, not knowing
+每一屏至少 50% 是视觉内容。每个文本块最多 2–3 句话。如果某个东西可以做成图表、动画或交互元素，它就不该是一段文字。
 
-No "What does API stand for?" Instead: "A user reports stale data after switching pages. Where would you look first?" Quizzes test whether you can *use* what you learned to solve a new problem.
+### 测验考查的是"做"，而非"记"
 
-### No recycled metaphors
+不会有"API 是哪几个单词的缩写？"这种问题。取而代之的是："用户反馈切换页面后看到的是过期数据。你会先看哪里？"测验检验的是你能否*运用*所学来解决一个新问题。
 
-Each concept gets a metaphor that fits *that specific idea*. A database is a library with a card catalog. Auth is a bouncer checking IDs. API rate limiting is a nightclub with a capacity limit. Never the same metaphor twice.
+### 不重复套用比喻
 
-### Original code only
+每个概念都配一个贴合*它本身*的比喻。数据库是一个带卡片目录的图书馆。身份认证是一个查验身份证的保安。API 限流是一家有人数上限的夜店。绝不重复使用同一个比喻。
 
-Code snippets are exact copies from the real codebase — never modified or simplified. The learner should be able to open the actual file and see the same code they learned from.
+### 只用原始代码
 
-## Skill structure
+代码片段都是从真实代码库中精确复制的——绝不修改或简化。学习者应该能打开实际文件，看到和自己在课程里学到的一模一样的代码。
+
+## 技能结构
 
 ```
 codebase-to-course/
-├── SKILL.md                          # Main skill instructions
+├── SKILL.md                          # 主技能指令
 └── references/
-    ├── design-system.md              # CSS tokens, typography, colors, layout
-    └── interactive-elements.md       # Quiz, animation, and visualization patterns
+    ├── design-system.md              # CSS 设计令牌、排版、配色、布局
+    └── interactive-elements.md       # 测验、动画与可视化模式
 ```
 
 
 ---
 
-Built by [Zara](https://x.com/zarazhangrui) with Claude Code.
+由 [Zara](https://x.com/zarazhangrui) 使用 Claude Code 打造。

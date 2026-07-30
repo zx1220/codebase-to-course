@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>课程看板 · 4 门课程</title>
+  <meta name="generated" content="2026-07-13 13:58">
+  <!-- Favicon：朱砂红圆角底 + 摊开的书，内联 SVG，零外部依赖 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23D94F30'/><path d='M50 32C41 26 29 26 22 30V68C29 64 41 64 50 70' fill='%23fff'/><path d='M50 32C59 26 71 26 78 30V68C71 64 59 64 50 70' fill='%23fff' fill-opacity='0.92'/><path d='M50 32V70' stroke='%23D94F30' stroke-width='2.5'/></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:           #FAF7F2;
+      --bg-card:     #FFFFFF;
+      --bg-soft:     #F3EDE4;
+      --ink:         #2A2520;
+      --ink-soft:    #6B6259;
+      --ink-faint:   #A89E92;
+      --line:        #E8E0D5;
+      --accent:      #D94F30;
+      --accent-soft: #FDEEE9;
+      --shadow-sm:   0 1px 2px rgba(42,37,32,.04), 0 2px 8px rgba(42,37,32,.04);
+      --shadow-md:   0 4px 12px rgba(42,37,32,.06), 0 12px 32px rgba(42,37,32,.08);
+      --shadow-lg:   0 8px 24px rgba(42,37,32,.08), 0 24px 56px rgba(42,37,32,.12);
+      --radius:      18px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1C1814; --bg-card: #28221D; --bg-soft: #221E19;
+        --ink: #F2EBE0; --ink-soft: #B5A99B; --ink-faint: #7A6F62; --line: #3A322B;
+        --accent-soft: #3A2520;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,.2); --shadow-md: 0 4px 12px rgba(0,0,0,.3); --shadow-lg: 0 8px 24px rgba(0,0,0,.4);
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg); color: var(--ink); line-height: 1.6; min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .hero { max-width: 1080px; margin: 0 auto; padding: 72px 32px 40px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+      letter-spacing: .04em; color: var(--accent); background: var(--accent-soft);
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800;
+      font-size: clamp(36px, 6vw, 60px); line-height: 1.05; letter-spacing: -.025em;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { font-size: clamp(16px, 2vw, 19px); color: var(--ink-soft); max-width: 580px; line-height: 1.65; }
+    .hero-stats { display: flex; gap: 32px; margin-top: 36px; flex-wrap: wrap; }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat-num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 32px; line-height: 1; color: var(--ink); letter-spacing: -.02em; }
+    .stat-label { font-size: 13px; color: var(--ink-faint); font-weight: 500; }
+
+    .courses-section { max-width: 1080px; margin: 0 auto; padding: 24px 32px 80px; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+    .section-head h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -.01em; }
+    .section-head .hint { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-faint); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+
+    .card {
+      position: relative; display: block; text-decoration: none; color: inherit;
+      background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      overflow: hidden; border: 1px solid transparent;
+      transition: transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s cubic-bezier(.22,1,.36,1);
+      animation: cardIn .5s cubic-bezier(.22,1,.36,1) both;
+    }
+    .card:hover, .card:focus-visible { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--line); outline: none; }
+    .card-stripe { height: 6px; width: 100%; background: var(--card-accent, var(--accent)); }
+    .card-body { padding: 28px 28px 24px; }
+    .card-meta { display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: .03em; color: var(--ink-faint); margin-bottom: 16px; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--card-accent, var(--accent)); flex-shrink: 0; }
+    .card-meta-sep::before { content: '·'; margin: 0 2px; color: var(--ink-faint); }
+    .card h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 22px; line-height: 1.25; letter-spacing: -.015em; color: var(--ink); margin-bottom: 14px; transition: color .2s; }
+    .card:hover h3 { color: var(--card-accent, var(--accent)); }
+    .card-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin-bottom: 20px; }
+    .card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .tag { font-size: 12px; font-weight: 500; color: var(--ink-soft); background: var(--bg-soft); padding: 4px 10px; border-radius: 6px; }
+    .tag-accent { color: var(--card-accent, var(--accent)); background: var(--card-accent-soft, var(--accent-soft)); }
+    .card-cta { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; border-top: 1px solid var(--line); }
+    .card-cta-text { font-size: 14px; font-weight: 600; color: var(--card-accent, var(--accent)); }
+    .card-arrow { font-size: 18px; color: var(--card-accent, var(--accent)); transition: transform .25s; }
+    .card:hover .card-arrow { transform: translateX(6px); }
+
+    .empty { grid-column: 1 / -1; text-align: center; padding: 64px 24px; color: var(--ink-faint); font-size: 15px; }
+    .empty-code { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--bg-soft); padding: 8px 14px; border-radius: 8px; margin-top: 12px; display: inline-block; color: var(--ink-soft); }
+
+    .footer { max-width: 1080px; margin: 0 auto; padding: 40px 32px 48px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--ink-faint); }
+    .footer-meta { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    @media (max-width: 640px) {
+      .hero { padding: 48px 20px 24px; }
+      .courses-section { padding: 16px 20px 60px; }
+      .hero-stats { gap: 24px; }
+      .grid { grid-template-columns: 1fr; gap: 16px; }
+    }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <span class="hero-eyebrow"><span>◆</span> 代码库转课程</span>
+    <h1>把代码变成<em>看得懂</em>的课。<br>这里是你做过的所有课程。</h1>
+    <p>每一张卡片对应一个代码库的交互式课程。点开就能在浏览器里学，离线可用。新增课程后重跑一次扫描脚本，这里会自动出现新卡片。</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">4</span><span class="stat-label">门课程</span></div>
+      <div class="stat"><span class="stat-num">22</span><span class="stat-label">个模块</span></div>
+      <div class="stat"><span class="stat-num">07/13</span><span class="stat-label">最近更新</span></div>
+    </div>
+  </header>
+  <section class="courses-section">
+    <div class="section-head">
+      <h2>全部课程</h2>
+      <span class="hint">按更新时间排序 ↓</span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+  <footer class="footer">
+    <span>由 codebase-to-course 技能生成 · 点击卡片打开课程</span>
+    <span class="footer-meta">看板生成于 2026-07-13 13:58</span>
+  </footer>
+  <script>
+    // 课程数据直接内联，无需 fetch，双击 file:// 即可打开
+    const COURSES = [{"dir":"aihot-skill-course","title":"AI HOT Skill 课：让 AI 助手替你刷 AI 资讯","accent":"#D94F30","modules":5,"date":"2026-06-26"},{"dir":"anthropic-skills","title":"解密 Agent Skills：教 AI 学会新技能","accent":"#D4A843","modules":6,"date":"2026-07-13"},{"dir":"ecc-course","title":"ECC:给 AI 编程工具装一个「操作系统」","accent":"#D94F30","modules":5,"date":"2026-07-13"},{"dir":"rsshub-course","title":"RSSHub 学习笔记 · 万物皆可 RSS","accent":"#2A7B9B","modules":6,"date":"2026-07-13"}];
+
+    function hexToRgb(hex){const h=hex.replace('#','');return{r:parseInt(h.slice(0,2),16),g:parseInt(h.slice(2,4),16),b:parseInt(h.slice(4,6),16)};}
+    function softBg(hex){const{r,g,b}=hexToRgb(hex);const m=c=>Math.round(c+(255-c)*.88);return`rgb(${m(r)},${m(g)},${m(b)})`;}
+    function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+    const known = {
+      'aihot-skill-course': '追踪一句「今天 AI 圈有啥新闻」从输入到出结果的完整旅程，拆解 Skill 的两个核心部件。',
+      'anthropic-skills': '从零理解 Agent Skill 是什么、怎么触发、怎么写一个完整的 Skill，配真实仓库案例。',
+      'rsshub-course': '理解 RSSHub 如何把 B站、微博等网站的「方言」翻译成 RSS 这种「世界语」，含路由与缓存机制。',
+    };
+
+    const grid = document.getElementById('grid');
+    if (!COURSES.length) {
+      grid.innerHTML = '<div class="empty">没有找到已构建的课程。生成一门课后跑 <span class="empty-code">bash build-gallery.sh</span> 更新看板。</div>';
+    } else {
+      COURSES.sort((a,b) => (a.date < b.date ? 1 : -1));
+      grid.innerHTML = COURSES.map((c,i) => {
+        const accent = c.accent || '#D94F30';
+        const desc = known[c.dir] || `共 ${c.modules} 个模块的交互式课程，含动画图解、代码对照翻译和情境测验。`;
+        return `<a class="card" href="${c.dir}/index.html" style="--card-accent:${accent};--card-accent-soft:${softBg(accent)};animation-delay:${i*70}ms">
+          <div class="card-stripe"></div>
+          <div class="card-body">
+            <div class="card-meta"><span class="card-dot"></span><span>${c.modules} 个模块</span><span class="card-meta-sep"></span><span>${c.date}</span></div>
+            <h3>${escapeHtml(c.title)}</h3>
+            <p class="card-desc">${desc}</p>
+            <div class="card-tags"><span class="tag tag-accent">交互式</span><span class="tag">离线可用</span><span class="tag">中文讲解</span></div>
+            <div class="card-cta"><span class="card-cta-text">开始学习</span><span class="card-arrow">→</span></div>
+          </div>
+        </a>`;
+      }).join('');
+    }
+  </script>
+</body>
+</html>

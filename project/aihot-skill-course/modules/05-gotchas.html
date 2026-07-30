@@ -1,0 +1,229 @@
+<section class="module" id="module-5" style="background: var(--color-bg)">
+  <div class="module-content">
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">地板下的暗门：坑与输出哲学</h1>
+      <p class="module-subtitle">这个 Skill 真正的智慧，藏在「不要做」清单和输出规矩里</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- SCREEN 1: UA 这个坑 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">最大的坑：忘了戴「面具」就被 403</h2>
+        <p>如果整个 Skill 只能记一件事，就是这条：调 API 时 curl <strong>必须</strong>带浏览器 User-Agent，否则直接被挡。SKILL.md 把它单列成「先决条件」，放在所有工作流之前——可见踩过多少次坑。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">先决条件（真身）</span>
+            <pre><code><span class="code-line">UA=<span class="code-string">"Mozilla/5.0 (Macintosh; Intel Mac OS</span></span>
+<span class="code-line"><span class="code-string">  X 10_15_7) AppleWebKit/537.36 (KHTML,</span></span>
+<span class="code-line"><span class="code-string">  like Gecko) Chrome/124.0.0.0 Safari/537.36"</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># 之后所有调 API 的 curl 都要带它：</span></span>
+<span class="code-line">curl -sH <span class="code-string">"User-Agent: $UA"</span> \</span>
+<span class="code-line">  <span class="code-string">"https://aihot.virxact.com/api/public/daily"</span></span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl">先把一串「伪装成 Chrome 浏览器」的身份字符串存进 <code>UA</code> 变量。</p>
+              <p class="tl">后面<strong>每一条</strong>调 API 的 curl，都要加 <code>-H "User-Agent: $UA"</code> 把它带上。</p>
+              <p class="tl">不带会怎样？服务器以为是商业爬虫，直接回 <strong>403 Forbidden</strong>。</p>
+              <p class="tl">你会以为「接口挂了」，其实只是没戴面具被保安拦下了。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">为什么需要这层面具</strong>
+            <p>网站的 nginx（服务器软件）配了一个 <span class="term" data-definition="黑名单是一种「拒绝列表」——凡匹配某些特征的请求一律拒绝。这里 nginx 用 User-Agent 黑名单挡掉默认 curl 的请求（UA 形如 curl/7.x），因为商业爬虫常用这种 UA 大量抓取。换成浏览器 UA 就能混过这道关卡。">UA 黑名单</span>，专挡默认的 <code>curl/X.Y</code> 身份——因为那是商业爬虫的典型特征。但<strong>装 Skill 的入口路径</strong>（<code>/aihot-skill/install.sh</code>）特意豁免了这道关卡，因为它的设计前提就是 <code>curl -fsSL ... | bash</code> 一行装。<strong>UA 要求只针对 /api/public/* 数据端点</strong>——别误推广到全站。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 输出哲学 — 别泄漏基础设施 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">输出哲学：把基础设施藏到地板下面</h2>
+        <p>SKILL.md 花了整整一节讲「给用户的输出格式」。核心原则一句话：<strong>用户看到的是资讯简报，不是 API 调试日志</strong>。所有基础设施细节都必须对用户隐形。</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">SKILL.md 的红线清单</span>
+            <pre><code><span class="code-line"><span class="code-comment">✅ OK（用户能直接懂）：</span></span>
+<span class="code-line">- "时间窗 2026-05-05 ~ 2026-05-07"</span>
+<span class="code-line">- "最近 3 天命中 OpenAI 的全部条目"</span>
+<span class="code-line">- "按发布时间倒序" / "共 50 条"</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment">❌ 不 OK（基础设施泄漏）：</span></span>
+<span class="code-line">- mode=selected / category=paper</span>
+<span class="code-line">- /api/public/items?since=2026-04-30T...</span>
+<span class="code-line">- "限流 600 req/min" / "nginx 缓存 60s"</span>
+<span class="code-line">- "cursor" / "hasNext=true"</span>
+<span class="code-line">- 任何 HTTP 状态码 / cache 状态</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">说人话</span>
+            <div class="translation-lines">
+              <p class="tl"><strong>判断标准很简单</strong>：用户能直接看懂吗？能 → 留；不能 → 删。</p>
+              <p class="tl">「时间窗」「共 50 条」是<strong>人话</strong>，留。</p>
+              <p class="tl">「mode=selected」「cursor」「600 req/min」是<strong>开发者黑话</strong>，删。</p>
+              <p class="tl">数据源最多一句「来自 aihot.virxact.com」，甚至不提也行。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">这条规矩的深意：AI 的「翻译」职责</strong>
+            <p>这其实是给 AI 立的<strong>角色边界</strong>：你是用户和机器之间的<strong>翻译</strong>，不是传声筒。机器说的话（JSON、参数名、状态码）你要<strong>消化成人话</strong>再转述，不能原样倒给用户。这个原则不只适用于 aihot——你以后让 AI 做任何「对接外部系统再汇报」的活，都可以搬这句话：「别把基础设施细节泄漏给最终用户」。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: 时间转人话 + 保留 URL -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">两条容易忘的细节规矩</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🕐</div>
+            <h4 class="pattern-title">时间必须转人话</h4>
+            <p class="pattern-desc"><code>2026-05-08T01:48:00.000Z</code> 这种 ISO 串用户看不懂——要换成「今天上午 09:48」「2 小时前」。机器精确，但人只懂相对时间。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
+            <div class="pattern-icon" style="background: var(--color-accent)">🔗</div>
+            <h4 class="pattern-title">每条都得留 URL</h4>
+            <p class="pattern-desc">即使为了篇幅把三条合并成一句总结，<strong>每条 item 的 url 都不能丢</strong>。没 URL 的条目用户追溯不到原文，等于不可信。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🚫</div>
+            <h4 class="pattern-title">别脑补、别当原文</h4>
+            <p class="pattern-desc">summary 是 LLM 生成的摘要，<strong>不是原文</strong>。要引用得回 url 核对。AI 永远以 API 返回为准，绝不凭记忆编内容。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: 全局回顾 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">把整栋楼装进一张图</h2>
+        <p>五节课走完，我们把整个系统画成一张图。点击任何一个角色，看它的职责回顾——这是你以后给 AI 描述需求、或者排查问题时的「地图」。</p>
+
+        <div class="arch-diagram">
+          <div class="arch-zone arch-zone-browser">
+            <h4 class="arch-zone-label">用户侧</h4>
+            <div class="arch-component" data-desc="说中文大白话的那个人。只会提需求、读简报，看不懂任何技术细节。整个系统的存在就是为了让这个人不必懂技术。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🙋</div>
+              <span>用户</span>
+            </div>
+          </div>
+          <div class="arch-zone">
+            <h4 class="arch-zone-label">AI 助手侧</h4>
+            <div class="arch-component" data-desc="聪明的执行者。会读说明书、拼 curl、排版输出——但本身没有任何今日资讯。它的核心能力是「翻译」：把用户的人话翻成机器请求，把机器 JSON 翻成人话简报。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🤖</div>
+              <span>AI 助手</span>
+            </div>
+            <div class="arch-component" data-desc="一份静态 markdown 文档。不主动说话、不发请求、不存数据——只在被 AI 翻开时亮出规矩：走哪个接口、怎么戴 UA、怎么排版。它是整个系统唯一的「知识载体」。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">📜</div>
+              <span>SKILL.md</span>
+            </div>
+          </div>
+          <div class="arch-zone arch-zone-external">
+            <h4 class="arch-zone-label">外部数据源</h4>
+            <div class="arch-component" data-desc="真正的数据仓库。四个公开端点（daily / daily/{date} / dailies / items），匿名免 token，但要戴浏览器 UA。所有今天的 AI 资讯都住在这里的数据库里。"
+                 onclick="showArchDesc(this)">
+              <div class="arch-icon">🌐</div>
+              <span>aihot API</span>
+            </div>
+          </div>
+          <div class="arch-description" id="arch-desc">点任何一个角色，回顾它在系统里的职责</div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-content">
+            <strong class="callout-title">你现在已经拥有的能力</strong>
+            <p>学完这五节，你已经能：① 看懂任何「Skill」类项目的本质——一份写给 AI 的说明书；② 理解 API 端点、参数、路由、翻页这些核心概念；③ 识别 AI 何时在「拿过时记忆糊弄你」、何时在「真去查实时数据」；④ 给 AI 下达更精确的指令——比如「默认走精选」「带上 since 时间窗」「输出别暴露参数名」。这些就是「用 AI 指挥 AI」的底座。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: 综合测验 -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">最后一关：综合诊断</h2>
+        <p>这是一道「排查问题」的情景题——最能检验你是不是真的理解了整个系统。</p>
+
+        <div class="quiz-container" id="quiz-module5">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情景</span>
+              <p>用户问「今天 AI 圈有啥」，但 AI 助手回复说：「抱歉，aihot 接口好像挂了，返回 403。」用户什么都没改过，网站网页也能正常打开。最可能的原因是什么？</p>
+            </div>
+
+            <div class="quiz-question-block"
+                 data-correct="option-b"
+                 data-explanation-right="完全正确。403 + 网页正常 = 典型的「UA 没戴」症状。aihot 的 /api/public/* 端点用 nginx UA 黑名单挡默认 curl UA，但网页和安装入口是豁免的。AI 忘了加 -H User-Agent 就会撞这道墙，却误以为「接口挂了」。这就是 SKILL.md 把 UA 要求单列为「先决条件」的原因——它是最容易踩、最容易被误诊的坑。"
+                 data-explanation-wrong="注意两个线索：① 网页能正常打开，说明网站本身没挂；② 报的是 403（被拒绝），不是 500（服务器错）或超时。403 在 aihot 这个语境下最常见的原因是什么？回想模块开头那个「先决条件」。">
+              <h3 class="quiz-question">最可能的根因是？</h3>
+              <div class="quiz-options">
+                <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                  <div class="quiz-option-radio"></div>
+                  <span>aihot 网站服务器宕机了，需要等恢复</span>
+                </button>
+                <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                  <div class="quiz-option-radio"></div>
+                  <span>AI 拼 curl 时漏了 User-Agent 头，被 UA 黑名单挡了</span>
+                </button>
+                <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                  <div class="quiz-option-radio"></div>
+                  <span>用户没配 API Key，需要先去注册</span>
+                </button>
+              </div>
+              <div class="quiz-feedback"></div>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="对。「日报」是 daily 接口的显式触发词，而 daily 按 UTC 0 点切片，跟「过去 24 小时」的滚动窗口根本对不上。正确做法是走 selected + since=24小时前。这个区分是整个路由逻辑里最容易踩的坑——SKILL.md 反复强调「宽问题别走 daily」。"
+               data-explanation-wrong="想想用户真正想要的是什么——是「此刻往回数 24 小时」的内容。daily 接口返回的是哪种时间切片？它和滚动窗口能对上吗？回想模块 3 里「日报 vs 过去 24 小时」那段警告。">
+            <h3 class="quiz-question">另一题：用户说「过去 24 小时大新闻」，AI 却走了 /daily 接口。这会出什么问题？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>时间对不上——daily 是 UTC 整日切片，不是滚动 24 小时窗</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>没问题，daily 就是干这个的</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>会触发 403，因为 daily 不允许带时间参数</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">查看答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">重做</button>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: var(--space-8)">
+          <div class="callout-icon">🎓</div>
+          <div class="callout-content">
+            <strong class="callout-title">课程到此结束</strong>
+            <p>你刚刚把一个真实的 AI Skill 项目从外到内拆了一遍。下次你看到任何「教 AI 新本事」的项目——不管是 Cursor 的规则、Claude 的 Skill、还是 Codex 的指令——它骨子里都是同一件事：一份写给 AI 的、告诉它「该做什么、别做什么」的说明书。能读懂这份说明书，你就能<strong>指挥 AI 而不是被 AI 指挥</strong>。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+[
+  {
+    "dir": "aihot-skill-course",
+    "title": "AI HOT Skill 课：让 AI 助手替你刷 AI 资讯",
+    "accent": "#D94F30",
+    "modules": 5,
+    "date": "2026-06-26"
+  }
+,
+  {
+    "dir": "anthropic-skills",
+    "title": "解密 Agent Skills：教 AI 学会新技能",
+    "accent": "#D4A843",
+    "modules": 6,
+    "date": "2026-07-13"
+  }
+,
+  {
+    "dir": "rsshub-course",
+    "title": "RSSHub 学习笔记 · 万物皆可 RSS",
+    "accent": "#2A7B9B",
+    "modules": 6,
+    "date": "2026-07-13"
+  }
+]

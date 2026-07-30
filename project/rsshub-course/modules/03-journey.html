@@ -1,0 +1,311 @@
+<section class="module" id="module-3" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <!-- ═══════════════ MODULE HEADER ═══════════════ -->
+    <header class="module-header">
+      <span class="module-number">03</span>
+      <h2 class="module-title">一次请求的旅程 · 中间件流水线</h2>
+      <p class="module-subtitle">请求不是「咣当」掉进 handler 的，它要排队过一道道关卡——这些关卡叫「中间件」。</p>
+    </header>
+
+    <!-- ═══════════════ SCREEN 1 · 开场 + 数据流动画 (hero visual) ═══════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading">先看一遍完整旅程</h3>
+      <p>上一模块我们看清了 handler 的真面目——它只是返回一个数据对象。但请求在到达 handler 之前，要先穿过一串「关卡」。点「Next Step」一步步看，请求是怎么被接力处理的。</p>
+
+      <div class="flow-animation" data-steps='[
+        {"highlight":"flow-actor-1","label":"阅读器发起请求：给我 /bilibili/... 的订阅源"},
+        {"highlight":"flow-actor-1","label":"请求进入 RSSHub，朝第一道关卡飞去","packet":true,"from":"actor-1","to":"actor-2"},
+        {"highlight":"flow-actor-2","label":"accessControl 检查访问密钥：你有钥匙吗？"},
+        {"highlight":"flow-actor-2","label":"钥匙对，放行 → 请求进入缓存关卡","packet":true,"from":"actor-2","to":"actor-3"},
+        {"highlight":"flow-actor-3","label":"cache 查一下：这个地址之前抓过吗？"},
+        {"highlight":"flow-actor-3","label":"【分支A · 命中】直接把旧结果扔回阅读器，handler 都不用跑","packet":true,"from":"actor-3","to":"actor-1"},
+        {"highlight":"flow-actor-3","label":"【分支B · 未命中】放行，请求继续往里飞去找 handler","packet":true,"from":"actor-3","to":"actor-4"},
+        {"highlight":"flow-actor-4","label":"handler 调用 B站 API、解析数据、返回一个数据对象"},
+        {"highlight":"flow-actor-4","label":"数据对象往回飞，回到缓存关卡","packet":true,"from":"actor-4","to":"actor-3"},
+        {"highlight":"flow-actor-3","label":"cache 把新数据存起来，再把它扔回阅读器","packet":true,"from":"actor-3","to":"actor-1"}
+      ]'>
+        <div class="flow-actors">
+          <div class="flow-actor" id="flow-actor-1">
+            <div class="flow-actor-icon" style="background: var(--color-actor-1)">📖</div>
+            <span>阅读器</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-2">
+            <div class="flow-actor-icon" style="background: var(--color-actor-2)">🛂</div>
+            <span>accessControl</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-3">
+            <div class="flow-actor-icon" style="background: var(--color-actor-3)">💾</div>
+            <span>cache</span>
+          </div>
+          <div class="flow-actor" id="flow-actor-4">
+            <div class="flow-actor-icon" style="background: var(--color-actor-4)">⚙️</div>
+            <span>handler</span>
+          </div>
+        </div>
+
+        <div class="flow-packet" id="flow-packet"></div>
+
+        <div class="flow-step-label" id="flow-label">点「Next Step」开始这次旅程</div>
+
+        <div class="flow-controls">
+          <button class="btn flow-next-btn">Next Step</button>
+          <button class="btn flow-reset-btn">Restart</button>
+          <span class="flow-progress"></span>
+        </div>
+      </div>
+
+      <p>注意到那条「分支A · 命中」了吗？如果之前抓过，<span class="term" data-definition="handler 就是路由文件里真正去抓数据、解析数据的那个函数——比如调用 B站 API 把视频列表拿回来。它是整条流水线上「最核心那一站」，但只是一站而已。">handler</span> 根本不会跑。这就是为什么同一个订阅源「第一次慢、第二次快」。</p>
+    </div>
+
+    <!-- ═══════════════ SCREEN 2 · 隐喻 + 5 张步骤卡 ═══════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading">机场安检 + 流水线</h3>
+      <p>把请求想象成一个旅客进机场：先过安检门查钥匙、再过登机牌扫描查缓存、走到对应登机口（<span class="term" data-definition="路由就是 URL 地址和 handler 函数之间的对应关系——比如 /bilibili/user/:uid 对应一个抓 B站 用户动态的 handler。Web 框架靠路由表把请求送到对的函数。">路由</span>匹配），handler 干完活回来，还要经过打包区美化、最后贴标签出港。每一道关都是一个<span class="term" data-definition="中间件 (middleware) 就是流水线上的一道关卡——它接收请求，做一件具体的事（查权限、查缓存、记日志），然后决定放行还是拦下。多个中间件按固定顺序排队，串成一条处理流水线。">中间件</span>，按固定顺序排队。</p>
+
+      <div class="step-cards">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>accessControl 查访问密钥</strong>
+            <p>你设了 ACCESS_KEY 吗？没钥匙的请求直接被拦下，返回 <span class="term" data-definition="HTTP 状态码是服务器给浏览器的一个三位数回复——2xx 表示成功，4xx 表示你这边出错了（比如 403 没权限、404 找不到），5xx 表示服务器自己出错了。">HTTP 状态码</span> <span class="term" data-definition="403 是 HTTP 状态码之一，意思是「禁止访问」——服务器收到了你的请求，但你没权限，通常是因为没带对的密钥或登录信息。阅读器看到 403 就知道被门禁拦下了。">403</span>。</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>cache 查有没有现成的</strong>
+            <p><span class="term" data-definition="cache（缓存）就是把之前抓过的结果先存一份，下次同样的请求来了直接给旧的，不用再去抓一遍——像把昨天查过的电话号码记在便签上，今天不用再翻通讯录。">cache</span> 查 <span class="term" data-definition="Redis 是一个超快的「内存数据库」——数据存在内存里而不是硬盘上，读写极快。RSSHub 用它来存缓存，所以第二次请求几乎瞬间返回。">Redis</span>：这个地址之前抓过吗？抓过就秒回。</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>路由匹配找到 handler</strong>
+            <p>缓存没命中？放行。Web 框架根据 URL 找到对应的 handler 函数。</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>handler 抓数据</strong>
+            <p>handler 调外部 API、解析 HTML、返回一个数据对象（上一模块见过的那个）。</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>parameter / template 美化并渲染</strong>
+            <p>数据对象往回飞，parameter 支持 ?filter ?limit 等<span class="term" data-definition="参数就是 URL 里问号后面那些附加的选项——比如 ?limit=10 表示「只要 10 条」，?format=json 表示「我要 JSON 格式」。它让你用同一个地址拿到不同的结果。">参数</span>，template 把它渲染成 RSS。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SCREEN 3 · 中间件总图 ═══════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading">完整的流水线总图</h3>
+      <p>真实的注册顺序更长——下面是 <code>lib/app-bootstrap.tsx</code> 里一长串 <code>app.use(...)</code> 的「翻译版」。请求从上往下穿过每一道关，响应再从下往上穿回来。</p>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">注册顺序</span>
+<pre><code>trimTrailingSlash  → 去掉 URL 末尾多余的斜杠
+compress           → 压缩响应，省流量
+logger             → 打印日志
+trace              → 链路追踪（调试用）
+honeybadger/sentry → 错误上报（出 bug 自动报警）
+accessControl      → 【关卡1】查访问密钥，没钥匙就 403
+debug              → 统计调试信息
+template           → 【关卡】在 handler 之后渲染输出
+header             → 设置响应头、ETag
+antiHotlink        → 防图片盗链
+parameter          → 【关卡】美化数据、支持 ?filter ?limit 等
+cache              → 【关卡2】查缓存，没缓存才放行去 handler
+
+然后才路由匹配 → 跑 handler</code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">大白话</span>
+          <div class="translation-lines">
+            <p class="tl">前面这几道是「基础设施」——去斜杠、压缩、记日志、出错报警，跟业务无关。</p>
+            <p class="tl">accessControl 是第一道业务关卡：查密钥。</p>
+            <p class="tl">template / header / parameter 这几道在 handler 「之后」才干活，给数据做加工。</p>
+            <p class="tl">cache 是最后一道关卡——它命中就直接返回，handler 根本不跑。</p>
+            <p class="tl">所有关卡都过了，才轮到路由匹配 → 真正跑 handler。</p>
+          </div>
+        </div>
+      </div>
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">（说明性展示。原文来自 <code>lib/app-bootstrap.tsx</code> 第 28–47 行连续的 <code>app.use(...)</code> 调用，这里把每个中间件的作用翻译出来做成教学。）</p>
+    </div>
+
+    <!-- ═══════════════ SCREEN 4 · 4 张中间件典型代表卡 ═══════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading">四个典型的中间件「角色」</h3>
+      <p>每个中间件就像流水线上一个工位的工人，各管一摊事。记住这四个角色，80% 的 bug 你都能定位到是哪个工位出了问题。</p>
+
+      <div class="pattern-cards">
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+          <div class="pattern-icon" style="background: var(--color-actor-2)">🛂</div>
+          <h4 class="pattern-title">accessControl · 守门员</h4>
+          <p class="pattern-desc">站在最前门查钥匙。你设了 ACCESS_KEY，它就核对你的请求带没带对的密钥，没带就 403 直接挡回去。</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+          <div class="pattern-icon" style="background: var(--color-actor-3)">💾</div>
+          <h4 class="pattern-title">cache · 省钱大师</h4>
+          <p class="pattern-desc">查 Redis 里有没有现成结果。命中就秒回、连 handler 都不跑；没命中才放行去抓新数据。</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+          <div class="pattern-icon" style="background: var(--color-actor-4)">✨</div>
+          <h4 class="pattern-title">parameter · 美颜滤镜</h4>
+          <p class="pattern-desc">handler 干完活之后才上场。它支持 ?limit=10、?filter=xxx 等参数，对返回的数据做裁剪和美化。</p>
+        </div>
+        <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+          <div class="pattern-icon" style="background: var(--color-actor-1)">🏷️</div>
+          <h4 class="pattern-title">template · 翻译成 RSS</h4>
+          <p class="pattern-desc">把那个数据对象翻译成阅读器认得的 RSS/Atom/JSON 格式。抓取和输出分开——这是下一模块的主角。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SCREEN 5 · 缓存关卡代码翻译 (Snippet C + D) ═══════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading">放大看 cache 关卡怎么工作</h3>
+      <p>缓存关卡是整条流水线上最精巧的一站。左边是 <code>lib/middleware/cache.ts</code> 的真实代码，右边逐行翻译——注意工程师那些藏在代码里的小心思。</p>
+
+      <div class="translation-block animate-in">
+        <div class="translation-code">
+          <span class="translation-label">CODE · cache.ts</span>
+<pre><code><span class="code-line">    const requestPath = ctx.req.path;</span>
+<span class="code-line">    const format = `:${ctx.req.query('format') || 'rss'}`;</span>
+<span class="code-line">    const limit = ctx.req.query('limit') ? `:${ctx.req.query('limit')}` : '';</span>
+<span class="code-line">    const key = 'rsshub:koa-redis-cache:' + h64ToString(requestPath + format + limit);</span>
+<span class="code-line">    const controlKey = 'rsshub:path-requested:' + h64ToString(requestPath + format + limit);</span>
+<span class="code-line">    ...</span>
+<span class="code-line">    if (value) {</span>
+<span class="code-line">        ctx.status(200);</span>
+<span class="code-line">        ctx.header('RSSHub-Cache-Status', 'HIT');</span>
+<span class="code-line">        ctx.set('data', JSON.parse(value));</span>
+<span class="code-line">        await next();</span>
+<span class="code-line">        return;</span>
+<span class="code-line">    }</span></code></pre>
+        </div>
+        <div class="translation-english">
+          <span class="translation-label">大白话</span>
+          <div class="translation-lines">
+            <p class="tl">拿到请求的地址，比如 /bilibili/user/123。</p>
+            <p class="tl">再加上格式（默认 rss）和数量限制，拼成一个完整的「请求签名」。</p>
+            <p class="tl">用 xxhash 把这个长签名压成一个短字符串——长地址当缓存 key 太占地方，工程师特意压短省 Redis 内存。</p>
+            <p class="tl">这就成了 Redis 里查缓存的钥匙。</p>
+            <p class="tl">接下来去 Redis 查：这把钥匙有对应的值吗？</p>
+            <p class="tl"><strong>命中了！</strong>直接返回 HTTP 200，并在响应头偷偷贴个「HIT」小标签（你可以用浏览器开发者工具看到）。</p>
+            <p class="tl">把缓存里的数据塞回去，然后调 next() 继续走流水线——但后面的 handler 不会重新抓，因为数据已经在了。</p>
+            <p class="tl">注意这个 return：命中就直接结束，handler 那一站根本不会跑。这就是「省事关卡」的精髓。</p>
+          </div>
+        </div>
+      </div>
+      <p style="font-size: var(--text-sm); color: var(--color-text-muted);">文件：<code>lib/middleware/cache.ts</code> 第 21–27 行 与 第 54–60 行。</p>
+    </div>
+
+    <!-- ═══════════════ SCREEN 6 · 洋葱模型 callout ═══════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading">一个通用的大智慧 · 洋葱模型</h3>
+      <p>把每个中间件想象成洋葱的一层皮。请求从外面一层层穿进去（accessControl → cache → ... → handler），handler 处理完，响应再一层层穿出来（... → parameter → template）。这就是<span class="term" data-definition="洋葱模型是几乎所有现代 Web 框架（Express、Koa、Hono 等）处理请求的核心结构——中间件像洋葱皮一层层包裹，请求往里穿、响应往外穿，每一层都能在「进入前」和「离开后」各干一次活。">洋葱模型</span>。</p>
+
+      <div class="callout callout-accent">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong class="callout-title">这是 Web 框架的通用思想</strong>
+          <p>请求一层层穿进去、响应一层层穿出来——Express、Koa、Hono 这些<span class="term" data-definition="Web 框架就是帮你处理 HTTP 请求/响应的一套现成工具——你不用自己从零写「怎么接收请求、怎么解析 URL」，框架帮你搭好骨架，你只管填业务逻辑（写 handler）。RSSHub 用的是 Hono。">Web 框架</span>全都这么干。RSSHub 用的是 Hono。学会这套思路，你看任何一个现代 Web 服务都能秒懂它怎么运转。</p>
+        </div>
+      </div>
+
+      <p>这意味着每一层中间件都有「两次机会」：请求穿过它时干一次活（比如 accessControl 查钥匙），响应穿回来时还能再干一次活（比如 template 渲染、header 设置 <span class="term" data-definition="ETag 是响应头里的一个「数据指纹」——服务器算出一段哈希值贴在响应上，下次浏览器请求时带上这个值，如果数据没变服务器就只回一句「没变」，省掉重复传输。是一种省流量的缓存机制。">ETag</span>）。出问题的时候，先想清楚是「进去时」还是「出来时」出的问题，你就锁定了一半的代码范围。</p>
+    </div>
+
+    <!-- ═══════════════ SCREEN 7 · Quiz ═══════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading">动手排个错 · 三道场景题</h3>
+      <p>这三题考的都是「定位问题在哪个工位」——这是你跟 AI 排错时最值钱的能力。</p>
+
+      <div class="quiz-container" id="quiz-module3">
+        <div class="quiz-question-block"
+             data-correct="option-b"
+             data-explanation-right="对了！accessControl 是流水线第一道业务关卡，专门核对 ACCESS_KEY。报 403 说明请求被它拦下了——最常见原因是阅读器没配上对的访问密钥。"
+             data-explanation-wrong="不太对。403 是「禁止访问」，不是「找不到」。访问控制这一站才是查钥匙的地方，路由匹配在它后面。再想想哪个中间件管「有没有权限」。">
+          <h3 class="quiz-question">Q1（debugging）你部署的 RSSHub 设了 ACCESS_KEY，结果阅读器订阅报 403 错误。最可能卡在哪一站？</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>cache 中间件——缓存里没找到这个地址</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>accessControl 中间件——访问密钥没配上</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>template 中间件——渲染格式不对</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-a"
+             data-explanation-right="完全正确！cache 第一次没命中，得让 handler 去外部 API 抓数据，所以慢；第二次命中了，直接从 Redis 秒回，handler 都不用跑。这就是「省事关卡」的威力。"
+             data-explanation-wrong="再想想。template 只负责渲染格式，跟「快慢」无关。关键是第一次要现抓、第二次有现成的——哪个中间件专门管「有没有现成的」？">
+          <h3 class="quiz-question">Q2（概念）同一个订阅源，第一次打开很慢、第二次打开很快。为什么？</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>cache 第一次没命中要去抓，第二次命中直接返回</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>template 第一次渲染慢，第二次渲染快</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>accessControl 第二次记住了你，不再查密钥</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <div class="quiz-question-block"
+             data-correct="option-c"
+             data-explanation-right="正是如此！template 中间件在 handler 之后统一负责渲染——抓取（handler）和输出（template）分开。handler 只管拿数据，渲染成 RSS/Atom/JSON 是 template 的事。这是「关注点分离」的设计。"
+             data-explanation-wrong="不太对。handler 只返回数据对象，恰恰是设计上有意的分工——不是 handler 偷懒，而是把「抓数据」和「渲染输出」拆给不同中间件。哪个中间件专门管「把数据翻译成阅读器格式」？">
+          <h3 class="quiz-question">Q3（architecture）为什么 handler 只返回一个数据对象、不自己生成 RSS？</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>因为 handler 写不出 RSS 格式的代码</span>
+            </button>
+            <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>因为 cache 会自动把数据转成 RSS</span>
+            </button>
+            <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+              <div class="quiz-option-radio"></div>
+              <span>因为 template 中间件在后面统一负责渲染，抓取和输出分开</span>
+            </button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">Try Again</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════ SCREEN 8 · 通往下一模块的钩子 ═══════════════ -->
+    <div class="screen">
+      <h3 class="screen-heading">下一站 · 谁来「翻译」数据？</h3>
+      <p>请求走完整条流水线，最后拿到一个数据对象。但它还不是 RSS——阅读器看不懂一个 JS 对象。谁负责把它「翻译」成阅读器认得的样子？</p>
+      <p>下模块我们聚焦流水线的最后一站：<strong>template</strong>。看那个数据对象是怎么变成 RSS / Atom / JSON 三种格式的——以及你加个 <code>?format=json</code> 背后到底发生了什么。</p>
+    </div>
+
+  </div>
+</section>

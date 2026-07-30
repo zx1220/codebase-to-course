@@ -1,0 +1,323 @@
+<section class="module" id="module-6" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">06</span>
+      <h1 class="module-title">生态与全景图</h1>
+      <p class="module-subtitle">最后把镜头拉远——看看这 17 个技能怎么组织、怎么分发，以及这套设计背后的开放标准。</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- ── Screen 1: 仓库的全貌 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">先看这座"技能动物园"的全貌</h2>
+        <p>这个仓库（<code>anthropics/skills</code>）不是一个技能，而是<strong>17 个技能的集合</strong>，外加规范、模板。它的整体结构是这样的：</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">anthropics/skills/</span>
+            <span class="ft-desc">整个仓库</span>
+            <div class="ft-children">
+              <div class="ft-folder">
+                <span class="ft-name">skills/</span>
+                <span class="ft-desc">★ 17 个现成技能（重头戏）</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">spec/</span>
+                <span class="ft-desc">Agent Skills 官方规范（指向 agentskills.io）</span>
+              </div>
+              <div class="ft-folder">
+                <span class="ft-name">template/</span>
+                <span class="ft-desc">一个最小可用的技能模板</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">.claude-plugin/marketplace.json</span>
+                <span class="ft-desc">插件市场的"目录页"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p>有意思的是，<code>spec/</code> 文件夹里只有一句话——真正的规范已经搬到了独立网站 <code>agentskills.io/specification</code>。这是个信号：<strong>Skill 不再只是 Claude 的私房菜，而是一个跨厂商的开放标准</strong>。</p>
+      </section>
+
+      <!-- ── Screen 2: 17个技能的分类 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">17 个技能，分成三个"家族"</h2>
+        <p>仓库的 <code>marketplace.json</code> 把这些技能打包成了三个插件集。每个集合服务一类用户：</p>
+
+        <div class="pattern-cards stagger-children">
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">📄</div>
+            <h4 class="pattern-title">document-skills（文档四件套）</h4>
+            <p class="pattern-desc"><strong>xlsx · docx · pptx · pdf</strong>。处理办公文档的"生产级"技能，就是 Claude.ai 里"创建文件"功能的内核。源码可见但不开源。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🎨</div>
+            <h4 class="pattern-title">example-skills（示例集）</h4>
+            <p class="pattern-desc"><strong>12 个</strong>演示用技能：算法艺术、前端设计、MCP 构建、网页测试、技能创建器……开源（Apache 2.0），拿来改最适合。</p>
+          </div>
+          <div class="pattern-card animate-in" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🔌</div>
+            <h4 class="pattern-title">claude-api（开发指南）</h4>
+            <p class="pattern-desc">单个技能，专门教 AI 怎么用 Claude API 和各语言 <span class="term" data-definition="SDK（Software Development Kit，软件开发工具包）：把某个服务的常用功能封装成现成代码库，开发者不用从零写。比如官方的 Python SDK 让你几行代码就能调用 Claude。">SDK</span> 写应用。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">留意"开源 vs 源码可见"的区别</strong>
+            <p>README 明确说：示例技能是 <strong><span class="term" data-definition="Apache 2.0：一种宽松的开源许可证——你可以免费用、改、商用，甚至改成闭源，只要附带一份版权声明。是商业友好的开源协议代表。">Apache 2.0</span> 开源</strong>（随便用、改、商用）；但文档四件套是<strong>"源码可见"（source-available）</strong>——能看、能学，但有专门的许可证限制。用之前务必看各自的 LICENSE.txt。这个区别在软件世界很重要。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 3: 分发机制——marketplace.json ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">技能怎么"上架"和"安装"？</h2>
+        <p>关键就是这个 <code>marketplace.json</code>。它像一份"技能商店的目录"，看它的真实结构：</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">.claude-plugin/marketplace.json</span>
+            <pre><code>
+<span class="code-line">{</span>
+<span class="code-line">  <span class="code-property">"name"</span>: <span class="code-string">"anthropic-agent-skills"</span>,</span>
+<span class="code-line">  <span class="code-property">"plugins"</span>: [</span>
+<span class="code-line">    {</span>
+<span class="code-line">      <span class="code-property">"name"</span>: <span class="code-string">"document-skills"</span>,</span>
+<span class="code-line">      <span class="code-property">"source"</span>: <span class="code-string">"./"</span>,</span>
+<span class="code-line">      <span class="code-property">"skills"</span>: [</span>
+<span class="code-line">        <span class="code-string">"./skills/xlsx"</span>,</span>
+<span class="code-line">        <span class="code-string">"./skills/docx"</span>,</span>
+<span class="code-line">        <span class="code-string">"./skills/pptx"</span>,</span>
+<span class="code-line">        <span class="code-string">"./skills/pdf"</span></span>
+<span class="code-line">      ]</span>
+<span class="code-line">    }</span>
+<span class="code-line">  ]</span>
+<span class="code-line">}</span>
+            </code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">逐行翻译</span>
+            <div class="translation-lines">
+              <p class="tl">整个市场的名字叫 <code>anthropic-agent-skills</code>。</p>
+              <p class="tl">下面列出若干个"插件包"（plugins）。</p>
+              <p class="tl">比如这个叫 <code>document-skills</code> 的包。</p>
+              <p class="tl"><code>source</code> 指明代码在仓库哪个位置。</p>
+              <p class="tl"><code>skills</code> 列出这个包<strong>包含哪些技能</strong>。</p>
+              <p class="tl">用户安装时是按"<strong>包</strong>"来装的——一次装进四个文档技能。</p>
+              <p class="tl">这种"打包分发"的模式，和手机 App 商店一个思路。</p>
+            </div>
+          </div>
+        </div>
+
+        <p>用户在 Claude Code 里只要一句命令就能装：<code>/plugin install document-skills@anthropic-agent-skills</code>。</p>
+      </section>
+
+      <!-- ── Screen 4: 三种使用入口 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">三扇门，都能用上技能</h2>
+        <p>这套技能系统不绑死某一个产品。同一批技能，三个入口都能用：</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">💻</div>
+            <h4 class="pattern-title">Claude Code（终端）</h4>
+            <p class="pattern-desc">程序员的主场。用 <code>/plugin</code> 命令装技能，还能跑技能自带的脚本、起子代理做对照测试。功能最全。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">🌐</div>
+            <h4 class="pattern-title">Claude.ai（网页）</h4>
+            <p class="pattern-desc">付费用户已内置文档四件套。也能上传自己的技能。限制是没法跑子代理，所以"对照评测"这类功能用不了。</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">⚡</div>
+            <h4 class="pattern-title">Claude API（代码集成）</h4>
+            <p class="pattern-desc">把技能能力嵌进你自己的应用。适合开发者做产品——比如让你的 App 自动具备"处理 PDF"的能力。</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">"一次编写，多处运行"的威力</strong>
+            <p>你写一个技能，三个平台都能用。这是因为技能的格式是<strong>标准化的</strong>（就是前面学的那个 SKILL.md 结构）。标准化带来的复用性，是任何生态系统能壮大的根基——USB 接口、网页的 HTML，都是同一个道理。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 5: 17个技能速览（按用途） ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">17 个技能，一眼速览</h2>
+        <p>把这些技能按"干啥用的"归个类，帮你建立索引（以后想找参考就知道去哪翻）：</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📄</div>
+            <div>
+              <strong>办公文档类</strong>
+              <p>xlsx · docx · pptx · pdf —— 处理表格、文档、幻灯片、PDF</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🎨</div>
+            <div>
+              <strong>创意设计类</strong>
+              <p>algorithmic-art · canvas-design · frontend-design · theme-factory · brand-guidelines —— 生成艺术、海报、网页、主题、品牌物料</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🛠</div>
+            <div>
+              <strong>开发工程类</strong>
+              <p><span class="term" data-definition="MCP（Model Context Protocol，模型上下文协议）：一个开放标准，让 AI 能通过统一的接口调用外部工具和服务。MCP 服务就像给 AI 装的'外挂插件'，让它能查数据库、调 API。">mcp-builder</span> · webapp-testing · web-artifacts-builder · claude-api —— 造 MCP 服务、测网页、建复杂前端、用 Claude API</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">✍️</div>
+            <div>
+              <strong>沟通写作类</strong>
+              <p>internal-comms · doc-coauthoring —— 写内部沟通稿、协作写文档</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">🎁</div>
+            <div>
+              <strong>小工具 + 元技能</strong>
+              <p>slack-gif-creator（做 Slack 动图）· skill-creator（<strong>造技能的技能</strong>，本课程的主角之一）</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 6: 全景回顾——把5个模块串起来 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">一张图回顾你学到的全部</h2>
+        <p>把前五个模块的知识点串成一条线——这就是"理解 Skill 系统"的完整心智模型：</p>
+
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-num">1</div>
+            <p><strong>是什么</strong>：装满说明书的文件夹，按需加载</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">2</div>
+            <p><strong>结构</strong>：SKILL.md + scripts/references/assets</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">3</div>
+            <p><strong>加载</strong>：三级渐进披露，省脑容量</p>
+          </div>
+        </div>
+        <div class="flow-steps" style="margin-top: var(--space-4)">
+          <div class="flow-step">
+            <div class="flow-step-num">4</div>
+            <p><strong>触发</strong>：description 是命脉，要 pushy</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">5</div>
+            <p><strong>打磨</strong>：草稿→对照测→改→循环</p>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-step-num">6</div>
+            <p><strong>生态</strong>：标准格式，三平台通用</p>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🏆</div>
+          <div class="callout-content">
+            <strong class="callout-title">你现在拥有的超能力</strong>
+            <p>学完这套，你不只是"懂了 Skill 是啥"。你掌握了<strong>如何把专业知识固化成 AI 能自动调用的资产</strong>——这是 AI 时代一项非常实在的能力。无论你是想让 AI 更好地服从你的工作规矩，还是想给团队沉淀一套可复用的智能流程，这条路都通。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Screen 7: 给你的下一步 + 收尾测验 ── -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">你的下一步：动手造一个</h2>
+        <p>读懂不如做透。给你一个最实在的建议：</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>挑一个你反复对 AI 啰嗦的规矩</strong>
+              <p>比如"我们公司的表格怎么排版"、"我的代码评审 checklist"。越具体越好。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>照着 template/SKILL.md 写一版草稿</strong>
+              <p>name 用 kebab-case，description 写得 pushy 一点。正文先写主干，别贪多。</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>用 skill-creator 的思路测一轮</strong>
+              <p>准备 2-3 个真实任务，带技能跑、看结果、改、再跑。第一版不完美是正常的。</p>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-8)">最后，一道综合题收尾：</p>
+
+        <div class="quiz-container" id="quiz-module6">
+          <div class="scenario-block">
+            <div class="scenario-context">
+              <span class="scenario-label">情境</span>
+              <p>你团队想沉淀一套"事故复盘报告"的写作规范（固定章节、固定语气、要引用监控截图），让 Claude 每次都能照办。综合本课程全部六个模块，下面哪套做法最合理？</p>
+            </div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="满分答案。它综合运用了：渐进式披露（主文件+references 分层）、结构齐全（assets 放模板）、触发命脉（pushy 的 description 覆盖多种说法）、以及迭代打磨（测了再改）。这正是把六模块融会贯通的做法。"
+               data-explanation-wrong="这个方案有遗漏。回顾一下六个模块：结构（scripts/references/assets）、渐进式披露（别全塞主文件）、触发（description 要 pushy）、迭代（测了再改）。哪个选项把这些都考虑全了？">
+            <h3 class="quiz-question">最合理的做法是？</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>把所有规范、模板、示例全写进一个 SKILL.md，description 写"写事故报告时用"</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>只写一个 description，正文留空，靠 Claude 自己发挥</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>SKILL.md 写主流程和章节骨架，把详细语气规范放进 references/，模板放进 assets/，description 写得 pushy 覆盖"复盘、事故、postmortem"等说法，再用 2-3 个真实事故测一轮迭代</span>
+              </button>
+              <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>等官方出一个事故报告技能，直接用现成的</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module6')">提交答案</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module6')">重做</button>
+        </div>
+
+        <div class="callout callout-info" style="margin-top: var(--space-12)">
+          <div class="callout-icon">🎓</div>
+          <div class="callout-content">
+            <strong class="callout-title">课程到这里就结束啦</strong>
+            <p>你从一个"用过 AI 但不知其所以然"的人，变成了能<strong>看懂 Skill 结构、会设计触发、能迭代打磨、理解整个生态</strong>的人。下一个最好的复习，就是去翻翻仓库里那 17 个真实的 SKILL.md——你会发现，每一个都是这套原则的鲜活样本。祝玩得开心。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
