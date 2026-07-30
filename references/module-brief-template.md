@@ -7,7 +7,7 @@
 ## Module N: [Title]
 
 ### Teaching Arc
-- **Metaphor:** [A fresh, specific metaphor — never "restaurant." See `references/content-philosophy.md` > Metaphors First]
+- **Metaphor:** [A fresh, specific metaphor unique to this module — follow the rules in `references/content-philosophy.md` › Metaphors First]
 - **Opening hook:** [1 sentence that connects to something the learner already knows from using the app]
 - **Key insight:** [The one thing the learner should walk away understanding]
 - **"Why should I care?":** [How this helps them steer AI / debug / make decisions]
@@ -21,6 +21,18 @@ File: src/example/file.ts (lines 12-24)
 
 File: src/another/file.ts (lines 45-52)
 [paste actual code here]
+
+**Snippet length rule (balance readability against fidelity):** Prefer naturally short, punchy snippets (5-10 lines). But when a longer block (15-25 lines) carries key engineering wisdom — error handling, caching, boundary conditions, a clever guard clause — **do not skip it to keep things short.** Instead, mark it for the writing agent to present as 2-3 consecutive translation blocks, each covering a slice with its own explanation. *Cutting an idea out of the codebase to fit a length budget is the #1 cause of important knowledge being silently dropped.*
+
+### Concept Coverage (anti-drop contract)
+
+List every concept this module **must** teach clearly — the actors, data-flow steps, engineering patterns, or tech-stack choices it owns. This is the brief-stage promise that nothing important gets dropped when the writing agent works alone. The writer lands each one; the quiz tests at least the most decision-relevant ones.
+
+- [ ] Concept 1 — [one line: what it is, why it matters]
+- [ ] Concept 2 — [one line]
+- [ ] …
+
+> Source these from your Phase 1 analysis (the "What to extract" list: actors, user journey, data flows, clever patterns, tech stack & why). If a key idea from the codebase doesn't belong in *any* module's list here, that's a gap to fix before writing — see the course-level coverage check in SKILL.md › Phase 2.5.
 
 ### Interactive Elements
 

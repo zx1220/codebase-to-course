@@ -38,7 +38,7 @@ No walls of text. Each screen within a module teaches exactly one idea. If you n
 ### Metaphors First, Then Reality
 Introduce every new concept with a metaphor from everyday life. Then immediately ground it: "In our code, this looks like..." The metaphor builds intuition; the code grounds it in reality.
 
-**Critical: No recycled metaphors.** Do NOT default to "restaurant" for everything — that's the #1 crutch. Each concept deserves its own metaphor that feels natural to *that specific idea*. A database is a library with a card catalog. Auth is a bouncer checking IDs. An event loop is an air traffic controller. Message passing is a postal system. API rate limiting is a nightclub with a capacity limit. Pick the metaphor that makes the concept click, not the one that's easiest to reach for. If you catch yourself using "restaurant" or "kitchen" more than once in a course, stop and rethink.
+**Critical: No recycled metaphors.** Do NOT default to "restaurant" for everything — that's the #1 crutch. Each concept deserves its own metaphor that feels natural to *that specific idea* — e.g. auth as a bouncer checking IDs, or API rate limiting as a nightclub with a capacity limit. Pick the metaphor that makes the concept click, not the one that's easiest to reach for. If you catch yourself using "restaurant" or "kitchen" more than once in a course, stop and rethink.
 
 ### Learn by Tracing
 Follow what actually happens when the learner does something they already do every day in the app — trace the data flow end-to-end. "You know that button you click? Here's the journey your data takes after you click it..." This works because the learner has *already experienced the result* — now they're seeing the machinery behind it. It's like watching a behind-the-scenes documentary of a movie you loved.
@@ -64,19 +64,15 @@ Every technical term (API, DOM, callback, middleware, etc.) gets a dashed-underl
 
 ### Quizzes That Test Application, Not Memory
 
-The goal of learning is practical application — being able to *do something* with what you learned. Quizzes should test whether the learner can use their knowledge to solve a new problem, not whether they can regurgitate a definition.
+Quizzes test whether the learner can *use* their knowledge to solve a new problem — never whether they can regurgitate a definition.
 
 **What to quiz (in order of value):**
 1. **"What would you do?" scenarios** — Present a new situation the learner hasn't seen and ask them to apply what they learned. e.g., "You want to add a 'save to favorites' feature. Which files would you need to change?" This is the gold standard.
-2. **Debugging scenarios** — "A user reports X is broken. Based on what you learned, where would you look first?" This tests whether they understood the architecture, not just memorized file names.
-3. **Architecture decisions** — "You're building a similar app from scratch. Would you put this logic in the frontend or backend? Why?" Tests whether they understood the *reasoning* behind design choices.
+2. **Debugging scenarios** — "A user reports X is broken. Based on what you learned, where would you look first?" Tests whether they understood the architecture, not just memorized file names.
+3. **Architecture decisions** — "You're building a similar app from scratch. Would you put this logic in the frontend or backend? Why?" Tests the *reasoning* behind design choices.
 4. **Tracing exercises** — "When a user does X, trace the path the data takes." Tests whether they can follow the flow.
 
-**What NOT to quiz:**
-- Definitions ("What does API stand for?") — that's what the glossary tooltips are for
-- File name recall ("Which file handles X?") — nobody memorizes file names
-- Syntax details ("What's the correct way to write a fetch call?") — this isn't a coding bootcamp
-- Anything that can be answered by scrolling up and copying — that tests scrolling, not understanding
+**What NOT to quiz:** definitions ("What does API stand for?" — that's what glossary tooltips are for), file-name recall (nobody memorizes file names), syntax details (this isn't a coding bootcamp), or anything answerable by scrolling up and copying.
 
 **Quiz tone:**
 - Wrong answers get encouraging, non-judgmental explanations ("Not quite — here's why...")
@@ -84,6 +80,4 @@ The goal of learning is practical application — being able to *do something* w
 - Never punitive, never score-focused. No "You got 3/5!" — the quiz is a thinking exercise, not an exam
 - Wrong answer explanations should teach something new, not just say "wrong, the answer was B"
 
-**How many quizzes:** One per module, placed at the end after the learner has seen all the content. 3-5 questions per quiz. Each question should make the learner pause and *think*, not just pick the obvious answer.
-
-**Deciding what concepts are worth quizzing:** Quiz the things that would actually help someone in practice — architecture understanding ("where does this logic live and why?"), debugging intuition ("what would cause this symptom?"), and decision-making ("what's the tradeoff here?"). If a concept won't help someone debug a problem, steer an AI assistant, or make an architectural decision, it's not worth quizzing.
+**How many quizzes:** One per module, placed at the end after the learner has seen all the content. 3-5 questions per quiz. Each question should make the learner pause and *think*, not just pick the obvious answer. Quiz only concepts that help someone in practice — debugging a problem, steering an AI assistant, or making an architectural decision.

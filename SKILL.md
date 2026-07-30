@@ -106,11 +106,14 @@ Read `references/module-brief-template.md` for the template structure. Read `ref
 **For each module, write a brief to `/root/code/codebase-to-course/project/course-name/briefs/0N-slug.md` containing:**
 - Teaching arc (metaphor, opening hook, key insight)
 - Pre-extracted code snippets (copy-pasted from the codebase with file paths and line numbers)
+- Concept coverage list — the actors/flows/patterns this module owns (the anti-drop contract)
 - Interactive elements checklist with enough detail to build them
 - Which sections of which reference files the writing agent needs
 - What the previous and next modules cover (for transitions)
 
 The code snippets are the critical token-saving step. By pre-extracting them into the brief, writing agents never need to read the codebase at all.
+
+**Coverage check (mandatory, before parallel dispatch).** Once every brief is written, lay them all out and check them against the Phase 1 "What to extract" list item by item — every main actor, the core user journey, every key data flow / communication pattern, every clever engineering pattern, and the tech stack with its why-chosen reasons. Each must be owned by some module's **Concept Coverage** list. **Anything uncovered gets a brief added or folded into a neighbour — prefer one extra screen over dropping a key concept.** This is what stops important knowledge from being silently lost once agents start writing in isolation.
 
 ### Phase 3: Build the Course
 
@@ -210,7 +213,7 @@ The visual design should feel like a **beautiful developer notebook** — warm, 
 The `references/` directory contains detailed specs. **Read them only when you reach the relevant phase** — not upfront. This keeps context lean.
 
 - **`references/content-philosophy.md`** — Visual density rules, metaphor guidelines, quiz design, tooltip rules, code translation guidance. Read during Phase 2.5 (briefs) and Phase 3 (writing modules).
-- **`references/gotchas.md`** — Common failure points checklist. Read during Phase 3 and Phase 4 (review).
+- **`references/gotchas.md`** — Pre/post-build checklist of failure points to verify (snippet fidelity, tooltip clipping, scroll-snap, coverage). The *why* behind each item points back to `content-philosophy.md`; this file is just checkable items. Read during Phase 3 and Phase 4 (review).
 - **`references/module-brief-template.md`** — Template for Phase 2.5 module briefs. Read only for complex codebases using the parallel path.
 - **`references/design-system.md`** — Complete CSS custom properties, color palette, typography scale, spacing system, shadows, animations, scrollbar styling. Read during Phase 3 when writing module HTML.
 - **`references/interactive-elements.md`** — Implementation patterns for every interactive element: drag-and-drop quizzes, multiple-choice quizzes, code↔English translations, group chat animations, message flow visualizations, architecture diagrams, pattern cards, callout boxes. Read the relevant sections during Phase 3.
