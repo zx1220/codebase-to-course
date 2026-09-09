@@ -15,12 +15,13 @@
 
 - [ ] **Tooltips not clipped.** Translation blocks use `overflow: hidden`; tooltips must use `position: fixed` appended to `document.body` (`main.js` already does this). This is the #1 recurring build bug — verify visually.
 - [ ] **Aggressive tooltips.** Any term a non-technical friend wouldn't use in casual conversation is tooltip'd on first use per module (REPL, JSON, flag, entry point, PATH, pip, namespace, function, class, module, PR, E2E, software names…). Err heavily toward too many; skip only terms the learner already knows from their own domain.
+- [ ] **Cornell card closes the module.** Final screen order is quiz → Cornell summary card, nothing after it except an optional one-line hook. The card has all four parts (cue keywords + self-ask questions / covered notes / Feynman challenge with stuck points / 1–3 sentence plain summary), its questions aren't definition lookups, and the notes stay covered until revealed. Module header shows 「⏱ 约 N 分钟」. *(see content-philosophy › The Learning Methodology)*
 
 ## After all modules
 
 - [ ] **One module at a time, verified each.** Writing all modules in one pass makes later modules thin and rushed. For complex codebases, this is what the parallel path + module briefs exist to prevent.
 - [ ] **Every module has interactivity.** No module is only text + code blocks. Each has at least one of: quiz, data flow animation, group chat, architecture diagram, or drag-and-drop. These aren't decoration — they're how non-technical learners process information.
-- [ ] **Coverage check.** The five mandatory interactive elements are all present somewhere in the course: group chat animation, data/message flow animation, code↔English blocks (≥1/module), quizzes (≥1/module), glossary tooltips.
+- [ ] **Coverage check.** The six mandatory interactive elements are all present somewhere in the course: group chat animation, data/message flow animation, code↔English blocks (≥1/module), quizzes (≥1/module), glossary tooltips, Cornell summary cards (≥1/module, final screen).
 
 ## Hard CSS rules (don't get these wrong)
 

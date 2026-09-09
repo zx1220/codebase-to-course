@@ -74,12 +74,16 @@ This is a **menu, not a checklist**. Pick the modules that serve the codebase �
 
 **The key principle:** Every module should connect back to a practical skill — steering AI, debugging, making decisions. If a module doesn't help the learner DO something better, cut it or reframe it until it does.
 
+**Define ONE verifiable outcome first (西蒙学习法).** Before listing modules, write exactly one sentence of the form 「学完这门课，你能做到：___」 — observable and testable (能复述一条请求的完整旅程 / 能定位某类 bug 该看哪里 / 能向 AI 说清一个功能要改哪些文件). Words like 「了解」「理解」「掌握」 are banned — they can't be verified. Every module must serve this outcome; a module that doesn't, gets cut. The sentence appears verbatim in Module 1's opening screen as a `callout callout-accent` titled 「学完你能做到」. (Methodology details: `references/content-philosophy.md` › The Learning Methodology.)
+
 **Each module should contain:**
 - 3-6 screens (sub-sections that flow within the module)
 - At least one code-with-English translation
 - At least one interactive element (quiz, visualization, or animation)
 - One or two "aha!" callout boxes with universal CS insights
 - A metaphor that grounds the technical concept in everyday life — but NEVER reuse the same metaphor across modules, and NEVER default to the "restaurant" metaphor (it's overused). Pick metaphors that organically fit the specific concept. The best metaphors feel *inevitable* for the concept, not forced.
+- **A duration estimate in its header** — prefix the `.module-subtitle` with 「⏱ 约 N 分钟 · 」. Target 15–25 minutes per module (≈ one pomodoro, 番茄学习法). If a module honestly estimates over ~30 minutes, split it into two.
+- **A fixed ending sequence** — quiz screen → Cornell summary card screen (the module's last screen). A one-line hook for the next module may follow the card as a short paragraph, but nothing else comes after it.
 
 **Mandatory interactive elements (every course must include ALL of these):**
 - **Group Chat Animation** — at least one across the course. These are the iMessage/WeChat-style conversations between components. They're one of the most engaging elements and must always appear, even if you have to creatively frame a module's concept as a conversation between actors.
@@ -87,8 +91,9 @@ This is a **menu, not a checklist**. Pick the modules that serve the codebase �
 - **Code ↔ English Translation Blocks** — at least one per module (already required above, but reiterating: this is non-negotiable).
 - **Quizzes** — at least one per module (multiple-choice, scenario, drag-and-drop, or spot-the-bug — any quiz type counts).
 - **Glossary Tooltips** — on every technical term, first use per module.
+- **Cornell Summary Card** — exactly one per module, on the module's **final screen, immediately after the quiz**. Left cue column (keywords + self-ask questions) + covered notes area with reveal/re-cover (the recall self-test, 康奈尔笔记法) + a Feynman challenge block with stuck points pointing back into the module (费曼学习法) + a 1–3 sentence plain-Chinese summary. Full HTML pattern: `references/interactive-elements.md` › Cornell Summary Card.
 
-These five element types are the backbone of every course. Other interactive elements (architecture diagrams, layer toggles, pattern cards, etc.) are optional and should be added when they fit. But the five above must ALWAYS be present — no exceptions.
+These six element types are the backbone of every course. Other interactive elements (architecture diagrams, layer toggles, pattern cards, etc.) are optional and should be added when they fit. But the six above must ALWAYS be present — no exceptions.
 
 **Do NOT present the curriculum for approval — just build it.** The user wants a course, not a planning document. Design the curriculum internally, then go straight to building. If they want changes, they'll tell you after seeing the result.
 
@@ -216,4 +221,4 @@ The `references/` directory contains detailed specs. **Read them only when you r
 - **`references/gotchas.md`** — Pre/post-build checklist of failure points to verify (snippet fidelity, tooltip clipping, scroll-snap, coverage). The *why* behind each item points back to `content-philosophy.md`; this file is just checkable items. Read during Phase 3 and Phase 4 (review).
 - **`references/module-brief-template.md`** — Template for Phase 2.5 module briefs. Read only for complex codebases using the parallel path.
 - **`references/design-system.md`** — Complete CSS custom properties, color palette, typography scale, spacing system, shadows, animations, scrollbar styling. Read during Phase 3 when writing module HTML.
-- **`references/interactive-elements.md`** — Implementation patterns for every interactive element: drag-and-drop quizzes, multiple-choice quizzes, code↔English translations, group chat animations, message flow visualizations, architecture diagrams, pattern cards, callout boxes. Read the relevant sections during Phase 3.
+- **`references/interactive-elements.md`** — Implementation patterns for every interactive element: drag-and-drop quizzes, multiple-choice quizzes, code↔English translations, group chat animations, message flow visualizations, architecture diagrams, pattern cards, callout boxes, Cornell summary cards. Read the relevant sections during Phase 3.

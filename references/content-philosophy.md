@@ -81,3 +81,15 @@ Quizzes test whether the learner can *use* their knowledge to solve a new proble
 - Wrong answer explanations should teach something new, not just say "wrong, the answer was B"
 
 **How many quizzes:** One per module, placed at the end after the learner has seen all the content. 3-5 questions per quiz. Each question should make the learner pause and *think*, not just pick the obvious answer. Quiz only concepts that help someone in practice — debugging a problem, steering an AI assistant, or making an architectural decision.
+
+### The Learning Methodology: Simon · Pomodoro · Cornell · Feynman
+
+Every course is built on a four-part learning loop. These aren't decorative labels — they are rules that shape curriculum structure, module sizing, and the mandatory module-ending summary card. The full chain: **西蒙定目标 → 番茄切割时间 → （模块内容）→ 康奈尔回忆自测 → 费曼输出验收**.
+
+**西蒙 (Simon) — one verifiable goal.** Before designing any module, write exactly ONE sentence of the form 「学完这门课，你能做到：___」. It must be observable and testable — 能复述一条请求的完整旅程 / 能定位某类 bug 该看哪里 / 能向 AI 说清一个功能要改哪些文件. Words like 「了解」「理解」「掌握」 are banned: they can't be verified. The 4–6 modules are this outcome decomposed into sub-goals; anything that doesn't serve the outcome gets cut. This sentence appears verbatim in Module 1's opening screen as a `callout callout-accent` titled 「学完你能做到」.
+
+**番茄 (Pomodoro) — time-boxed modules.** Each module is sized to roughly one pomodoro: 15–25 minutes of focused reading. The module header (`.module-subtitle`) states the estimate as a 「⏱ 约 N 分钟 · 」 prefix. Make the estimate honest — count screens (roughly 3–4 minutes each) plus the quiz and summary card. If a module honestly estimates over ~30 minutes, that's the pomodoro principle telling you to split it into two modules. One goal, one time box, no sprawl.
+
+**康奈尔 (Cornell) — structured recall.** Each module ends with a Cornell summary card (see `interactive-elements.md` › Cornell Summary Card): a cue column (keywords + self-ask questions) stays visible, the notes area starts covered, and the learner must recall from cues before revealing. The covered-by-default notes ARE the 遮住笔记自测 action — never pre-reveal them. The re-cover button exists so the learner can test themselves again. Recall first, review second; re-reading is not learning.
+
+**费曼 (Feynman) — output as acceptance.** The card's Feynman block asks the learner to explain the module's core idea to a layperson BEFORE revealing the reference answer. If they can't say it plainly, they haven't learned it yet. The 常见卡壳点 list names the typical knowledge gaps and points back to the exact screen to re-learn — 讲不清楚的地方就是缺口，缺口指回路标. A module isn't "done" when the learner finishes reading it; it's done when they pass their own Feynman check.

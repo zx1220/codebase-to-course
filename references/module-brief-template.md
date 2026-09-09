@@ -11,6 +11,7 @@
 - **Opening hook:** [1 sentence that connects to something the learner already knows from using the app]
 - **Key insight:** [The one thing the learner should walk away understanding]
 - **"Why should I care?":** [How this helps them steer AI / debug / make decisions]
+- **Duration:** ~N min (one pomodoro, 15–25 min — if honestly over 30, propose a split)
 
 ### Code Snippets (pre-extracted)
 
@@ -43,6 +44,7 @@ Check which elements this module needs. Include enough detail for the writing ag
 - [ ] **Group chat animation** — actors: [list]. Message flow summary: [who says what to whom, in what order]
 - [ ] **Data flow animation** — actors: [list]. Steps: [sequence of highlights and packet movements]
 - [ ] **Drag-and-drop** — items: [list], targets: [list]
+- [ ] **Cornell summary card** (mandatory, final screen) — cue keywords: [3–5 个]; self-ask questions: [2–3 个，应用型]; Feynman topic: [把什么讲给外行听]; stuck points: [2–3 个，各指向哪个 screen]; plain summary: [1–3 句]
 - [ ] **Other** — [architecture diagram, layer toggle, pattern cards, etc.]
 
 ### Reference Files to Read

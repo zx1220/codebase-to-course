@@ -15,6 +15,7 @@
  *  - Architecture diagram
  *  - "Spot the bug" challenge
  *  - Layer toggle
+ *  - Cornell summary card (module wrap-up)
  */
 (function () {
   'use strict';
@@ -554,5 +555,45 @@
     if (layer) layer.style.display = 'block';
     btn.classList.add('active');
   };
+
+  /* ── CORNELL SUMMARY CARD ──────────────────────────────────── */
+  // Module wrap-up card: covered notes area (recall self-test) + Feynman
+  // challenge. Auto-initializes every .cornell-card — no ids, no onclick.
+  // Adding .live is progressive enhancement: without JS the notes are simply
+  // visible, so the content can never be locked out.
+  function initCornell(card) {
+    const notesBody = $('.cornell-notes-body', card);
+    const revealBtn = $('.cornell-reveal-btn', card);
+    const coverBtn  = $('.cornell-cover-btn',  card);
+    const feyn      = $('.cornell-feynman', card);
+    const feynBtn   = $('.cornell-feynman-toggle-btn', card);
+
+    card.classList.add('live', 'covered');
+    if (notesBody) notesBody.setAttribute('aria-hidden', 'true');
+    if (revealBtn) revealBtn.setAttribute('aria-expanded', 'false');
+
+    function reveal() {
+      card.classList.remove('covered');
+      if (notesBody) notesBody.removeAttribute('aria-hidden');
+      if (revealBtn) revealBtn.setAttribute('aria-expanded', 'true');
+      if (coverBtn)  { coverBtn.hidden = false; coverBtn.focus(); }
+    }
+    function coverAgain() {
+      card.classList.add('covered');
+      if (notesBody) notesBody.setAttribute('aria-hidden', 'true');
+      if (revealBtn) revealBtn.setAttribute('aria-expanded', 'false');
+      if (coverBtn)  coverBtn.hidden = true;
+      if (revealBtn) revealBtn.focus();
+    }
+
+    if (revealBtn) revealBtn.addEventListener('click', reveal);
+    if (coverBtn)  coverBtn.addEventListener('click',  coverAgain);
+    if (feynBtn && feyn) feynBtn.addEventListener('click', () => {
+      const open = feyn.classList.toggle('open');
+      feynBtn.setAttribute('aria-expanded', String(open));
+    });
+  }
+
+  $$('.cornell-card').forEach(el => initCornell(el));
 
 })();

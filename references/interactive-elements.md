@@ -22,6 +22,7 @@ HTML skeletons for every interactive element type used in courses. Pick the elem
 15. [Visual File Tree](#visual-file-tree)
 16. [Icon-Label Rows](#icon-label-rows)
 17. [Numbered Step Cards](#numbered-step-cards)
+18. [Cornell Summary Card](#cornell-summary-card)
 
 ---
 
@@ -524,3 +525,82 @@ For sequences that would otherwise be a numbered paragraph list. Visual, scannab
   </div>
 </div>
 ```
+
+---
+
+## Cornell Summary Card
+
+The mandatory module wrap-up element (one per module, on the **final screen, immediately after the quiz**). It implements the Cornell note-taking method plus a Feynman self-check: a cue column that stays visible, a notes area that starts **covered** (the recall self-test — look at the cues only, say the key points out loud, then reveal to compare), a Feynman challenge (explain to a layperson before seeing the reference answer), and a plain-language summary bar.
+
+**Wiring:** `main.js` auto-initializes every `.cornell-card` on page load. No ids, no inline onclick — buttons are found by class inside the card. `.cornell-reveal-btn` uncovers the notes, `.cornell-cover-btn` re-covers them (repeated self-testing), `.cornell-feynman-toggle-btn` expands the reference answer. Without JavaScript the notes are simply visible — the content can never be locked out.
+
+**HTML:**
+```html
+<div class="cornell-card">
+  <span class="cornell-label">模块收官 · 总结卡</span>
+
+  <div class="cornell-grid">
+    <!-- Left 1/3: cue column (always visible) -->
+    <div class="cornell-cues">
+      <span class="cornell-col-label">线索栏 · 回忆的抓手</span>
+      <div class="cornell-cue-keys">
+        <span class="cornell-cue-key">中间件</span>
+        <span class="cornell-cue-key">缓存命中</span>
+        <span class="cornell-cue-key">403</span>
+      </div>
+      <p class="cornell-cue-question">请求到达 handler 之前要过哪几道关卡？</p>
+      <p class="cornell-cue-question">为什么同一个订阅源「第一次慢、第二次快」？</p>
+    </div>
+
+    <!-- Right 2/3: notes area (covered by default = the self-test) -->
+    <div class="cornell-notes">
+      <span class="cornell-col-label">笔记区 · 先回忆，再揭开对照</span>
+      <div class="cornell-notes-body">
+        <ul>
+          <li>请求先过 accessControl 查密钥，没钥匙直接 403。</li>
+          <li>cache 查 Redis：命中就秒回旧结果，handler 根本不跑。</li>
+          <li>未命中才进 handler，抓完的数据再写回缓存。</li>
+        </ul>
+      </div>
+      <div class="cornell-notes-cover">
+        <p class="cornell-cover-hint">先别看——只看左边线索栏，把要点口头说一遍</p>
+        <button class="btn btn-primary cornell-reveal-btn">我想好了，揭开笔记</button>
+      </div>
+      <button class="btn cornell-cover-btn" hidden>盖上，再测一次</button>
+    </div>
+  </div>
+
+  <!-- Feynman challenge (sub-block) -->
+  <div class="cornell-feynman">
+    <span class="cornell-feynman-badge">费曼挑战</span>
+    <p class="cornell-feynman-prompt">不看笔记，把「中间件流水线」讲给一位完全不懂技术的同事听——他能听懂吗？</p>
+    <button class="btn cornell-feynman-toggle-btn" aria-expanded="false">我讲完了，对照参考答案</button>
+    <div class="cornell-feynman-answer">
+      <p>参考解释：一个请求进门后不是直接干活，而是排队过一道道关卡——有人查钥匙（权限），有人查有没有现成货（缓存），都放行了才轮到真正干活的 handler。</p>
+      <div class="cornell-feynman-stuck">
+        <strong>常见卡壳点</strong>
+        <ul>
+          <li>讲不清「命中缓存时 handler 会不会跑」——回去看 Screen 1 的分支 A。</li>
+          <li>把 accessControl 和 cache 的顺序说反——关卡是有固定顺序的。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom summary bar -->
+  <div class="cornell-summary">
+    <span class="cornell-summary-label">大白话总结</span>
+    <p>请求要排队过关卡才能到 handler；缓存命中时连 handler 都不用跑，所以第二次特别快。</p>
+  </div>
+</div>
+```
+
+**Rules:**
+- Exactly **one card per module**, placed on the module's **final screen**, right after the quiz screen. Nothing except a short one-line hook to the next module may follow it.
+- **Cue column:** 3–5 keyword chips (the module's key vocabulary — this doubles as vocabulary review) + 2–3 self-ask questions. Questions must be application-oriented and answerable from the module (「为什么第二次请求快？」), never definition lookups (「cache 是什么？」is what glossary tooltips are for).
+- **Notes area:** 3–5 key points, one line each, distilled in your own words — never sentences copied from the module.
+- **Feynman prompt:** always phrased as explaining to a specific layperson (「讲给一位完全不懂技术的同事/家人听」). The reference answer is 3–5 sentences of genuinely plain Chinese, zero jargon. The stuck-points list has 2–3 items, each phrased as 「讲不清 X —— 回去看 Screen N」 and pointing back to a specific screen in this module — that pointer is the Feynman gap-detection loop.
+- **Summary bar:** 1–3 sentences, plain Chinese, no new information — only what the module already taught.
+- Button labels are fixed (don't reword): 「我想好了，揭开笔记」「盖上，再测一次」「我讲完了，对照参考答案」.
+- Do not add `id` attributes or inline handlers — the card is stateless and initializes by class scan.
+
